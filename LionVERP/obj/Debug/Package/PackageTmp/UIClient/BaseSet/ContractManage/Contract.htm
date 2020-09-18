@@ -1,0 +1,586 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>菜单管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/EventMenu.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "rbinder")
+                .setName("rbinder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("合同模板管理")
+            );
+
+                    host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "b2", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdt")
+                .setDock("top")
+                .setHeight(60)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                    host.pdt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bold;font-size:16px;color:#666666'>城市</span>")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                    host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_dtreebar_onitemselected")
+            , "before1");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pft")
+                .setDock("top")
+                .setHeight(60)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                    host.pft.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bold;font-size:16px;color:#666666'>表单</span>")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "b2");
+
+                    host.pmt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "mtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_mtoolbar_onclick")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-weight:bold;font-size:16px;color:#666666'>模板</span>")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "b2");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "b2");
+
+                    host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ftreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_ftreebar_onitemselected")
+            , "before");
+
+                    host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "模板名称"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "b2");
+
+                    host.ly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "rtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_rtoolbar_onclick")
+            , "main");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "prt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                    host.prt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(10)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bold;font-size:16px;color:#666666'>模板列</span>")
+            );
+
+                    host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "rtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "列名称"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "mdlg")
+                .setLeft(130)
+                .setTop(90)
+                .setWidth(980)
+                .setHeight(770)
+                .setDisplay("none")
+                .setCaption("模板")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.mdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmbt")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.pmbt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            );
+
+                    host.mdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptb")
+                .setDock("top")
+                .setHeight(70)
+            );
+
+                    host.ptb.append(
+                (new linb.UI.Input)
+                .setHost(host, "tname")
+                .setDataBinder("binder")
+                .setDataField("tname")
+                .setLeft(60)
+                .setTop(10)
+                .setWidth(270)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;font-size:14px'>模板名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ptb.append(
+                (new linb.UI.Input)
+                .setHost(host, "tcode")
+                .setDataBinder("binder")
+                .setDataField("tcode")
+                .setLeft(350)
+                .setTop(10)
+                .setWidth(220)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;font-size:14px'>模板编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ptb.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(590)
+                .setTop(10)
+                .setWidth(220)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;font-size:14px'>模板ID</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                    host.mdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptform")
+                .setDock("fill")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "rdlg")
+                .setLeft(500)
+                .setTop(150)
+                .setWidth(630)
+                .setHeight(370)
+                .setCaption("模板列")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "artoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_artoolbar_onclick")
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rmname")
+                .setDataBinder("rbinder")
+                .setDataField("rmname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>模板名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rmcode")
+                .setDataBinder("rbinder")
+                .setDataField("rmcode")
+                .setLeft(320)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>模板编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rname")
+                .setDataBinder("rbinder")
+                .setDataField("rname")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>模板列名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rcode")
+                .setDataBinder("rbinder")
+                .setDataField("rcode")
+                .setLeft(320)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>模板列编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "rtype")
+                .setDataBinder("rbinder")
+                .setDataField("rtype")
+                .setLeft(40)
+                .setTop(150)
+                .setWidth(250)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产品类型</span>")
+                .setLabelHAlign("left")
+                .setItems([{ "id": "a", "caption": "item a", "image": "img/demo.gif" }, { "id": "b", "caption": "item b", "image": "img/demo.gif" }, { "id": "c", "caption": "item c", "image": "img/demo.gif" }, { "id": "d", "caption": "item d", "image": "img/demo.gif", "disabled": true}])
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rtext")
+                .setDataBinder("rbinder")
+                .setDataField("rtext")
+                .setLeft(40)
+                .setTop(200)
+                .setWidth(530)
+                .setHeight(110)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>模板</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                    host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rid")
+                .setDataBinder("rbinder")
+                .setDataField("rid")
+                .setLeft(320)
+                .setTop(160)
+                .setWidth(250)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("模板列编码")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this;
+                    emobj = EventMenu;
+                    preurl = "../../../UIServer/BaseSet/OrderTypeManage/OrderTypes.aspx";
+                    emobj.IQueryEMenu("f", "", ns.ftreebar);
+                    IdepItemsByAtrr("cs", ns.dtreebar)
+                },
+                _stoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _ftreebar_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _mtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    var ov = ns.ctreegrid.getUIValue()
+                    if (item.id == "a1") {
+                        ns.mdlg.setDisplay("block")
+                      //  InitContract("")
+                    }
+                    if (item.id == "a3") {
+                        if (ov != "" && ov != null) {
+                            ns.mdlg.setDisplay("block")
+                            InitContract(ov)
+                        }
+                        else {
+                            linb.msg("请选合同模板")
+                        }
+                    }
+                    if (item.id == "a4") {
+                        if (ov != "" && ov != null) {
+                            IDelFun("DelContract('" + ov + "')")
+                        }
+                        else {
+                            linb.msg("请选合同模板")
+                        }
+                    }
+                },
+                _atoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        SaveOrderType()
+                    }
+                    if (item.id == "a3") {
+                        ns.odlg.setDisplay("none")
+                    }
+                },
+                _rtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _artoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                }
+            },
+            Static: {
+                viewSize: { "width": 1280, "height": 1024 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function InitOrderType(tv) {
+            var o = { "tcode": tv }
+            var url = preurl + "/InitOrderType"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                InitKj(r)
+            }
+            else {
+                InitUnKj()
+            }
+        }
+        function InitKj(r) {
+            ns.emcode.setValue(r.emcode)
+            ns.ofname.setValue(r.tname)
+            ns.ofcode.setValue(r.tcode)
+            ns.dsource.setValue(r.tsource)
+            ns.ofid.setValue(r.id)
+        }
+        function InitUnKj() {
+            ns.emcode.setValue()
+            ns.ofname.setValue()
+            ns.ofcode.setValue()
+            ns.ofid.setValue(0)
+        }
+        function SaveOrderType() {
+
+            var url = preurl + "/SaveOrderType"
+            var db = linb.DataBinder.getFromName("binder");
+            var o = db.updateDataFromUI().getData();
+            var b = AjaxExb(url, o)
+            BackVad(b, "reload()", false)
+        }
+        function DelOrderType(tv) {
+            var o = { "tcode": tv }
+            var url = preurl + "/DelOrderType"
+            var b = AjaxExb(url, o);
+            BackVad(b, "reload()", false)
+        }
+        function QueryList() {
+            var url = preurl + "/QueryList";
+            var b = AjaxEb(url);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.coftreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[0]}] })
+                }
+                ns.coftreegrid.setRows(arr)
+            }
+        }
+        function reload() {
+            QueryList()
+            ns.odlg.setDisplay("none")
+        }
+     </script>
+</body>
+</html>
+

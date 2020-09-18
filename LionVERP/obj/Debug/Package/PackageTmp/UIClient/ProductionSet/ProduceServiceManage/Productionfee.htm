@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品服务费</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+   
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("服务费管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ptlb")
+                .setLeft(180)
+                .setTop(20)
+                .setWidth(240)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("当前类别")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_ptlb_onchange")
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bloder;color:#666666'>服务类型</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "border:1px solid #cccccc" })
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "border:1px solid #cccccc" })
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "fwtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "平台" }, { "id": "col2", "width": 200, "type": "input", "caption": "名称" }, { "id": "col3", "width": 120, "type": "input", "caption": "金额" }, { "id": "col3", "width": 120, "type": "input", "caption": "套金额"}])
+                .setValue("")
+                .onRowSelected("_fwtreegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fdlg")
+                .setLeft(152)
+                .setTop(205)
+                .setWidth(550)
+                .setHeight(256)
+                .setDisplay("none")
+                .setCaption("服务费")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fatoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_fatoolbar_onclick")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ptname")
+                .setLeft(70)
+                .setTop(50)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("平&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;台")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pname")
+                .setLeft(70)
+                .setTop(90)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("产&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fff")
+                .setDataBinder("binder")
+                .setDataField("fff")
+                .setLeft(70)
+                .setTop(130)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("服&nbsp;务&nbsp;&nbsp;费")
+                .setValue("0")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fid")
+                .setDataBinder("binder")
+                .setDataField("fid")
+                .setLeft(70)
+                .setTop(180)
+                .setWidth(350)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcode")
+                .setDataBinder("binder")
+                .setDataField("pcode")
+                .setLeft(70)
+                .setTop(220)
+                .setWidth(350)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("PCode")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ptcode")
+                .setDataBinder("binder")
+                .setDataField("ptcode")
+                .setLeft(70)
+                .setTop(170)
+                .setWidth(350)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("PtCode")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tfff")
+                .setDataBinder("binder")
+                .setDataField("tfff")
+                .setLeft(70)
+                .setTop(170)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("套服务费")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/ProduceServiceManage/Producefees.aspx";
+                     IinvItems("", ns.ptreebar)
+                     IdepItemsByAtrr("s", ns.ptlb)
+                 },
+
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var ptv = ns.ptlb.getUIValue();
+                     ns.ptreebar.setValue(item.id)
+                     IinvCItems(item, ns.ptreebar);
+                     GetFee(ptv, item.id)
+                 },
+                 _ptlb_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.fwtreegrid.removeAllRows()
+                     QueryList(newValue);
+
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var ptv = ns.ptlb.getUIValue()
+                     var pv = ns.ptreebar.getUIValue()
+                     var fv = ns.fwtreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         if (ptv == "" || ptv == null) {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         if (pv == "" || pv == null) {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         ns.fdlg.setDisplay("block")
+                         InitFee(ptv, pv, 0)
+                     }
+                     if (item.id == "a3") {
+                         if (fv == "" || fv == null) {
+                             linb.message("请选择服务费")
+                             return
+                         }
+                         ns.fdlg.setDisplay("block")
+                         InitFee("", "", fv)
+                     }
+                     if (item.id == "a4") {
+                         if (fv == "" || fv == null) {
+                             linb.message("请选择服务费")
+                             return
+                         }
+                         IDoFun("确定要删除服务费？", "DelFee('" + fv + "')")
+                     }
+                 },
+                 _fatoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         SaveFee()
+                     }
+                     if (item.id == "a3") {
+                         ns.fdlg.setDisplay("none")
+                         InitUnKj();
+                     }
+                 },
+                 _fwtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.fwtreegrid.setValue(row.id)
+
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 }
+             }
+         });
+     
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitFee(ptv, pv, id) {
+             var o = { "ptcode": ptv ,"pcode":pv,"id":id}
+             var url = preurl + "/InitFee"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.ptname.setValue(r.aname)
+             ns.ptcode.setValue(r.acode)
+             ns.pname.setValue(r.iname)
+             ns.pcode.setValue(r.icode)
+             ns.fff.setValue(r.fmoney)
+             ns.tfff.setValue(r.tfmoney)
+             ns.fid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.ptname.setValue()
+             ns.ptcode.setValue()
+             ns.pname.setValue()
+             ns.pcode.setValue()
+             ns.fff.setValue(0)
+             ns.tfff.setValue(0)
+             ns.fid.setValue(0)
+         }
+         function SaveFee() {
+             var url = preurl + "/SaveFee"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoad()", false)
+         }
+         function DelFee(v) {
+             var o = { "fid": v }
+             var url = preurl + "/DelFee"
+             var b = AjaxExb(url, o);
+             BackVad(b, "ReLoad()", false)
+         }
+         function QueryList(ptv) {
+             var url = preurl + "/QueryList";
+             var o = {"ptcode":ptv}
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fwtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4]}] })
+                 }
+                 ns.fwtreegrid.setRows(arr)
+             }
+         }
+         function GetFee(ptv, pv) {
+             var o = {"ptcode":ptv,"pcode": pv}
+             var url = preurl + "/GetProduceFee"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fwtreegrid.setValue(r)
+             }
+             else {
+                 ns.fwtreegrid.setValue("")
+                 linb.message("产品未设置服务费")
+             }
+         }
+         function ReLoad() {
+             var ptv = ns.ptlb.getUIValue();
+             ns.fdlg.setDisplay("none")
+             QueryList(ptv)
+         }
+     </script>
+</body>
+</html>
+

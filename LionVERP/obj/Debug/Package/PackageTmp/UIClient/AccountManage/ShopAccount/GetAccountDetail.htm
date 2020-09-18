@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户收款</title>
+    <link href="../../../bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../../dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../plugins/jQuery/jQuery-2.1.4.min.js" type="text/javascript"></script> 
+    <script src="../../../bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iviewtable.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IWorkLine.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LodopFuncs.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LvPrint.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("客户收款详情")
+            );
+
+                    host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "jg1")
+                .setDock("top")
+                .setHeight(12)
+            );
+
+                    host.panel.append(
+                (new linb.UI.Group)
+                .setHost(host, "g1")
+                .setDock("top")
+                .setHeight(59)
+                .setCaption("订单流程")
+                .setToggleBtn(false)
+            );
+
+                    host.g1.append(
+                (new linb.UI.StatusButtons)
+                .setHost(host, "ostatusbuttons")
+                .setItems([{ "id": "a", "caption": "状态"}])
+                .setLeft(100)
+                .setTop(10)
+                .setWidth(1000)
+                .setHeight(30)
+                .setSelMode("multibycheckbox")
+                .setBorderType("none")
+                .setValue("a")
+            );
+
+                    host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "jg2")
+                .setDock("top")
+                .setHeight(12)
+            );
+
+                    host.panel.append(
+                (new linb.UI.Group)
+                .setHost(host, "g2")
+                .setDock("top")
+                .setHeight(288)
+                .setCaption("收款详情")
+                .setToggleBtn(false)
+            );
+
+                    host.g2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1")
+                .setDock("fill")
+            );
+                    host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "shdlg")
+                .setLeft(310)
+                .setTop(180)
+                .setWidth(600)
+                .setHeight(260)
+                .setDisplay("none")
+                .setCaption("审核")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.shdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "shtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_shtoolbar_onclick")
+            );
+
+                    host.shdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "checkstate")
+                .setLeft(30)
+                .setTop(60)
+                .setWidth(455)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("处理结果")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "通过" }, { "id": "-1", "caption": "驳回"}])
+            );
+
+                    host.shdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "checkbz")
+                .setLeft(30)
+                .setTop(110)
+                .setWidth(470)
+                .setHeight(90)
+                .setLabelSize(60)
+                .setLabelCaption("处理意见")
+                .setMultiLines(true)
+            );
+
+                    return children;
+
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", bcode = "" ;
+                    emcode = "0092";
+                    preurl = "../../../UIServer/AccountBusiness/CustomeAccount.aspx";
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"].toString();
+                        WorkFlowBar(emcode, sid, ns.toolbar);
+                        WorkLine(sid, emcode, ns.ostatusbuttons);
+                        Init();
+                    }
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    bcode = item.bcode;
+                    if (item.btip == "1") {
+                        BtnDoTip(sid, emcode, item, true)
+                    }
+                    else {
+                        BtnDo(sid, emcode, item)
+                    }
+                }
+                ,
+                _shtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        var bzt = ns.checkstate.getUIValue();
+                        var bdt = ns.checkbz.getUIValue();
+                        if (!CheckInput(ns, ns.checkstate, true, "", "选择审核状态！", "", "", "")) {
+                            return
+                        }
+                        FireCheckBtn(sid, bcode, bzt, bdt)
+                    }
+                    else {
+                        ns.shdlg.setDisplay("none");
+                    }
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function Init() {
+            var o = { "emcode": emcode, "sid": sid }
+            var url = preurl + "/QueryCustomeAccountHtm"
+            var b = AjaxExb(url, o);
+            ns.p1.setHtml(b)
+        }
+        function CheckOrder() {
+            ns.shdlg.setDisplay("block");
+        }
+    </script>
+</body>
+</html>

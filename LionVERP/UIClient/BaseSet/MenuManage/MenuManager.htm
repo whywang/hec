@@ -1,0 +1,479 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>菜单管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IMenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IGroup.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("菜单管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_mtreebar_onitemselected")
+                .beforeExpend("_mtreebar_beforeexpend")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "mname")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(60)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("菜单名称")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s1")
+                .setLeft(40)
+                .setTop(20)
+                .setCaption("***菜单信息***")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "mcode")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(110)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("菜单编码")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "pmname")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(160)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("父级菜单")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "pmcode")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(210)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("父级编码")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "murl")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(260)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("URL地址")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "mshow")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(310)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("是否显示")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Input)
+                .setHost(host, "msort")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(360)
+                .setWidth(350)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("顺&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序")
+            , "main");
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "mdlg")
+                .setLeft(160)
+                .setTop(130)
+                .setWidth(660)
+                .setHeight(400)
+                .setDisplay("none")
+                .setCaption("菜单")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "mstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_mstoolbar_onclick")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "emname")
+                .setDataBinder("binder")
+                .setDataField("emname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>菜单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "emcode")
+                .setDataBinder("binder")
+                .setDataField("emcode")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>菜单编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "epmname")
+                .setDataBinder("binder")
+                .setDataField("epmname")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(110)
+                .setWidth(250)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>父级菜单</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "epmcode")
+                .setDataBinder("binder")
+                .setDataField("epmcode")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(110)
+                .setWidth(250)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>父级编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "eshow")
+                .setDataBinder("binder")
+                .setDataField("eshow")
+                .setLeft(40)
+                .setTop(170)
+                .setWidth(235)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>是否显示</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+                .setValue("1")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "eurl")
+                .setDataBinder("binder")
+                .setDataField("eurl")
+                .setLeft(40)
+                .setTop(290)
+                .setWidth(560)
+                .setHeight(60)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>菜单Url</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "eid")
+                .setDataBinder("binder")
+                .setDataField("eid")
+                .setLeft(50)
+                .setTop(300)
+                .setWidth(400)
+                .setHeight(60)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("菜单名称")
+                .setMultiLines(true)
+                .setValue("1")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "emsort")
+                .setDataBinder("binder")
+                .setDataField("emsort")
+                .setLeft(350)
+                .setTop(230)
+                .setWidth(250)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>顺&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "emstyle")
+                .setDataBinder("binder")
+                .setDataField("emstyle")
+                .setLeft(40)
+                .setTop(230)
+                .setWidth(235)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>样&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;式</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "A" }, { "id": "b", "caption": "B" }, { "id": "c", "caption": "C" }, { "id": "d", "caption": "D" }, { "id": "e", "caption": "E" }, { "id": "f", "caption": "F" }, { "id": "g", "caption": "G" }, { "id": "h", "caption": "H" }, { "id": "i", "caption": "I" }, { "id": "j", "caption": "J" }, { "id": "k", "caption": "K" }, { "id": "l", "caption": "L" }, { "id": "m", "caption": "M" }, { "id": "n", "caption": "N" }, { "id": "o", "caption": "O" }, { "id": "p", "caption": "P" }, { "id": "q", "caption": "Q" }, { "id": "r", "caption": "R" }, { "id": "s", "caption": "S" }, { "id": "t", "caption": "T" }, { "id": "u", "caption": "U" }, { "id": "v", "caption": "V" }, { "id": "w", "caption": "W" }, { "id": "x", "caption": "X" }, { "id": "y", "caption": "Y" }, { "id": "z", "caption": "Z"}])
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "emgroup")
+                .setDataBinder("binder")
+                .setDataField("emgroup")
+                .setLeft(350)
+                .setTop(170)
+                .setWidth(235)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>菜单组别</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "A" }, { "id": "b", "caption": "B" }, { "id": "c", "caption": "C" }, { "id": "d", "caption": "D" }, { "id": "e", "caption": "E" }, { "id": "f", "caption": "F" }, { "id": "g", "caption": "G" }, { "id": "h", "caption": "H" }, { "id": "i", "caption": "I" }, { "id": "j", "caption": "J" }, { "id": "k", "caption": "K" }, { "id": "l", "caption": "L" }, { "id": "m", "caption": "M" }, { "id": "n", "caption": "N" }, { "id": "o", "caption": "O" }, { "id": "p", "caption": "P" }, { "id": "q", "caption": "Q" }, { "id": "r", "caption": "R" }, { "id": "s", "caption": "S" }, { "id": "t", "caption": "T" }, { "id": "u", "caption": "U" }, { "id": "v", "caption": "V" }, { "id": "w", "caption": "W" }, { "id": "x", "caption": "X" }, { "id": "y", "caption": "Y" }, { "id": "z", "caption": "Z"}])
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+                 iniExComs: function (com, threadid) {
+                 },
+                 customAppend: function (parent, subId, left, top) {
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/MenuManage/Menus.aspx";
+                     IMenuItems("", ns.mtreebar)
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var svm = ns.mtreebar.getUIValue();
+                     if (item.id == "a1") {
+                         if (svm) {
+                             if (svm.length > 3) {
+                                 linb.warn("请选择上级菜单")
+                                 return
+                             }
+                         }
+                         else {
+                             svm = "";
+                         }
+                         ns.mdlg.setDisplay("block")
+                         InitMenu(svm, "")
+                     }
+                     if (item.id == "a3") {
+                         if (svm == null || svm == "") {
+                             linb.warn("请选择上级菜单")
+                             return
+                         }
+                         ns.mdlg.setDisplay("block")
+                         InitMenu("", svm)
+                     }
+                     if (item.id == "a4") {
+                     }
+                 },
+                 _mstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveMenu()
+                     }
+                     ns.mdlg.setDisplay("none")
+                 },
+                 _mtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IMenuCItems(item, ns.mtreebar);
+                     QueryMenu(item.id)
+                 },
+                 _mtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IMenuCItems(item, ns.mtreebar)
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitMenu(pmv, mv) {
+             var o = { "mpcode": pmv, "mcode": mv }
+             var url = preurl + "/InitMenu"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.emname.setValue(r.mname)
+                 ns.emcode.setValue(r.mcode)
+                 ns.epmname.setValue(r.mpname)
+                 ns.epmcode.setValue(r.mpcode)
+                 ns.eshow.setValue(r.mshow == true ? "1" : "0")
+                 ns.eurl.setValue(r.murl)
+                 ns.eid.setValue(r.id)
+                 ns.emgroup.setUIValue(r.mtype)
+                 ns.emsort.setValue(r.msort)
+                 ns.emstyle.setUIValue(r.mstyle)
+             }
+         }
+         function QueryMenu(mv) {
+             var o = { "mpcode": "", "mcode": mv }
+             var url = preurl + "/InitMenu"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.mname.setValue(r.mname)
+                 ns.mcode.setValue(r.mcode)
+                 ns.pmname.setValue(r.mpname)
+                 ns.pmcode.setValue(r.mpcode)
+                 ns.mshow.setValue(r.mshow == true ? "是" : "否")
+                 ns.murl.setValue(r.murl)
+                 ns.msort.setValue(r.msort)
+             }
+         }
+         function SaveMenu() {
+             var url = preurl + "/SaveMenu"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+
+         function SetGroupMenu(rv, mv) {
+             var o = { "gcode": rv, "menulist": mv }
+             var url = gpreurl + "/SetGroupMenu"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetGroupMenu(rv) {
+             var o = { "gcode": rv }
+             var url = gpreurl + "/ReSetGroupMenu"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", true)
+         }
+         function GetGroupMenu(rv) {
+             var o = { "gcode": rv }
+             var url = gpreurl + "/GetGroupMenu"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.warn("未设置")
+             }
+             else {
+                 ns.mgtreebar.setValue(b)
+             }
+         }
+     </script>
+</body>
+</html>
+

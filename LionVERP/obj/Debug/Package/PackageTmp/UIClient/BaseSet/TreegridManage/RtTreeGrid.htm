@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>表格设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("报表模板管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>报表单</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_mtreebar_onitemselected")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pvt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pvt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(10)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>模板</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pvl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pvr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "vtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "模板名" }, { "id": "col2", "width": 200, "type": "input", "caption": "表/视图" }, { "id": "col3", "width": 200, "type": "input", "caption": "模板Head" }, { "id": "col3", "width": 200, "type": "input", "caption": "列" }, { "id": "col3", "width": 200, "type": "input", "caption": "查询条件" }])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "vdlg")
+                .setLeft(131)
+                .setTop(74)
+                .setWidth(925)
+                .setHeight(540)
+                .setCaption("报表模板")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rtname")
+                .setDataBinder("binder")
+                .setDataField("rtname")
+                .setLeft(40)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>模板名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rtcode")
+                .setDataBinder("binder")
+                .setDataField("rtcode")
+                .setLeft(250)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>模板编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "emname")
+                .setDataBinder("binder")
+                .setDataField("emname")
+                .setLeft(460)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>表单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbtname")
+                .setDataBinder("binder")
+                .setDataField("dbtname")
+                .setLeft(670)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>表/视图</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "emcode")
+                .setDataBinder("binder")
+                .setDataField("emcode")
+                .setLeft(470)
+                .setTop(50)
+                .setWidth(200)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>表单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "thtext")
+                .setDataBinder("binder")
+                .setDataField("thtext")
+                .setLeft(40)
+                .setTop(90)
+                .setWidth(830)
+                .setHeight(120)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>报表列</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbcol")
+                .setDataBinder("binder")
+                .setDataField("dbcol")
+                .setLeft(40)
+                .setTop(220)
+                .setWidth(830)
+                .setHeight(120)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>数据列</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbwhere")
+                .setDataBinder("binder")
+                .setDataField("dbwhere")
+                .setLeft(40)
+                .setTop(350)
+                .setWidth(830)
+                .setHeight(120)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>查询条件</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.vdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rtid")
+                .setDataBinder("binder")
+                .setDataField("rtid")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(200)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;bold;font-size:14px'>模板名称</span>")
+                .setLabelHAlign("left")
+                .setDisplay("none")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../RptTemp";
+                     IeventMenuByAttr("rp", ns.mtreebar)
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveTreegrid()
+                     }
+                     if (item.id == "a3") {
+                         ns.vdlg.setDisplay("none")
+                     }
+                 },
+                 _mtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.mtreebar.setUIValue(item.id);
+                     QueryList()
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var ev = ns.mtreebar.getUIValue()
+                     var tv = ns.vtreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         if (ev != "" && ev != null) {
+                             ns.vdlg.setDisplay("block");
+                             InitTreegrid(ev, "")
+                         }
+                         else {
+                             linb.warn("请选择表单")
+                         }
+                     }
+                     if (item.id == "a3") {
+                         if (tv != "" && tv != null) {
+                             ns.vdlg.setDisplay("block");
+                             InitTreegrid("", tv)
+                         }
+                         else {
+                             linb.warn("请选择表单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (tv != "" && tv != null) {
+                             linb.confirms("确定要删除?", "DelTreegrid('" + tv + "')")
+                         }
+                         else {
+                             linb.warn("请选择表单")
+                         }
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitTreegrid(ev, tv) {
+             var o = { "emcode": ev,"rtcode":tv}
+             var url = preurl + "/InitRptTemp"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.emcode.setValue(r.emcode)
+                 ns.emname.setValue(r.emname)
+                 ns.rtname.setValue(r.rtname)
+                 ns.rtcode.setValue(r.rtcode)
+                 ns.dbtname.setValue(r.dbtname)
+                 ns.thtext.setValue(r.thtext)
+                 ns.dbcol.setValue(r.dbcol)
+                 ns.dbwhere.setValue(r.dbwhere)
+                 ns.rtid.setValue(r.id)
+             }
+         }
+         function SaveTreegrid() {
+             var url = preurl + "/SaveRptTemp"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList()", false)
+         }
+         function DelTreegrid(tv) {
+             var o = { "rtcode": tv }
+             var url = preurl + "/DelRptTemp"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList()", false)
+         }
+         function QueryList() {
+             var ev=ns.mtreebar.getUIValue();
+             var url = preurl + "/QueryList";
+             var o = { "emcode": ev }
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.vtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.vtreegrid.setRows(arr)
+             }
+         }
+     </script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>角色管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+                     this.properties = {};
+                 },
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "rbinder")
+                .setName("rbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("角色管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "rtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "角色名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "角色编码" }, { "id": "col3", "width": 400, "type": "input", "caption": "角色描述"}])
+                .setValue("")
+                .onRowSelected("_rtreegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "pagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .onClick("_pagebar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "rdlg")
+                .setLeft(131)
+                .setTop(111)
+                .setWidth(550)
+                .setHeight(359)
+                .setDisplay("none")
+                .setCaption("角色")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rname")
+                .setDataBinder("rbinder")
+                .setDataField("rname")
+                .setLeft(70)
+                .setTop(40)
+                .setWidth(390)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>角色名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rcode")
+                .setDataBinder("rbinder")
+                .setDataField("rcode")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(90)
+                .setWidth(390)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>角色编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rdetail")
+                .setDataBinder("rbinder")
+                .setDataField("rdetail")
+                .setLeft(70)
+                .setTop(240)
+                .setWidth(390)
+                .setHeight(70)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>角色描述</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rid")
+                .setDataBinder("rbinder")
+                .setDataField("rid")
+                .setLeft(40)
+                .setTop(80)
+                .setWidth(450)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>角色名称</span>")
+                .setValue("0")
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "rattr")
+                .setDataBinder("rbinder")
+                .setDataField("rattr")
+                .setLeft(70)
+                .setTop(140)
+                .setWidth(375)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>角色属性</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "通用"}])
+                .onChange("_rattr_onchange")
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "rdep")
+                .setDataBinder("rbinder")
+                .setDataField("rdep")
+                .setLeft(70)
+                .setTop(190)
+                .setWidth(375)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>角色品牌</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(41)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='color:#656666;font-weight:bolder;font-size:16px'>系统角色</span>")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/RoleManage/Role.aspx";
+                     QueryList(1);
+                     IdepItems("0001", ns.rdep)
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.rtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.rdlg.setDisplay("block");
+                         InitRole(v)
+                     }
+                     if (item.id == "a3") {
+                         if (v != "") {
+                             ns.rdlg.setDisplay("block");
+                             InitRole(v)
+                         }
+                         else {
+                             linb.message("请选择角色")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != "") {
+                             IDelFun("DelRole('" + v + "')")
+                         }
+                         else {
+                             linb.message("请选择角色")
+                         }
+                     }
+                 },
+                 _rtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.rtreegrid.setValue(row.id)
+                 },
+                 _pagebar_onclick: function (profile, page) {
+                     var ns = this, uictrl = profile.boxing();
+                     QueryList(page);
+                     profile.boxing().setPage(page)
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         var rt = ns.rattr.getUIValue();
+                         if (rt == "" || rt == null) {
+                             if (!CheckInput(ns, ns.rdep, true, "", "请选择角色品牌！", "", "", "", "")) {
+                                 return
+                             }
+                         }
+                         SaveRole()
+                     }
+                     ns.rdlg.setDisplay("none");
+                 },
+                 _rattr_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (newValue == "a") {
+                         ns.rdep.setReadonly(true)
+                     }
+                     else {
+                         ns.rdep.setReadonly(false)
+                     }
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitRole(v) {
+             var o = { "rcode": v }
+             var url = preurl + "/InitRole"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function SaveRole() {
+             var url = preurl + "/SaveRole"
+             var db = linb.DataBinder.getFromName("rbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList(1)", false)
+         }
+         function DelRole(v) {
+             var o = { "rcode": v }
+             var url = preurl + "/DelRole"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function QueryList(page) {
+             var url = preurl + "/QueryListFyRole";
+             var o = { "curpage": page, "pagesize": "15" };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.rtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 2; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2]}] })
+                 }
+                 ns.pagebar.setValue("1:1:" + r[1] + "")
+                 ns.rtreegrid.setRows(arr)
+             }
+         }
+         function InitKj(r) {
+            ns.rname.setValue(r.rname)
+            ns.rcode.setValue(r.rcode)
+            ns.rdetail.setValue(r.rdetail)
+            ns.rattr.setValue(r.rtype)
+            ns.rdep.setValue(r.dcode)
+            ns.rdetail.setValue(r.rdetail)
+            ns.rid.setValue(r.id)
+            if (r.rread) {
+                ns.rattr.setReadonly(true) 
+            }
+         }
+         function InitUnKj() {
+            ns.rname.setValue()
+            ns.rcode.setValue()
+            ns.rdetail.setValue()
+            ns.rid.setValue(0)
+            if (r.rread) {
+                ns.rattr.setReadonly(true)
+            }
+         }
+     </script>
+</body>
+</html>

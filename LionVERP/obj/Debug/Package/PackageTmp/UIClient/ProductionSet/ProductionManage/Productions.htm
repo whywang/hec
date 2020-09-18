@@ -1,0 +1,1227 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'>
+        <img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iunit.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Imaterial.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IJc.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/INomalSize.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IRemarks.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Icomputermethods.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IocmList.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IimageList.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ipackage.js" type="text/javascript"></script>
+    <script src="../../../Scripts/ProductionSet/IproductionAttrSet.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ProductionApartType.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "plbinder")
+                .setName("plbinder")
+            );
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "pbinder")
+                .setName("pbinder")
+            );
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "spbinder")
+                .setName("spbinder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("产品管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "pca")
+                .setDock("fill")
+            , "before");
+
+                    host.pca.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lbtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "停售", "image": "../../../Image/opeimage/del.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a5", "caption": "批量新增", "image": "../../../Image/opeimage/add.gif"}], "caption": "grp1"}])
+                .onClick("_lbtoolbar_onclick")
+            );
+
+                    host.pca.append(
+                (new linb.UI.Pane)
+                .setHost(host, "cpt")
+                .setDock("top")
+                .setHeight(40)
+                .setCustomStyle({ "KEY": "background:#f2f2f2;border-top:1px solid #cccccc" })
+            );
+
+                    host.cpt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;color:#666666'>产品分类</span>")
+            );
+
+                    host.pca.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "lbtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_lbtreebar_onitemselected")
+                .beforeExpend("_lbtreebar_beforeexpend")
+            );
+
+                    host.pca.append(
+                (new linb.UI.Pane)
+                .setHost(host, "cpl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pca.append(
+                (new linb.UI.Pane)
+                .setHost(host, "cpr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block5")
+                .setDock("fill")
+            , "main");
+
+                    host.ctl_block5.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ptoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a2", "type": "split", "split": true }, { "id": "a6", "caption": "停售", "image": "../../../Image/opeimage/del.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a7", "caption": "起售", "image": "../../../Image/opeimage/open.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a8", "caption": "批量新增", "image": "../../../Image/opeimage/open.gif"}], "caption": "grp1"}])
+                .onClick("_ptoolbar_onclick")
+            );
+
+                    host.ctl_block5.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setDirtyMark(false)
+                .setDirectInput(false)
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "产品名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "编码" }, { "id": "col3", "width": 100, "type": "input", "caption": "材质" }, { "id": "col4", "width": 100, "type": "input", "caption": "单位" }, { "id": "col4", "width": 100, "type": "input", "caption": "状态"}])
+                .setValue("")
+                .onRowSelected("_ptreegrid_onrowselected")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "plglg")
+                .setLeft(151)
+                .setTop(110)
+                .setWidth(639)
+                .setHeight(290)
+                .setDisplay("none")
+                .setCaption("产品类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.plglg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lbstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_lbstoolbar_onclick")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lname")
+                .setDataBinder("plbinder")
+                .setDataField("lname")
+                .setLeft(60)
+                .setTop(60)
+                .setWidth(240)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lcode")
+                .setDataBinder("plbinder")
+                .setDataField("lcode")
+                .setLeft(350)
+                .setTop(60)
+                .setWidth(240)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lpname")
+                .setDataBinder("plbinder")
+                .setDataField("lpname")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(120)
+                .setWidth(240)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>上级名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lpcode")
+                .setDataBinder("plbinder")
+                .setDataField("lpcode")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(120)
+                .setWidth(240)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>上级编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lid")
+                .setDataBinder("plbinder")
+                .setDataField("lid")
+                .setLeft(40)
+                .setTop(70)
+                .setWidth(450)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("类别名称")
+                .setValue("0")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.RadioBox)
+                .setHost(host, "drange")
+                .setDataBinder("plbinder")
+                .setDataField("drange")
+                .setItems([{ "id": "mm", "caption": "门类" }, { "id": "wl", "caption": "物料" }, { "id": "wj", "caption": "五金" }, { "id": "jj", "caption": "家具"}])
+                .setLeft(60)
+                .setTop(210)
+                .setWidth(530)
+                .setHeight(30)
+                .setSelMode("multibycheckbox")
+                .setCheckBox(true)
+                .setValue("")
+            );
+
+                    host.plglg.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(60)
+                .setTop(190)
+                .setCaption("应用范围")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pdlg")
+                .setLeft(384)
+                .setTop(71)
+                .setWidth(666)
+                .setHeight(569)
+                .setDisplay("none")
+                .setCaption("产品")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.pdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.ppm.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pstoolbar_onclick")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pname")
+                .setDataBinder("pbinder")
+                .setDataField("pname")
+                .setLeft(80)
+                .setTop(40)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>产品名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcode")
+                .setDataBinder("pbinder")
+                .setDataField("pcode")
+                .setReadonly(true)
+                .setLeft(340)
+                .setTop(40)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>产品编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "plname")
+                .setDataBinder("pbinder")
+                .setDataField("plname")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(100)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "plcode")
+                .setDataBinder("pbinder")
+                .setDataField("plcode")
+                .setReadonly(true)
+                .setLeft(340)
+                .setTop(100)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "psprice")
+                .setDataBinder("pbinder")
+                .setDataField("psprice")
+                .setLeft(40)
+                .setTop(370)
+                .setWidth(470)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("销&nbsp;&nbsp;售&nbsp;价")
+                .setValue("0")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pgprice")
+                .setDataBinder("pbinder")
+                .setDataField("pgprice")
+                .setLeft(40)
+                .setTop(410)
+                .setWidth(470)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("供&nbsp;&nbsp;货&nbsp;价")
+                .setValue("0")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcprice")
+                .setDataBinder("pbinder")
+                .setDataField("pcprice")
+                .setLeft(40)
+                .setTop(450)
+                .setWidth(470)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("采&nbsp;&nbsp;购&nbsp;价")
+                .setValue("0")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbz")
+                .setDataBinder("pbinder")
+                .setDataField("pbz")
+                .setLeft(80)
+                .setTop(430)
+                .setWidth(490)
+                .setHeight(60)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                    host.ppm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pcztype")
+                .setDataBinder("pbinder")
+                .setDataField("pcztype")
+                .setLeft(80)
+                .setTop(160)
+                .setWidth(215)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>材质类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "全材质" }, { "id": "b", "caption": "部分材质"}])
+                .setValue("b")
+                .onChange("_pcztype_onchange")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "punit")
+                .setDataBinder("pbinder")
+                .setDataField("punit")
+                .setLeft(340)
+                .setTop(160)
+                .setWidth(215)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pstate")
+                .setDataBinder("pbinder")
+                .setDataField("pstate")
+                .setLeft(80)
+                .setTop(310)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "起售" }, { "id": "0", "caption": "停售"}])
+                .setValue("1")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pid")
+                .setDataBinder("pbinder")
+                .setDataField("pid")
+                .setLeft(50)
+                .setTop(70)
+                .setWidth(470)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("产品名称")
+                .setValue("0")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcz")
+                .setDataBinder("pbinder")
+                .setDataField("pcz")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(220)
+                .setWidth(490)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>材&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;质</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+                .onFocus("_pcz_onfocus")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ptcprice")
+                .setDataBinder("pbinder")
+                .setDataField("ptcprice")
+                .setLeft(40)
+                .setTop(490)
+                .setWidth(470)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("套&nbsp;&nbsp;餐&nbsp;价")
+                .setValue("0")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ptype")
+                .setDataBinder("pbinder")
+                .setDataField("ptype")
+                .setLeft(340)
+                .setTop(310)
+                .setWidth(215)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Input)
+                .setHost(host, "psize")
+                .setDataBinder("pbinder")
+                .setDataField("psize")
+                .setLeft(80)
+                .setTop(370)
+                .setWidth(490)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>产品规格</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "czdlg")
+                .setLeft(290)
+                .setTop(50)
+                .setWidth(340)
+                .setHeight(450)
+                .setDisplay("none")
+                .setShadow(false)
+                .setCaption("材质颜色")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.czdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cztoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_cztoolbar_onclick")
+            );
+
+                    host.czdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "cztreegrid")
+                .setDock("width")
+                .setTop(30)
+                .setHeight(360)
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setRowHandlerWidth(60)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 260, "type": "input", "caption": "材质颜色"}])
+                .setValue("")
+                .onRowSelected("_pcztreegrid_onrowselected")
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.ppm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pldlg")
+                .setLeft(141)
+                .setTop(93)
+                .setWidth(930)
+                .setHeight(530)
+                .setDisplay("none")
+                .setCaption("批量新增")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.pldlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plpt")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.plpt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "plstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_plstoolbar_onclick")
+            );
+
+                    host.pldlg.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ply")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                    host.ply.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pcpt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2;border-top:1px solid #cccccc" })
+            , "before");
+
+                    host.pcpt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "slp1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>产品分类</span>")
+            );
+
+                    host.ply.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "pltreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_pltreebar_onitemselected")
+                .beforeExpend("_pltreebar_beforeexpend")
+            , "before");
+
+                    host.ply.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdpt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2;border-top:1px solid #cccccc" })
+            , "main");
+
+                    host.pdpt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "slp2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666;font-weight:bolder;'>产品详情</span>")
+            );
+
+                    host.ply.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pltype")
+                .setDataBinder("bbinder")
+                .setDataField("pltype")
+                .setLeft(310)
+                .setTop(210)
+                .setWidth(205)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            , "main");
+
+                    host.ply.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "plunit")
+                .setDataBinder("bbinder")
+                .setDataField("plunit")
+                .setLeft(40)
+                .setTop(210)
+                .setWidth(205)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>单位</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            , "main");
+
+                    host.ply.append(
+                (new linb.UI.Input)
+                .setHost(host, "plmname")
+                .setDataBinder("bbinder")
+                .setDataField("plmname")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(70)
+                .setWidth(490)
+                .setHeight(130)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产品材质</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+                .onFocus("_pmname_onfocus")
+            , "main");
+
+                    host.ply.append(
+                (new linb.UI.Input)
+                .setHost(host, "plsize")
+                .setDataBinder("bbinder")
+                .setDataField("plsize")
+                .setLeft(40)
+                .setTop(270)
+                .setWidth(490)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>规格</span>")
+                .setLabelHAlign("left")
+            , "main");
+
+                    host.ply.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pmdlg")
+                .setLeft(290)
+                .setTop(10)
+                .setWidth(270)
+                .setHeight(440)
+                .setDisplay("none")
+                .setCaption("材质颜色")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "main");
+
+                    host.pmdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmt")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.pmt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pmtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pmtoolbar_onclick")
+            );
+
+                    host.pmdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "pmtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 190, "type": "input", "caption": "材质颜色"}])
+                .setValue("")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fdlg")
+                .setLeft(309)
+                .setTop(157)
+                .setWidth(480)
+                .setCaption("添加失败记录")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                    host.fdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ftreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 160, "type": "input", "caption": "材质"}])
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this; SetFlag = 0, objpat = ProductionApartType;
+                    preurl = "../../../UIServer/ProductionSet/ProductionManage/Productions.aspx";
+                    IinvItems("", ns.lbtreebar)
+                    IunitNItems(ns.punit)
+                },
+                _lbtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    var v = ns.lbtreebar.getUIValue()
+                    if (item.id == "a1") {
+                        ns.plglg.setDisplay("block")
+                        InitInvCate(v, "")
+                    }
+                    if (item.id == "a3") {
+                        if (v != null && v != "") {
+                            ns.plglg.setDisplay("block")
+                            InitInvCate("", v)
+                        }
+                        else {
+                            linb.warn("请选择产品类")
+                        }
+                    }
+                    if (item.id == "a4") {
+                        if (v != null && v != "") {
+                            linb.confirms("确定操作？", "DelInvCate('" + v + "')")
+                        }
+                        else {
+                            linb.warn("请选择产品类别")
+                        }
+                    }
+                    if (item.id == "a5") {
+                        ns.pcdlg.setDisplay("block");
+                        var sv = ns.lbtreebar.getUIValue();
+                        ns.pccode.setValue(sv);
+                    }
+                },
+                _lbtreebar_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    IinvCItems(item, ns.lbtreebar)
+                    ns.lbtreebar.setValue(item.id)
+                    QueryListInv(item.id, ns.ptreegrid)
+                },
+                _lbtreebar_beforeexpend: function (profile, item) {
+                    var ns = this, uictrl = profile.boxing();
+                    IinvCItems(item, ns.lbtreebar)
+                },
+                _lbstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+
+                        SaveInvCate()
+                    }
+                    else {
+                        ns.mdlg.setDisplay("none")
+                        InitUnKj()
+                    }
+                },
+                _ptoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    var lv = ns.lbtreebar.getUIValue()
+                    var v = ns.ptreegrid.getUIValue();
+                    objpat.IApartTypeCate(ns.ptype)
+                    if (item.id == "a1") {
+                        if (lv != "") {
+                            ns.pdlg.setDisplay("block")
+                            ns.pcztype.setItems([{ "id": "a", "caption": "全材质" }, { "id": "b", "caption": "部分材质"}])
+                            InitInv(lv, "")
+                        }
+                        else {
+                            linb.warn("请选择产品类")
+                        }
+                    }
+                    if (item.id == "a3") {
+                        if (v != null && v != "") {
+                            ns.pdlg.setDisplay("block")
+                            ns.pcztype.setItems([{ "id": "b", "caption": "部分材质"}])
+                            InitInv("", v)
+                        }
+                        else {
+                            linb.warn("请选择产品")
+                        }
+                    }
+                    if (item.id == "a4") {
+                        if (v != null && v != "") {
+                            linb.confirms('确定操作？', "DelInvCate('" + v + "')")
+                        }
+                        else {
+                            linb.warn("请选择产品")
+                        }
+                    }
+                    if (item.id == "a5") {
+                        if (v != null && v != "") {
+                            ns.spdlg.setDisplay("block")
+                            ns.pcodelist.setValue(v)
+                        }
+                        else {
+                            linb.warn("请选择产品")
+                        }
+                    }
+                    if (item.id == "a6") {
+                        if (v != null && v != "") {
+                            linb.confirms('确定停售？', "CloseProduction()")
+                        }
+                        else {
+                            linb.warn("请选择产品")
+                        }
+                    }
+                    if (item.id == "a7") {
+                        if (v != null && v != "") {
+                            linb.confirms('确定启售？', "OpenProduction()")
+                        }
+                        else {
+                            linb.warn("请选择产品")
+                        }
+                    }
+                    if (item.id == "a8") {
+                        ns.pldlg.setDisplay("block")
+                        IinvItems("", ns.pltreebar)
+                        IunitNItems(ns.plunit);
+                        objpat.IApartTypeCate(ns.pltype)
+                    }
+                },
+                _ptreegrid_onrowselected: function (profile, row, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _pstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        if (!CheckInput(ns, ns.ptype, true, "", " 产品类型不能为空！", "", "", "")) {
+                            return
+                        }
+                        SaveInv()
+                    }
+                    else {
+                        ns.pdlg.setDisplay("none")
+                        InitUnKj()
+                    }
+                },
+                _cztoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        var cv = ns.cztreegrid.getUIValue()
+                        if (cv == null || cv == "") {
+                            linb.warn("请选择材质颜色")
+                            return;
+                        }
+                        else {
+                            ns.pcz.setValue(cv);
+                            ns.cztreegrid.setValue("")
+                            ns.czdlg.setDisplay("none")
+                        }
+                    }
+                    else {
+                        ns.cztreegrid.setValue("")
+                        ns.czdlg.setDisplay("none")
+                    }
+                },
+                _pcz_onfocus: function (profile) {
+                    var ns = this, uictrl = profile.boxing();
+                    ns.czdlg.setDisplay("block")
+                    IMaterialNTable(ns.cztreegrid)
+                },
+                _pcztype_onchange: function (profile, oldValue, newValue) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (newValue == "b") {
+                        ns.pcz.onFocus("_pcz_onfocus")
+                    }
+                    else {
+                        ns.pcz.onFocus("")
+                        ns.pcz.setValue("")
+                    }
+                },
+                _pcztreegrid_onrowselected: function (profile, row, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    var pzt = ns.pid.getUIValue()
+                    if (pzt != "0") {
+                        ns.cztreegrid.setValue(row.id)
+                    }
+                },
+                _pltreebar_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    IinvCItems(item, ns.pltreebar)
+                },
+                _pmtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        var sv = ns.pmtreegrid.getUIValue();
+                        ns.plmname.setUIValue(sv);
+                        ns.pmdlg.setDisplay("none");
+                    }
+                    if (item.id == "a3") {
+                        ns.pmdlg.setDisplay("none")
+                    }
+                },
+                _pmname_onfocus: function (profile) {
+                    var ns = this, uictrl = profile.boxing();
+                    ns.pmdlg.setDisplay("block");
+                    IMaterialNTable(ns.pmtreegrid)
+                },
+                _pltreebar_beforeexpend: function (profile, item) {
+                    var ns = this, uictrl = profile.boxing();
+                    IinvCItems(item, ns.pltreebar)
+                },
+                _plstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    var spv = ns.pltreebar.getUIValue();
+                    if (item.id == "a1") {
+                        if (spv == "" || spv == null) {
+                            linb.warn("选择产品类别");
+                            return;
+                        }
+                        AddBacthProduction(spv)
+                        ns.pldlg.setDisplay("none")
+                    }
+                    if (item.id == "a3") {
+                        ns.pldlg.setDisplay("none")
+                    }
+                }
+            },
+            Static: {
+                viewSize: { "width": 1280, "height": 1024 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+
+        function InitInvCate(lv, v) {
+            var o = { "iccode": lv, "icode": v }
+            var url = preurl + "/InitInventoryCategory"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                InitKj(r)
+            }
+            else {
+                InitUnKj()
+            }
+        }
+        function SaveInvCate() {
+            var url = preurl + "/SaveInventoryCategory"
+            var db = linb.DataBinder.getFromName("plbinder");
+            var o = db.updateDataFromUI().getData();
+            var b = AjaxExb(url, o)
+            BackVad(b, " ", false)
+        }
+        function SaveBatchCate() {
+            var pv = ns.pcname.getUIValue();
+            var pc = ns.pccode.getUIValue();
+            if (pv == "" || pv == null) {
+                linb.warn("请输入类别名称");
+                return
+            }
+            if (pc == "" || pc == null) {
+                linb.warn("请选择类别编码");
+                return
+            }
+            var url = preurl + "/BatchSaveInventoryCategory"
+            var o = { "pname": pv, "pcode": pc }
+            var b = AjaxExb(url, o)
+            BackVad(b, " ReLoad()", false)
+        }
+        function DelInvCate(v) {
+            var o = { "iccode": v }
+            var url = preurl + "/DelInventoryCategory"
+            var b = AjaxExb(url, o);
+            BackVad(b, "", true)
+        }
+        function ReLoad() {
+            IinvItems("", ns.lbtreebar)
+            ns.plglg.setDisplay("none")
+        }
+        function InitKj(r) {
+            ns.lname.setValue(r.icname)
+            ns.lcode.setValue(r.iccode)
+            ns.lpname.setValue(r.icpname)
+            ns.lpcode.setValue(r.icpcode)
+            ns.lid.setValue(r.id)
+            ns.drange.setValue(r.drange)
+
+        }
+        function InitUnKj() {
+            ns.lname.setValue("")
+            ns.lcode.setValue("")
+            ns.lpname.setValue("")
+            ns.lpcode.setValue("")
+            ns.lid.setValue(0)
+        }
+
+        function InitInv(lv, v) {
+            var o = { "iccode": lv, "icode": v }
+            var url = preurl + "/InitInventory"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                CInitKj(r)
+            }
+            else {
+                CInitUnKj()
+            }
+        }
+        function SaveInv() {
+
+            var url = preurl + "/SaveInventory"
+            var db = linb.DataBinder.getFromName("pbinder");
+            var o = db.updateDataFromUI().getData();
+            var b = AjaxExb(url, o)
+            BackVad(b, "LoadPList() ", false)
+        }
+        function DelInv(v) {
+        }
+
+        function CInitKj(r) {
+            ns.pname.setValue(r.iname)
+            ns.pcode.setValue(r.icode)
+            ns.plname.setValue(r.icname)
+            ns.plcode.setValue(r.iccode)
+            ns.pcz.setValue(r.mname)
+            ns.punit.setValue(r.iunit)
+            ns.psprice.setValue(r.isaleprice)
+            ns.pgprice.setValue(r.isupplyprice)
+            ns.pcprice.setValue(r.ipurchaseprice)
+            ns.pstate.setValue(r.istate == true ? "1" : "0")
+            ns.pbz.setValue(r.idef1)
+            ns.ptcprice.setValue(r.tcprice)
+            ns.pid.setValue(r.id)
+            ns.psize.setValue(r.psize);
+        }
+        function CInitUnKj() {
+            ns.pname.setValue("")
+            ns.pcode.setValue("")
+            ns.plname.setValue("")
+            ns.plcode.setValue("")
+            ns.pcz.setValue("")
+            ns.punit.setValue("")
+            ns.psprice.setValue(0)
+            ns.pgprice.setValue(0)
+            ns.pcprice.setValue(0)
+            ns.pstate.setValue("")
+            ns.pbz.setValue("")
+            ns.ptcprice.setValue(0)
+            ns.pid.setValue(0)
+        }
+        function SetPrice() {
+            var db = linb.DataBinder.getFromName("spbinder");
+            var o = db.updateDataFromUI().getData();
+            var url = preurl + "/SetPrice"
+            var b = AjaxExb(url, o);
+            BackVad(b, "LoadPList()", false)
+            ns.spdlg.setDisplay("none")
+        }
+        function CloseProduction() {
+            var spl = ns.ptreegrid.getUIValue()
+            var o = { "plcode": spl, "t": "c" };
+            var url = preurl + "/SetState"
+            var b = AjaxExb(url, o);
+            BackVad(b, "LoadPList()", false)
+
+        }
+        function OpenProduction() {
+            var spl = ns.ptreegrid.getUIValue()
+            var o = { "plcode": spl, "t": "o" };
+            var url = preurl + "/SetState"
+            var b = AjaxExb(url, o);
+            BackVad(b, "LoadPList()", false)
+        }
+        function LoadPList() {
+            var spl = ns.lbtreebar.getUIValue()
+            if (spl != "") {
+                QueryListInv(spl, ns.ptreegrid)
+            }
+        }
+        function AddBacthProduction(pv) {
+            var arg1 = {"iccode":pv}
+            var url = preurl + "/BatchSaveInventory"
+            var db = linb.DataBinder.getFromName("bbinder");
+            var arg2 = db.updateDataFromUI().getData();
+            var o = $.extend(arg1, arg2);
+            var b = AjaxExb(url, o)
+            var r = BackVad(b, "", false)
+            if (r) {
+                if (r.length > 1) {
+                    ns.fdlg.setDisplay("block")
+                    ns.ftreegrid.removeAllRows();
+                    var arr = new Array();
+                    for (i = 1; i < r.length; i++) {
+                        var cel = r[i].toString().split(',')
+                        arr.push({ "id": cel[0], "cells": [{ "value": cel[0] }, { "value": cel[1] }] })
+                    }
+                    ns.ftreegrid.setRows(arr)
+                }
+            }
+        }
+    </script>
+</body>
+</html>

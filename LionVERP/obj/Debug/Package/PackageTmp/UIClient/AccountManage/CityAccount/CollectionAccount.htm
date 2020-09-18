@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户退款</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IBank.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("收款账户管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                    host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "gtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "账户名" }, { "id": "col1", "width": 150, "type": "input", "caption": "银行" }, { "id": "col2", "width": 200, "type": "input", "caption": "分/支行" }, { "id": "col3", "width": 120, "type": "input", "caption": "账户" }, { "id": "col4", "width": 120, "type": "input", "caption": "开户人" }, { "id": "col4", "width": 200, "type": "input", "caption": "说明"}])
+                .setValue("")
+                .onRowSelected("_gtreegrid_onrowselected")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dlg")
+                .setLeft(130)
+                .setTop(110)
+                .setWidth(570)
+                .setHeight(420)
+                .setDisplay("none")
+                .setCaption("收款账户")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.dlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_cstoolbar_onclick")
+            );
+
+                    host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "subbank")
+                .setDataBinder("binder")
+                .setDataField("subbank")
+                .setLeft(70)
+                .setTop(140)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999;'>分支行</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "acode")
+                .setDataBinder("binder")
+                .setDataField("acode")
+                .setLeft(70)
+                .setTop(240)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999;'>账户</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aperson")
+                .setDataBinder("binder")
+                .setDataField("aperson")
+                .setLeft(70)
+                .setTop(190)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999;'>开户人</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "remark")
+                .setDataBinder("binder")
+                .setDataField("remark")
+                .setLeft(70)
+                .setTop(290)
+                .setWidth(400)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999;'>说明</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                    host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(50)
+                .setTop(270)
+                .setWidth(400)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("开户人")
+                .setValue("0")
+            );
+
+                    host.dlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "abank")
+                .setDataBinder("binder")
+                .setDataField("abank")
+                .setLeft(70)
+                .setTop(90)
+                .setWidth(390)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999;'>银行</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "中国工商银行", "caption": "中国工商银行" }, { "id": "招商银行", "caption": "招商银行" }, { "id": "中国农业银行", "caption": "中国农业银行" }, { "id": "中国建设银行", "caption": "中国建设银行" }, { "id": "中国银行", "caption": "中国银行" }, { "id": "中国民生银行", "caption": "中国民生银行" }, { "id": "中国光大银行", "caption": "中国光大银行" }, { "id": "中信银行", "caption": "中信银行" }, { "id": "交通银行", "caption": "交通银行" }, { "id": "兴业银行", "caption": "兴业银行" }, { "id": "上海浦东发展银行", "caption": "上海浦东发展银行" }, { "id": "华夏银行", "caption": "华夏银行" }, { "id": "深圳发展银行", "caption": "深圳发展银行" }, { "id": "广东发展银行", "caption": "广东发展银行" }, { "id": "中国邮政储蓄银行", "caption": "中国邮政储蓄银行"}])
+            );
+
+                    host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aname")
+                .setDataBinder("binder")
+                .setDataField("aname")
+                .setLeft(70)
+                .setTop(40)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999;'>账户名</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>收款账户</span>")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this;
+                    preurl = "../../../CollectionAccount";
+                    QueryList();
+                    IBankList(ns.abank)
+                },
+
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    var av = ns.gtreegrid.getUIValue();
+                    if (item.id == "a1") {
+                        ns.dlg.setDisplay("block");
+                        Init("")
+                    }
+                    if (item.id == "a3") {
+                        if (av == "" || av == null) {
+                            linb.message("请选择账户");
+                            return
+                        }
+                        ns.dlg.setDisplay("block");
+                        Init(av)
+                    }
+                    if (item.id == "a4") {
+                        if (av == "" || av == null) {
+                            linb.message("请选择账户");
+                            return
+                        }
+                        IDelFun("DelCAcc('" + av + "')")
+                    }
+                },
+                _cstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        Save();
+                    }
+                    if (item.id == "a3") {
+                        ns.dlg.setDisplay("none");
+                    }
+                },
+                _gtreegrid_onrowselected: function (profile, row, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    ns.gtreegrid.setValue(row.id)
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function Init( av) {
+            var o = { "id": av }
+            var url = preurl + "/InitCAccount"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.acode.setValue(r.acode);
+                ns.abank.setValue(r.abank);
+                ns.subbank.setValue(r.asubbank);
+                ns.aname.setValue(r.aname);
+                ns.aperson.setValue(r.aperson);
+                ns.remark.setValue(r.remark);
+                ns.id.setValue(r.id)
+            }
+        }
+        function Save() {
+            if (!CheckInput(ns, ns.aname, true, "", "开户人不能为空！", "", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.acode, true, "", "账户不能为空！", "正确输入电话号码！", "", "")) {
+                return
+            }
+            var url = preurl + "/SaveCAccount"
+            var db = linb.DataBinder.getFromName("binder");
+            var o = db.updateDataFromUI().getData();
+            var b = AjaxExb(url, o)
+            BackVad(b, "QueryList()", false);
+            ns.dlg.setDisplay("none");
+        }
+        function QueryList() {
+            var url = preurl + "/QueryCList";
+            var b = AjaxEb(url);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.gtreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[2] }, { "value": cel[1] }, { "value": cel[5] }, { "value": cel[6]}] })
+                }
+                ns.gtreegrid.setRows(arr)
+            }
+        }
+        function DelCAcc(v) {
+            var o = { "bcode": v }
+            var url = preurl + "/DelCAccount"
+            var b = AjaxExb(url, o);
+            BackVad(b, "QueryList()", false)
+        }
+    </script>
+</body>
+</html>

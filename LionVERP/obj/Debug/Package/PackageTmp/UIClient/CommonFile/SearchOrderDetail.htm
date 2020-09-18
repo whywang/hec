@@ -1,0 +1,920 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>操作日志</title>
+     <link href="../../../Styles/Common/Common.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../Scripts/Api/Iviewtable.js" type="text/javascript"></script>
+     <script src="../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("查询订单详情")
+            );
+
+                    host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回" }, { "id": "a2", "type": "split", "split": true}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.panel.append(
+                (new linb.UI.Block)
+                .setHost(host, "b2")
+                .setDock("fill")
+            );
+
+                    host.b2.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g1")
+                .setDock("top")
+                .setHeight(300)
+                .setCaption("订单信息")
+                .setToggleBtn(false)
+            , "a");
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xcode")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单编号")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xwgcode")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("网购编号")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xprecode")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("原单编号")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xcdate")
+                .setReadonly(true)
+                .setLeft(800)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单日期")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xcustomer")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户姓名")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xtelephone")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户电话")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xaddress")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(50)
+                .setWidth(520)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户地址")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xdname")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("销售平台")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xcity")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("销售城市")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xotype")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单类型")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xsource")
+                .setReadonly(true)
+                .setLeft(800)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单来源")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xgzname")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(130)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("工长姓名")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xgztelephone")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(130)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("工长电话")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xmname")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(130)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("材质颜色")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xmaker")
+                .setReadonly(true)
+                .setLeft(800)
+                .setTop(130)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("商务助理")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xiskp")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(170)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("是否开票")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xisdf")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(170)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("是否到付")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xecity")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(170)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("城市类型")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xstype")
+                .setReadonly(true)
+                .setLeft(800)
+                .setTop(170)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("系统类型")
+            );
+
+                    host.g1.append(
+                (new linb.UI.Input)
+                .setHost(host, "xremark")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(210)
+                .setWidth(1040)
+                .setHeight(50)
+                .setLabelSize(60)
+                .setLabelCaption("订单备注")
+                .setMultiLines(true)
+            );
+
+                    host.tab.append(
+                (new linb.UI.Div)
+                .setHost(host, "d1")
+                .setDock("top")
+                .setHeight(20)
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g2")
+                .setDock("top")
+                .setHeight("auto")
+                .setCaption("产品信息")
+                .setToggleBtn(false)
+                .setCustomClass({ "KEY": "customtable" })
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g3")
+                .setDock("top")
+                .setHeight(351)
+                .setCaption("操作记录")
+                .setToggleBtn(false)
+            , "a");
+
+                    host.g3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "xcztreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(28)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "事件" }, { "id": "col2", "width": 140, "type": "input", "caption": "操作人" }, { "id": "col2", "width": 260, "type": "input", "caption": "描述" }, { "id": "col3", "width": 140, "type": "input", "caption": "日期"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "gf1")
+                .setDock("top")
+                .setHeight(300)
+                .setCaption("订单信息")
+                .setToggleBtn(false)
+            , "b");
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcode")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("反馈编号")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fxcode")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("销售编号")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fdname")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("平台/店面")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcity")
+                .setReadonly(true)
+                .setLeft(800)
+                .setTop(10)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("销售城市")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcustomer")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户姓名")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "ftelephone")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户电话")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "faddress")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(50)
+                .setWidth(520)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户地址")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fname")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单材质")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fotype")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单类型")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fmoney")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单金额")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcdate")
+                .setReadonly(true)
+                .setLeft(800)
+                .setTop(90)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("订单日期")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fzr")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(130)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("反馈责任")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fyy")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(130)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("反馈原因")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fclfs")
+                .setReadonly(true)
+                .setLeft(540)
+                .setTop(130)
+                .setWidth(520)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("处理方式")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fremark")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(210)
+                .setWidth(1040)
+                .setHeight(50)
+                .setLabelSize(60)
+                .setLabelCaption("订单备注")
+            );
+
+                    host.gf1.append(
+                (new linb.UI.Input)
+                .setHost(host, "fstype")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(170)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("系统类型")
+            );
+
+                    host.tab.append(
+                (new linb.UI.Div)
+                .setHost(host, "df1")
+                .setDock("top")
+                .setHeight(20)
+            , "b");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "gf2")
+                .setDock("top")
+                .setHeight("auto")
+                .setCaption("产品信息")
+                .setToggleBtn(false)
+                .setCustomClass({ "KEY": "customtable" })
+            , "b");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "gf3")
+                .setDock("top")
+                .setHeight(357)
+                .setCaption("操作记录")
+                .setToggleBtn(false)
+            , "b");
+
+                    host.gf3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "fcztreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(28)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "事件" }, { "id": "col2", "width": 140, "type": "input", "caption": "操作人" }, { "id": "col2", "width": 260, "type": "input", "caption": "描述" }, { "id": "col3", "width": 140, "type": "input", "caption": "日期"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g4")
+                .setDock("top")
+                .setHeight(210)
+                .setCaption("跟踪信息")
+                .setToggleBtn(false)
+            , "a");
+
+                    host.g4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ogztreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col2", "width": 400, "type": "input", "caption": "处理" }, { "id": "col3", "width": 100, "type": "input", "caption": "日期" }, { "id": "col4", "width": 100, "type": "input", "caption": "操作员"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "gf4")
+                .setDock("top")
+                .setHeight(210)
+                .setCaption("订单跟踪")
+                .setToggleBtn(false)
+            , "b");
+
+                    host.gf4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "fogztreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col2", "width": 400, "type": "input", "caption": "处理" }, { "id": "col3", "width": 100, "type": "input", "caption": "日期" }, { "id": "col4", "width": 100, "type": "input", "caption": "操作员"}])
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", menucode = "0006", bcode = "", nsid = "", osid = "", nfid = "", ofid = "";
+                    preurl = "../../UIServer/CommonFile/SearchingOrder.aspx";
+                    prelogurl = "../../UIServer/CommonFile/LogRecords.aspx";
+                    preinvurl = "../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx";
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"]
+                        IQueryTab()
+                        IQuerySid()
+                    }
+                },
+
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    GoBack();
+                },
+                _tab_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a") {
+                        xQueryOrder();
+                        if (nsid != "" && nsid != null) {
+                            LoadLogRecord(ns.xcztreegrid, nsid);
+                        }
+                        xOrderProduction();
+                        ShowTrace(ns.ogztreegrid)
+                    }
+                    if (item.id == "b") {
+                        fQueryOrder();
+                        fOrderProduction(nfid)
+                        if (nfid != "") {
+                            LoadLogRecord(ns.fcztreegrid, nfid);
+                        }
+                        ShowTrace(ns.fogztreegrid)
+                    }
+                }
+            },
+            Static: {
+                viewSize: { "width": 1280, "height": 1024 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function IQueryTab() {
+            var o = { "sid": sid }
+            var url = preurl + "/QueryTabList"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "caption": cel[1] })
+                    ns.tab.setValue(cel[0])
+                }
+                ns.tab.setItems(arr)
+            }
+
+        }
+        function IQuerySid() {
+            var o = { "sid": sid }
+            var url = preurl + "/QuerySid"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                nsid = r.nsid;
+                osid = r.osid;
+                nfid = r.nfid;
+                ofid = r.ofid;
+            }
+        }
+        function xQueryOrder() {
+            var o = { "sid": sid }
+            var url = preurl + "/QueryxOrder"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                 ns.xcode.setValue(r.scode);
+                 ns.xwgcode.setValue(r.wcode);
+                 ns.xprecode.setValue(r.procode);
+                 ns.xcdate.setValue(r.cdate);
+                 ns.xcustomer.setValue(r.customer);
+                 ns.xtelephone.setValue(r.telephone);
+                 ns.xaddress.setValue(r.address);
+                 ns.xdname.setValue(r.dname);
+                 ns.xcity.setValue(r.e_city);
+                 ns.xotype.setValue(r.otype);
+                 ns.xsource.setValue(r.source);
+                 ns.xgzname.setValue(r.gzname);
+                 ns.xgztelephone.setValue(r.gztelephone);
+                 ns.xmname.setValue(r.mname);
+                 ns.xmaker.setValue(r.maker);
+                 ns.xiskp.setValue("");
+                 ns.xisdf.setValue(r.isdf);
+                 ns.xecity.setValue(r.e_citytype);
+                 ns.xstype.setValue("销售订单");
+                 ns.xremark.setValue(r.ps);
+            }
+        }
+        function fQueryOrder() {
+            var o = { "sid": sid }
+            var url = preurl + "/QueryfOrder"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.fcode.setValue(r.scode);
+                ns.fxcode.setValue(r.pcode);
+                ns.fdname.setValue(r.dname);
+                ns.fcity.setValue(r.cityname);
+                ns.fcustomer.setValue(r.customer);
+                ns.ftelephone.setValue(r.telephone);
+                ns.faddress.setValue(r.address);
+                ns.fotype.setValue(r.otype);
+                ns.fmoney.setValue(0);
+                ns.fname.setValue(r.mname);
+                ns.fcdate.setValue(r.cdate);
+                ns.fyy.setValue(r.rrcode);
+                ns.fzr.setValue(r.rccode);
+                ns.fstype.setValue("反馈单");
+                ns.fremark.setValue(r.remark);
+            }
+        }
+        function xOrderProduction() {
+            if (nsid!=""&&nsid != null) {
+                var o = { "emcode": "0007", "sid": sid }
+                var url = preinvurl + "/SaleXqProduction"
+                var b = AjaxExb(url, o);
+                if (b) {
+                    ns.g2.setHtml(b)
+                }
+                else {
+                    return "";
+                }
+            }
+             if (osid != "" && osid != null) {
+                 var o = { "emcode": "0007", "sid": nsid }
+                 var url = preinvurl + "/SaleXqProduction"
+                 var b = AjaxExb(url, o);
+                 if (b) {
+                     ns.g2.setHtml(b)
+                 }
+                 else {
+                     return "";
+                 }
+            }
+        }
+ 
+        //加载产品概要
+        function LoadGyProductionHtml(nsid) {
+            var o = { "emcode": '0027', "sid": nsid }
+            var url = "../../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/SaleGyProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+
+        }
+        //加载产品分解
+        function LoadFjProductionHtml(nsid) {
+            var o = { "emcode": '0006', "sid": nsid, "btnmenu": "0004" }
+            var url = "../../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/SaleProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+        }
+        function LoadWjProductionHtml(nsid) {
+            var o = { "emcode": '0006', "sid": nsid, "btnmenu": "0004" }
+            var url = "../../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/UnFreeSaleWjProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+        }
+        function SearchGyProductionHtml(osid) {
+            var o = { "emcode": '006501',"sid": osid }
+            var url = "../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/SearchGyProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+
+        }
+        function SearchProductionHtml(osid) {
+            var o = { "emcode": '006502',"sid": osid }
+            var url = "../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/SearchProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+
+        }
+        function fOrderProduction() {
+            if (nfid != "" && nfid != null) {
+                var p2 = fLoadFjProductionHtml(nfid)
+                var p3 = fLoadWjProductionHtml(nfid)
+                ns.gf2.setHtml(p2 + p3 + "</table>")
+            }
+            if (ofid != ""&&ofid != null) {
+                 ns.gf2.setHtml( AfterSearchProductionHtml(ofid))
+            }
+        }
+        function fLoadFjProductionHtml(nfid) {
+            var o = { "emcode": "0006", "sid": nfid, "btnmenu": "0044" }
+            var url = "../../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/SaleProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+        }
+        function fLoadWjProductionHtml(nfid) {
+            var o = { "emcode": "0006", "sid": nfid, "btnmenu": "0044" }
+            var url = "../../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/UnFreeSaleWjProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+        }
+        function AfterSearchProductionHtml(ofid) {
+            var o = { "emcode": '006503', "sid": ofid }
+            var url = "../../UIServer/SalesBusiness/DistributorOrder/ProdctionDetail.aspx/AfterSearchProduction"
+            var b = AjaxExb(url, o);
+            if (b) {
+                return b;
+            }
+            else {
+                return "";
+            }
+
+        }
+        function LoadLogRecord(kj,vsid) {
+            var url = prelogurl + "/QueryList";
+            var o = { "sid": vsid };
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                kj.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4]}] })
+                }
+                kj.setRows(arr)
+            }
+        }
+        function ShowTrace(kj) {
+            var o = { "sid": sid }
+            var url = '../../../UIServer/CommonFile/OrderTrace.aspx/QueryRecordList';
+            var b = AjaxExb(url, o);
+            kj.removeAllRows();
+            var r = BackVad(b, "", false)
+            if (r) {
+                kj.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[1], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2] }, { "value": cel[3]}] })
+                }
+               kj.setRows(arr)
+            }
+        }
+    </script>
+</body>
+</html>

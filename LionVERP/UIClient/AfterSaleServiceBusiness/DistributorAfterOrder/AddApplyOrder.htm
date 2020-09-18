@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>新增门单订单</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/AppInit.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/SysMenuCode.js" type="text/javascript"></script>
+    <script src="../../../Scripts/CommonCompent/InitDlg.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>&nbsp;&nbsp;新增售后申请单</span>")
+            );
+
+                    host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='color:#666666;font-weight:bolder;font-size:16px'>新增售后申请单</span>")
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(140)
+                .setTop(25)
+                .setCaption("<span style='color:#666666;font-weight:border;font-size:12px'>Add NewOrder</span>")
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmt")
+                .setDock("top")
+                .setHeight(335)
+                .setCustomStyle({ "KEY": "border-bottom:5px solid #f2f2f2" })
+            );
+
+                    host.pmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(10)
+                .setTop(10)
+                .setCaption("<span style='color:#666666;font-weight:bolder;font-size:16px'>单据信息</span>")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "oscode")
+                .setDataBinder("binder")
+                .setDataField("oscode")
+                .setLeft(40)
+                .setTop(30)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>销售编号</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "customer")
+                .setDataBinder("binder")
+                .setDataField("customer")
+                .setLeft(270)
+                .setTop(30)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>客户姓名</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "telephone")
+                .setDataBinder("binder")
+                .setDataField("telephone")
+                .setLeft(500)
+                .setTop(30)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>客户电话</span>")
+                .setLabelHAlign("left")
+            );
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "maker")
+                .setDataBinder("binder")
+                .setDataField("maker")
+                .setReadonly(true)
+                .setLeft(730)
+                .setTop(30)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>制单员</span>")
+                .setLabelHAlign("left")
+            );
+
+
+
+
+                    host.pmt.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "aprovince")
+                 .setDataBinder("binder")
+                .setDataField("aprovince")
+                .setLeft(40)
+                .setTop(80)
+                .setWidth(210)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>市</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setReadonly(true)
+                .setValue("北京市")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "acity")
+                  .setDataBinder("binder")
+                .setDataField("acity")
+                .setLeft(270)
+                .setTop(80)
+                .setWidth(210)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>区</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "东城区", "caption": "东城区" }, { "id": "西城区", "caption": "西城区" }, { "id": "朝阳区", "caption": "朝阳区" }, { "id": "丰台区", "caption": "丰台区" }, { "id": "石景山区", "caption": "石景山区" }, { "id": "海淀区", "caption": "海淀区" }, { "id": "顺义区", "caption": "顺义区" }, { "id": "通州区", "caption": "通州区" }, { "id": "大兴区", "caption": "大兴区" }, { "id": "房山区", "caption": "房山区" }, { "id": "门头沟区", "caption": "门头沟区" }, { "id": "昌平区", "caption": "昌平区" }, { "id": "平谷区", "caption": "平谷区" }, { "id": "密云区", "caption": "密云区" }, { "id": "怀柔区", "caption": "怀柔区" }, { "id": "延庆区", "caption": "延庆区" }, { "id": "燕郊", "caption": "燕郊" }, { "id": "三河", "caption": "三河" }, { "id": "香河", "caption": "香河" }, { "id": "大厂", "caption": "大厂"}])
+            
+            );
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "address")
+                .setDataBinder("binder")
+                .setDataField("address")
+                .setLeft(500)
+                .setTop(80)
+                .setWidth(440)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>地址</span>")
+                .setLabelHAlign("left")
+            );
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "city")
+                .setDataBinder("binder")
+                .setDataField("city")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(130)
+                .setWidth(210)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>城市</span>")
+                .setLabelHAlign("left")
+            );
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setDataBinder("binder")
+                .setDataField("dname")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(130)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>店面</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "areason")
+                .setDataBinder("binder")
+                .setDataField("areason")
+                .setReadonly(true)
+                .setLeft(270)
+                .setTop(130)
+                .setWidth(670)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>售后原因</span>")
+                .setLabelHAlign("left")
+                .setCustomClass({ "KEY": "inputsearch" })
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "remark")
+                .setDataBinder("binder")
+                .setDataField("remark")
+                .setLeft(40)
+                .setTop(190)
+                .setWidth(900)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>售后详情</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+ 
+                    host.pmt.append(
+                (new linb.UI.Image)
+                .setHost(host, "srimg")
+                .setLeft(910)
+                .setTop(155)
+                .setWidth(20)
+                .setHeight(20)
+                .setSrc("../../../Image/opeimage/search.gif")
+                .setCursor("pointer")
+                .onClick("_srimg_onclick")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "sid")
+                .setDataBinder("binder")
+                .setDataField("sid")
+                .setLeft(40)
+                .setTop(280)
+                .setWidth(900)
+                .setHeight(80)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+            );
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "osid")
+                .setDataBinder("binder")
+                .setDataField("osid")
+                .setLeft(40)
+                .setTop(280)
+                .setWidth(900)
+                .setHeight(80)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+            );
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "citycode")
+                .setDataBinder("binder")
+                .setDataField("citycode")
+                .setLeft(40)
+                .setTop(280)
+                .setWidth(900)
+                .setHeight(80)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+            );
+
+                    host.pmt.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setLeft(40)
+                .setTop(280)
+                .setWidth(900)
+                .setHeight(80)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+            );
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+                iniExComs: function (com, threadid) {
+                },
+                customAppend: function (parent, subId, left, top) {
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", bcode = "", curobj = this;
+                    sebobj = SysEmCode,
+                    bmcode = "", pgcode = "0060";
+                    emcode = "", epgcode = "0059";
+                    bmcode = sebobj.IQueryCode(pgcode)
+                    emcode = sebobj.IQueryCode(epgcode);
+                    dlg = Dlg;
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"].toString();
+                        InitOrder();
+                    }
+                    SinglePageBar(bmcode, sid, ns.toolbar)
+                },
+
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    bcode = item.bcode;
+                    BtnDo(sid, emcode, item)
+                },
+                _srimg_onclick: function (profile, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    dlg.aftersalereasondlg();
+                } 
+            },
+            Static: {
+                viewSize: { "width": 1024, "height": 768 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function InitOrder() {
+            var o = { "sid": sid }
+            var url = "../../../UIServer/AfterSaleServiceBusiness/DistributorAfterDoorYqOrder/AfterApplyOrderDetail.aspx/InitAddOrder"
+            var b = AjaxExb(url, o);
+            $.when(b).done(function (d) {
+                var r = BackVad(d, "", false)
+                if (r) {
+                    ns.oscode.setValue(r.oscode);
+                    ns.customer.setValue(r.customer);
+                    ns.telephone.setValue(r.telephone);
+                    ns.address.setValue(r.address);
+                    ns.acity.setValue(r.acity);
+                    ns.maker.setValue(r.maker);
+                    ns.city.setValue(r.city);
+                    ns.dname.setValue(r.dname);
+                    ns.areason.setValue(r.areason);
+                    ns.remark.setValue(r.remark);
+                    ns.osid.setValue(r.osid);
+                    ns.sid.setValue(r.sid);
+                    ns.citycode.setValue(r.citycode);
+                    ns.dcode.setValue(r.dcode);
+                }
+            })
+        }
+        function SaveOrder() {
+            if (!CheckInput(ns, ns.oscode, true, "", "销售编号不能为空！", "", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.customer, true, "", "客户名称不能为空！", "", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.telephone, true, "telephone", "电话不能为空！", "正确输入电话号码！", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.address, true, "", "客户地址不能为空！", "", "", "")) {
+                return
+            }
+ 
+            if (!CheckInput(ns, ns.maker, true, "", "制单员不能为空！", "", "", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.remark, true, "", "售后详情不能为空！", "", "", "", "")) {
+                return
+            }
+            var arg1 = { "emcode": emcode,"bcode": bcode }
+            var url = "../../../UIServer/AfterSaleServiceBusiness/DistributorAfterDoorYqOrder/AfterApplyOrderDetail.aspx/SaveOrder"
+            var db = linb.DataBinder.getFromName("binder");
+            var arg2 = db.updateDataFromUI().getData();
+            var o = $.extend(arg1, arg2);
+            var b = AjaxExb(url, o)
+            if (!b || b == "F") {
+                linb.warn("操作失败！")
+            }
+            else {
+                linb.msg("操作成功！")
+                sleep(5000);
+                window.location.href = 'AFrameApplyOrder.htm?Sid=' + b
+            }
+        }
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {
+                SaveOrder();
+            }
+        }
+</script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>生产标准尺寸</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("生产标准尺寸")
+                 .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "btreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setSelMode("multibycheckbox")
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 120, "type": "input", "caption": "编码" }, { "id": "col3", "width": 120, "type": "input", "caption": "类型" }, { "id": "col4", "width": 100, "type": "input", "caption": "长" }, { "id": "col2", "width": 100, "type": "input", "caption": "宽" }, { "id": "col3", "width": 100, "type": "input", "caption": "厚" }, { "id": "col4", "width": 100, "type": "input", "caption": "辅尺" }, { "id": "col2", "width": 100, "type": "input", "caption": "高" }, { "id": "col3", "width": 100, "type": "input", "caption": "宽" }, { "id": "col4", "width": 100, "type": "input", "caption": "厚"}])
+                .onRowSelected("_btreegrid_onrowselected")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "bdlg")
+                .setLeft(71)
+                .setTop(101)
+                .setWidth(690)
+                .setHeight(340)
+                .setCaption("标准尺寸")
+                .setMinBtn(false)
+                .setDisplay("none")
+                .setMaxBtn(false)
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_astoolbar_onclick")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bname")
+                .setDataBinder("binder")
+                .setDataField("bname")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bid")
+                .setDataBinder("binder")
+                .setDataField("bid")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setDisplay("none")
+                .setValue(0)
+                .setLabelCaption("ID")
+            );
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bcode")
+                .setDataBinder("binder")
+                .setDataField("bcode")
+                .setLeft(320)
+                .setTop(50)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setReadonly(true)
+                .setLabelCaption("编码")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "btype")
+                .setDataBinder("binder")
+                .setDataField("btype")
+                .setLeft(10)
+                .setTop(100)
+                .setWidth(300)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("类型")
+                .setType("listbox")
+                .setItems([{ "id": "", "caption": " " }, { "id": "ms", "caption": "门" }, { "id": "mt", "caption": "套" }, { "id": "qt", "caption": "其他"}])
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bol")
+                .setDataBinder("binder")
+                .setDataField("bol")
+                .setLeft(320)
+                .setTop(100)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("一长")
+                .setValue("0")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bow")
+                .setDataBinder("binder")
+                .setDataField("bow")
+                .setLeft(10)
+                .setTop(150)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("一宽")
+                .setValue("0")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bod")
+                .setDataBinder("binder")
+                .setDataField("bod")
+                .setLeft(320)
+                .setTop(150)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("一厚")
+                .setValue("0")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bof")
+                .setDataBinder("binder")
+                .setDataField("bof")
+                .setLeft(10)
+                .setTop(200)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("辅尺")
+                .setValue("0")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "btl")
+                .setDataBinder("binder")
+                .setDataField("btl")
+                .setLeft(320)
+                .setTop(200)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("二长")
+                .setValue("0")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "btw")
+                .setDataBinder("binder")
+                .setDataField("btw")
+                .setLeft(10)
+                .setTop(250)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("二宽")
+                .setValue("0")
+            );
+
+                     host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "btd")
+                .setDataBinder("binder")
+                .setDataField("btd")
+                .setLeft(320)
+                .setTop(250)
+                .setWidth(310)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("二厚")
+                .setValue("0")
+            );
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/NomalSizeManage/CgNomalSizes.aspx";
+                     IinvItems("", ns.ptreebar)
+                     QueryList()
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     var nv = ns.btreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.message("选择减尺");
+                             return
+                         }
+                         SetProductionNs(pv, nv)
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         IDoFun("重置产品标准尺寸？", "ReSetProductionNs('" + pv + "')")
+                     }
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var cv = ns.btreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.bdlg.setDisplay("block")
+                         InitNomalSize("")
+                     }
+                     if (item.id == "a3") {
+                         if (cv != "" && cv != null) {
+                             ns.bdlg.setDisplay("block");
+                             InitNomalSize(cv)
+                         }
+                         else {
+                             linb.message("选择标准尺寸")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (cv != "" && cv != null) {
+                             IDelFun("DelNomalSize('" + cv + "')")
+                         }
+                         else {
+                             linb.message("请选择减尺")
+                         }
+                     }
+                 },
+                 _astoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.bdlg.setDisplay("block")
+                         SaveNomalSize()
+                     }
+                     if (item.id == "a3") {
+                         ns.bdlg.setDisplay("none")
+                         InitUnKj();
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                     GetProductionNs(item.id)
+                     ns.ptreebar.setValue(item.id)
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreebar.setValue(item.id)
+                   
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _btreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitNomalSize(v) {
+             var o = { "ncode": v }
+             var url = preurl + "/InitNomalSize"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.bname.setValue(r.nname)
+             ns.bcode.setValue(r.ncode)
+             ns.btype.setValue(r.ntype)
+             ns.bol.setValue(r.olen)
+             ns.bow.setValue(r.owid)
+             ns.bod.setValue(r.odee)
+             ns.bof.setValue(r.ofc)
+             ns.btl.setValue(r.tlen)
+             ns.btw.setValue(r.twid)
+             ns.btd.setValue(r.tdee)
+             ns.bid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.bname.setValue()
+             ns.bcode.setValue()
+             ns.btype.setValue()
+             ns.bol.setValue()
+             ns.bow.setValue()
+             ns.bod.setValue()
+             ns.bof.setValue()
+             ns.btl.setValue()
+             ns.btw.setValue()
+             ns.btd.setValue()
+             ns.bid.setValue(0)
+         }
+         function SaveNomalSize() {
+             var url = preurl + "/SaveNomalSize"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "Reload()", false)
+         }
+         function Reload() {
+             QueryList();
+             ns.bdlg.setDisplay("none")
+         }
+         function DelNomalSize(v) {
+             var o = { "ncode": v }
+             var url = preurl + "/DelNomalSize"
+             var b = AjaxExb(url, o);
+             BackVad(b, " Reload()", false)
+         }
+         function QueryList() {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.btreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }, { "value": cel[7] }, { "value": cel[8] }, { "value": cel[9]}] })
+                 }
+                 ns.btreegrid.setRows(arr)
+             }
+         }
+
+         function SetProductionNs(pv, nv) {
+             var o = { "pcode": pv, "ncode": nv }
+             var url = preurl + "/SetProductionNs"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetProductionNs(pv) {
+             var o = { "pcode": pv }
+             var url = preurl + "/ReSetProductionNs"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function GetProductionNs(pv) {
+             var o = { "pcode": pv }
+             var url = preurl + "/GetProductionNs"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.message("未设置结算方式");
+                 ns.btreegrid.setValue()
+             }
+             else {
+                 ns.btreegrid.setValue(b)
+             }
+         }
+     </script>
+</body>
+</html>

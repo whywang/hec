@@ -1,0 +1,14 @@
+﻿body{margin:0 0 0 0;background-color:#113e51; }
+li{float:left;list-style:none;padding-top:1px;margin-left:10px;width:80px}
+.logo{height:70px;float:left;position:relative;width:200px;top:0;left:0;}
+.logoimg{padding-top:5px;padding-left:30px}
+.tb{width:750px;float:right;height:70px}
+.lirq{width:100px;padding-top:15px; font-size:13px; color:white; text-align:center}
+.lisys{ font-size:13px; color:white; width:150px; }
+#Rq,#udep,#uname{font-size:14px;color:#ddd}
+#zy{height:30px; padding-top:10;cursor:pointer;border:none}
+#sz{height:30px; padding-top:10px;cursor:pointer;border:none}
+#sx{height:30px;width:27px;padding-top:10px;cursor:pointer;border:none}
+#gb{height:30px;cursor:pointer;border:none}
+#help{height:30px;cursor:pointer;border:none}
+#treecontrol{ cursor:pointer;}

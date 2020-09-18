@@ -1,0 +1,465 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品产线</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("产线管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pft")
+                .setDock("top")
+                .setHeight(40)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pft.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>工厂列表</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_dtreebar_onitemselected")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pwt")
+                .setDock("top")
+                .setHeight(41)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pwt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产线列表</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pwl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pwr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "产线名称" }, { "id": "col2", "width": 160, "type": "input", "caption": "工厂"}])
+                .setValue("")
+                .onRowSelected("_treegrid_onrowselected")
+            , "main");
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "wdlg")
+                .setLeft(150)
+                .setTop(130)
+                .setWidth(610)
+                .setDisplay("none")
+                .setCaption("产线信息")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "wlname")
+                .setDataBinder("binder")
+                .setDataField("wlname")
+                .setLeft(70)
+                .setTop(40)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("产线名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "wlcode")
+                .setDataBinder("binder")
+                .setDataField("wlname")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(40)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("产线编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setDataBinder("binder")
+                .setDataField("dname")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(90)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("工厂名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(90)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("工厂编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(70)
+                .setTop(210)
+                .setWidth(340)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("id")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pattr")
+                .setLeft(70)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("产品属性")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "", "caption": "无" }, { "id": "H", "caption": "高" }, { "id": "W", "caption": "宽" }, { "id": "D", "caption": "厚"}])
+                .setDataBinder("binder")
+                .setDataField("pattr")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ppart")
+                .setLeft(350)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("产品部件")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "", "caption": "无" }, { "id": "tb", "caption": "套板" }, { "id": "tx", "caption": "套线"}])
+                .setDataBinder("binder")
+                .setDataField("ppart")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "minval")
+                .setDataBinder("binder")
+                .setDataField("minval")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(190)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("属性最小值")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "maxval")
+                .setDataBinder("binder")
+                .setDataField("maxval")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(190)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("属性最大值")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../ProductionProcess";
+                     IdepItemsByAtrr("cs", ns.dtreebar)
+                     //QueryCateList();
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _treegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         //产线类别
+         function InitWlCate(pv) {
+             var o = { "cpcode": pv }
+             var url = "../../../WorkLine/InitWorkLineCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", true);
+             if (r) {
+                 ns.lname.setValue(r.wcname);
+                 ns.lcode.setValue(r.wccode)
+                 ns.lid.setValue(r.id)
+             }
+         }
+         function SaveWlCate() {
+             if (!CheckInput(ns, ns.lname, true, "", "部件名称不能为空！", "", "", "")) {
+                 return
+             }
+             var db = linb.DataBinder.getFromName("lbinder");
+             var url ="../../../WorkLine/SaveWorkLineCate"
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryWlCateList( ns.cxtreebar)", false)
+         }
+         function QueryWlCateList(kj) {
+             var url = '../../../WorkLine/QueryListCate';
+             var b = AjaxEb(url);
+             kj.setItems();
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 kj.setItems(arr)
+             }
+         }
+         function DelWlCate(v) {
+             var o = { "cpcode": v }
+             var url = "../../../WorkLine/DelWorkLineCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryWlCateList(ns.cxtreebar)" ,false)
+         }
+         //产线条件
+         function InitWl(pv, wv) {
+             var o = { "wpcode": pv, 'wcode': wv }
+             var url ="../../../WorkLine/InitWorkLine"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", true);
+             if (r) {
+                 ns.cname.setValue(r.wname);
+                 ns.ccode.setValue(r.wcode)
+                 ns.cpname.setValue(r.wcname)
+                 ns.cpcode.setValue(r.wccode);
+                 ns.cattr.setValue(r.wrattr)
+                 ns.clv.setValue(r.wrlv)
+                 ns.ctv.setValue(r.wrtv)
+                 ns.ctype.setValue(r.wrtype)
+                 ns.cid.setValue(r.id)
+             }
+         }
+         function SaveWl() {
+             var db = linb.DataBinder.getFromName("binder");
+             var url = "../../../WorkLine/SaveWorkLine"
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryWlList()", false)
+         }
+         function DelWl(v) {
+             var o = { "wcode": v }
+             var url = "../../../WorkLine/DelWorkLine"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryWlList()", false)
+         }
+         function QueryWlList() {
+             var v = ns.cxtreebar.getUIValue()
+             var url = "../../../WorkLine/QueryList";
+             var o = { "wpcode": v }
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.cxctreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[3] }, { "value": cel[1] }, { "value": cel[0] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }] })
+                 }
+                 ns.cxctreegrid.setRows(arr)
+             }
+         }
+
+         function SetWl(wv,iv,pv) {
+             var o = { "wccode": wv,"icode":iv,"pcode":pv }
+             var url ="../../../WorkLine/SetWorkLine"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetWl(wv,iv) {
+             var o = { "wccode": wv, "icode": iv }
+             var url = "../../../WorkLine/ReSetWorkLine"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetWl(wv, iv) {
+             var o = { "wccode": wv, "icode": iv }
+             var url = "../../../WorkLine/GetWorkLine"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.ptreegrid.setValue(b)
+             }
+             else {
+                 linb.message("未设置产线")
+             }
+         }
+     </script>
+    
+</body>
+</html>

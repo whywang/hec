@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>账号管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+             Instance: {
+                 initialize: function () {
+                     this.autoDestroy = true;
+                     this.properties = {};
+                 },
+                 iniComponents: function () {
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "sbinder")
+                .setName("sbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "ctl_panel3")
+                .setZIndex(1)
+                .setCaption("账号管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "查询", "image": "../../../Image/opeimage/search.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "密码重置", "image": "../../../Image/opeimage/reset.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "启用", "image": "../../../Image/opeimage/open.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a5", "caption": "停用", "image": "../../../Image/opeimage/close.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "utreegrid")
+                .setSelMode("multibycheckbox")
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setAltRowsBg(true)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "账号" },
+                { "id": "col2", "width": 140, "type": "input", "caption": "姓名" },
+                { "id": "col3", "width": 160, "type": "input", "caption": "部门" },
+                { "id": "col4", "width": 120, "type": "input", "caption": "角色" },
+                { "id": "col4", "width": 100, "type": "input", "caption": "状态"}])
+                .setValue("")
+                .onRowSelected("_utreegrid_onrowselected")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "pagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .onClick("_pagebar_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "Sdlg")
+                .setLeft(106)
+                .setTop(135)
+                .setWidth(550)
+                .setHeight(211)
+                .setCaption("查询")
+                .setDisplay("none")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.Sdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ustoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_ustoolbar_onclick")
+            );
+
+                     host.Sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "account")
+                .setDataBinder("sbinder")
+                .setDataField("account")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("账号")
+            );
+
+                     host.Sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "uname")
+                .setDataBinder("sbinder")
+                .setDataField("uname")
+                .setLeft(60)
+                .setTop(90)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("姓名")
+            );
+
+                     host.Sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "udepname")
+                .setDataBinder("sbinder")
+                .setDataField("udepname")
+                .setLeft(60)
+                .setTop(130)
+                .setWidth(350)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("部门")
+            );
+
+                     return children;
+                 },
+                 iniExComs: function (com, threadid) {
+                 },
+                 customAppend: function (parent, subId, left, top) {
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this; pn = 1;
+                     preurl = "../../../UIServer/BaseSet/UserManager/UserList.aspx";
+                     QueryList(1)
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.utreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.Sdlg.setDisplay("block")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             IDoFun("确定要重置？", "SetPass('" + v + "')")
+                         }
+                         else {
+                             linb.message("选择账号")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             IDoFun("确定启用账号？", "SetState('" + v + "','true')")
+                         }
+                         else {
+                             linb.message("选择账号")
+                         }
+                     }
+                     if (item.id == "a5") {
+                         if (v != null && v != "") {
+                             IDoFun("确定停用账号？", "SetState('" + v + "','false')")
+                         }
+                         else {
+                             linb.message("选择账号")
+                         }
+                     }
+                 },
+                 _utreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.utreegrid.setValue(row.id)
+                 },
+                 _pagebar_onclick: function (profile, page) {
+                     var ns = this, uictrl = profile.boxing();
+                     pn = page;
+                     QueryList(pn);
+                     profile.boxing().setPage(page)
+                 },
+                 _ustoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         QueryList(1)
+                     }
+                     else {
+                         ns.Sdlg.setDisplay("none")
+                     }
+
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function QueryList(page) {
+             var url = preurl + "/QueryList";
+             var arg1 = { "curpage": page, "pagesize": "15" };
+             var db = linb.DataBinder.getFromName("sbinder");
+             var arg2 = db.updateDataFromUI().getData();
+             var o = $.extend(arg1, arg2);
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.utreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.pagebar.setValue("1:1:" + r[1] + "")
+                 ns.utreegrid.setRows(arr)
+             }
+         }
+         function SetPass(v) {
+             var o = { "id": v }
+             var url = preurl + "/ResetPass"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "QueryList('"+pn+"') ", false)
+
+         }
+         function SetState(id,v) {
+             var o = { "id": id,"v":v }
+             var url = preurl + "/SetState"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "QueryList('"+pn+"') ", false)
+
+         }
+     </script>
+</body>
+</html>
+

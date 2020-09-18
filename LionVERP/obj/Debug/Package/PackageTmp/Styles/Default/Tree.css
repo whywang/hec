@@ -1,0 +1,61 @@
+﻿*{font-family:'Microsoft YaHei'}
+body{margin:0;background:#d8c6b4}
+.ptitle{padding-top:5px;display:block;text-align:center;font-size:15px;font-weight:500;color:#654c36}
+.pmenu{width:200px;list-style:none;margin-top:1px}
+.pmenu ul{margin:0;padding:0;text-align:left}
+.pmenu li{list-style-type:none;height:35px}
+.pmenu .ul{margin-top:1px}
+.pbartop{background:#0a2d3b}
+.pbar a:link{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;height:35px;text-decoration:none}
+.pbar a:visited{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.pbar a:hover{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.pbar a:active{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.pbar a span{padding-left:50px;padding-top:7px;display:block;font-size:14px;font-weight:500;color:#654c36}
+.pbar a.active:link{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.pbar a.active:hover{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.pbar a.active:active{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.pbar a.active:visited{background:url(../../Image/menutree/m_p_b1.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.cmenuinit{display:none}
+ 
+ 
+.cmenuinit li{list-style-type:none;background-color:#fff}
+.cmenuinit a span{padding-left:40px;padding-top:5px;display:block;font-size:13px;font-weight:500;color:#654c36}
+.cmenuinit a:link{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;height:35px;text-decoration:none}
+.cmenuinit a:visited{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;height:35px;background-position:0 -35px;text-decoration:none}
+.cmenuinit a:hover{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;height:35px;background-position:0 -35px;text-decoration:none}
+.cmenuinit a:active{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;height:35px;background-position:0 -35px;text-decoration:none}
+.cmenuinit a.actived:link{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.cmenuinit a.actived:hover{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.cmenuinit a.actived:active{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.cmenuinit a.actived:visited{background:url(../../Image/menutree/m_p_b2.gif);width:200px;display:block;background-position:0 -35px;height:35px;text-decoration:none}
+.mainmenu{padding-top:5px; display:block; text-align:center; font-size:16px ; font-weight:500; color:#654c36;}
+
+.a{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/a.png); background-repeat:no-repeat}
+.b{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/b.png); background-repeat:no-repeat}
+.c{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/c.png); background-repeat:no-repeat}
+.d{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/d.png); background-repeat:no-repeat}
+.e{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/e.png); background-repeat:no-repeat}
+.f{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/f.png); background-repeat:no-repeat}
+.g{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/g.png); background-repeat:no-repeat}
+.h{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/h.png); background-repeat:no-repeat}
+.i{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/i.png); background-repeat:no-repeat}
+.j{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/j.png); background-repeat:no-repeat}
+.k{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/k.png); background-repeat:no-repeat}
+.l{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/l.png); background-repeat:no-repeat}
+.m{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/m.png); background-repeat:no-repeat}
+.n{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/n.png); background-repeat:no-repeat}
+.o{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/o.png); background-repeat:no-repeat}
+.p{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/p.png); background-repeat:no-repeat}
+.q{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/q.png); background-repeat:no-repeat}
+.r{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/r.png); background-repeat:no-repeat}
+.s{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/s.png); background-repeat:no-repeat}
+.t{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/t.png); background-repeat:no-repeat}
+.u{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/u.png); background-repeat:no-repeat}
+.v{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/v.png); background-repeat:no-repeat}
+.w{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/w.png); background-repeat:no-repeat}
+.x{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/x.png); background-repeat:no-repeat}
+.y{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/y.png); background-repeat:no-repeat}
+.z{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px; background-image:url(../../Image/letter/z.png); background-repeat:no-repeat}
+.no{ display:block; float:left; margin-top:8px; margin-left:20px; width:16px; height:16px;}
+ 
+.pmenu .jg{ height:10px; background-color:#eee; width:200px;}

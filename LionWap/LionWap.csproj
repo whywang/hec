@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2BDA672D-7907-440F-897A-AB91E2128619}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LionWap</RootNamespace>
+    <AssemblyName>LionWap</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\ChangePassword.aspx" />
+    <Content Include="Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Account\Login.aspx" />
+    <Content Include="Account\Register.aspx" />
+    <Content Include="Image\sysimg\addimg.png" />
+    <Content Include="Image\sysimg\close.gif" />
+    <Content Include="Image\sysimg\input.gif" />
+    <Content Include="Image\sysimg\logobox.png" />
+    <Content Include="Image\sysimg\logopic.gif" />
+    <Content Include="Image\sysimg\logo_ipad.png" />
+    <Content Include="Image\sysimg\logo_pc.png" />
+    <Content Include="Image\sysimg\logo_wap.png" />
+    <Content Include="Image\sysimg\odetail.png" />
+    <Content Include="Image\sysimg\sure.png" />
+    <Content Include="Image\sysimg\tj.png" />
+    <Content Include="Image\sysimg\waz.png" />
+    <Content Include="Image\sysimg\white.png" />
+    <Content Include="Image\sysimg\yaz.png" />
+    <Content Include="layer\layer.js" />
+    <Content Include="layer\mobile\layer.js" />
+    <Content Include="layer\mobile\need\layer.css" />
+    <Content Include="layer\theme\default\icon-ext.png" />
+    <Content Include="layer\theme\default\icon.png" />
+    <Content Include="layer\theme\default\layer.css" />
+    <Content Include="layer\theme\default\loading-0.gif" />
+    <Content Include="layer\theme\default\loading-1.gif" />
+    <Content Include="layer\theme\default\loading-2.gif" />
+    <Content Include="Global.asax" />
+    <Content Include="Login.htm" />
+    <Content Include="main.htm" />
+    <Content Include="MobileCss\images\ajax-loader.gif" />
+    <Content Include="MobileCss\images\icons-png\action-black.png" />
+    <Content Include="MobileCss\images\icons-png\action-white.png" />
+    <Content Include="MobileCss\images\icons-png\alert-black.png" />
+    <Content Include="MobileCss\images\icons-png\alert-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-d-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-d-l-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-d-l-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-d-r-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-d-r-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-d-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-l-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-l-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-r-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-r-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-u-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-u-l-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-u-l-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-u-r-black.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-u-r-white.png" />
+    <Content Include="MobileCss\images\icons-png\arrow-u-white.png" />
+    <Content Include="MobileCss\images\icons-png\audio-black.png" />
+    <Content Include="MobileCss\images\icons-png\audio-white.png" />
+    <Content Include="MobileCss\images\icons-png\back-black.png" />
+    <Content Include="MobileCss\images\icons-png\back-white.png" />
+    <Content Include="MobileCss\images\icons-png\bars-black.png" />
+    <Content Include="MobileCss\images\icons-png\bars-white.png" />
+    <Content Include="MobileCss\images\icons-png\bullets-black.png" />
+    <Content Include="MobileCss\images\icons-png\bullets-white.png" />
+    <Content Include="MobileCss\images\icons-png\calendar-black.png" />
+    <Content Include="MobileCss\images\icons-png\calendar-white.png" />
+    <Content Include="MobileCss\images\icons-png\camera-black.png" />
+    <Content Include="MobileCss\images\icons-png\camera-white.png" />
+    <Content Include="MobileCss\images\icons-png\carat-d-black.png" />
+    <Content Include="MobileCss\images\icons-png\carat-d-white.png" />
+    <Content Include="MobileCss\images\icons-png\carat-l-black.png" />
+    <Content Include="MobileCss\images\icons-png\carat-l-white.png" />
+    <Content Include="MobileCss\images\icons-png\carat-r-black.png" />
+    <Content Include="MobileCss\images\icons-png\carat-r-white.png" />
+    <Content Include="MobileCss\images\icons-png\carat-u-black.png" />
+    <Content Include="MobileCss\images\icons-png\carat-u-white.png" />
+    <Content Include="MobileCss\images\icons-png\check-black.png" />
+    <Content Include="MobileCss\images\icons-png\check-white.png" />
+    <Content Include="MobileCss\images\icons-png\clock-black.png" />
+    <Content Include="MobileCss\images\icons-png\clock-white.png" />
+    <Content Include="MobileCss\images\icons-png\cloud-black.png" />
+    <Content Include="MobileCss\images\icons-png\cloud-white.png" />
+    <Content Include="MobileCss\images\icons-png\comment-black.png" />
+    <Content Include="MobileCss\images\icons-png\comment-white.png" />
+    <Content Include="MobileCss\images\icons-png\delete-black.png" />
+    <Content Include="MobileCss\images\icons-png\delete-white.png" />
+    <Content Include="MobileCss\images\icons-png\edit-black.png" />
+    <Content Include="MobileCss\images\icons-png\edit-white.png" />
+    <Content Include="MobileCss\images\icons-png\eye-black.png" />
+    <Content Include="MobileCss\images\icons-png\eye-white.png" />
+    <Content Include="MobileCss\images\icons-png\forbidden-black.png" />
+    <Content Include="MobileCss\images\icons-png\forbidden-white.png" />
+    <Content Include="MobileCss\images\icons-png\forward-black.png" />
+    <Content Include="MobileCss\images\icons-png\forward-white.png" />
+    <Content Include="MobileCss\images\icons-png\gear-black.png" />
+    <Content Include="MobileCss\images\icons-png\gear-white.png" />
+    <Content Include="MobileCss\images\icons-png\grid-black.png" />
+    <Content Include="MobileCss\images\icons-png\grid-white.png" />
+    <Content Include="MobileCss\images\icons-png\heart-black.png" />
+    <Content Include="MobileCss\images\icons-png\heart-white.png" />
+    <Content Include="MobileCss\images\icons-png\home-black.png" />
+    <Content Include="MobileCss\images\icons-png\home-white.png" />
+    <Content Include="MobileCss\images\icons-png\info-black.png" />
+    <Content Include="MobileCss\images\icons-png\info-white.png" />
+    <Content Include="MobileCss\images\icons-png\location-black.png" />
+    <Content Include="MobileCss\images\icons-png\location-white.png" />
+    <Content Include="MobileCss\images\icons-png\lock-black.png" />
+    <Content Include="MobileCss\images\icons-png\lock-white.png" />
+    <Content Include="MobileCss\images\icons-png\mail-black.png" />
+    <Content Include="MobileCss\images\icons-png\mail-white.png" />
+    <Content Include="MobileCss\images\icons-png\minus-black.png" />
+    <Content Include="MobileCss\images\icons-png\minus-white.png" />
+    <Content Include="MobileCss\images\icons-png\navigation-black.png" />
+    <Content Include="MobileCss\images\icons-png\navigation-white.png" />
+    <Content Include="MobileCss\images\icons-png\phone-black.png" />
+    <Content Include="MobileCss\images\icons-png\phone-white.png" />
+    <Content Include="MobileCss\images\icons-png\plus-black.png" />
+    <Content Include="MobileCss\images\icons-png\plus-white.png" />
+    <Content Include="MobileCss\images\icons-png\power-black.png" />
+    <Content Include="MobileCss\images\icons-png\power-white.png" />
+    <Content Include="MobileCss\images\icons-png\recycle-black.png" />
+    <Content Include="MobileCss\images\icons-png\recycle-white.png" />
+    <Content Include="MobileCss\images\icons-png\refresh-black.png" />
+    <Content Include="MobileCss\images\icons-png\refresh-white.png" />
+    <Content Include="MobileCss\images\icons-png\search-black.png" />
+    <Content Include="MobileCss\images\icons-png\search-white.png" />
+    <Content Include="MobileCss\images\icons-png\shop-black.png" />
+    <Content Include="MobileCss\images\icons-png\shop-white.png" />
+    <Content Include="MobileCss\images\icons-png\star-black.png" />
+    <Content Include="MobileCss\images\icons-png\star-white.png" />
+    <Content Include="MobileCss\images\icons-png\tag-black.png" />
+    <Content Include="MobileCss\images\icons-png\tag-white.png" />
+    <Content Include="MobileCss\images\icons-png\user-black.png" />
+    <Content Include="MobileCss\images\icons-png\user-white.png" />
+    <Content Include="MobileCss\images\icons-png\video-black.png" />
+    <Content Include="MobileCss\images\icons-png\video-white.png" />
+    <Content Include="MobileCss\images\icons-svg\action-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\action-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\alert-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\alert-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-d-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-d-l-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-d-l-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-d-r-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-d-r-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-d-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-l-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-l-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-r-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-r-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-u-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-u-l-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-u-l-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-u-r-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-u-r-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\arrow-u-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\audio-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\audio-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\back-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\back-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\bars-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\bars-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\bullets-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\bullets-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\calendar-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\calendar-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\camera-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\camera-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-d-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-d-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-l-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-l-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-r-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-r-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-u-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\carat-u-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\check-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\check-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\clock-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\clock-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\cloud-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\cloud-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\comment-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\comment-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\delete-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\delete-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\edit-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\edit-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\eye-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\eye-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\forbidden-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\forbidden-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\forward-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\forward-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\gear-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\gear-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\grid-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\grid-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\heart-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\heart-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\home-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\home-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\info-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\info-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\location-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\location-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\lock-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\lock-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\mail-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\mail-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\minus-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\minus-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\navigation-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\navigation-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\phone-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\phone-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\plus-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\plus-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\power-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\power-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\recycle-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\recycle-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\refresh-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\refresh-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\search-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\search-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\shop-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\shop-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\star-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\star-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\tag-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\tag-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\user-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\user-white.svg" />
+    <Content Include="MobileCss\images\icons-svg\video-black.svg" />
+    <Content Include="MobileCss\images\icons-svg\video-white.svg" />
+    <Content Include="MobileCss\jquery.mobile-1.4.5.min.css" />
+    <Content Include="MobileCss\jquery.mobile.external-png-1.4.5.min.css" />
+    <Content Include="MobileCss\jquery.mobile.icons-1.4.5.min.css" />
+    <Content Include="MobileCss\jquery.mobile.inline-png-1.4.5.min.css" />
+    <Content Include="MobileCss\jquery.mobile.inline-svg-1.4.5.min.css" />
+    <Content Include="MobileCss\jquery.mobile.structure-1.4.5.min.css" />
+    <Content Include="MobileCss\jquery.mobile.theme-1.4.5.min.css" />
+    <Content Include="MobileCss\ninetable.css" />
+    <Content Include="MobileScript\jquery.js" />
+    <Content Include="MobileScript\jquery.mobile-1.4.5.js" />
+    <Content Include="orderdetail.htm" />
+    <Content Include="Scripts\ajaxfileupload.js" />
+    <Content Include="Scripts\Common.js" />
+    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\Pages\dlg.js" />
+    <Content Include="Scripts\Pages\info.js" />
+    <Content Include="Scripts\Pages\Login.js" />
+    <Content Include="Scripts\Pages\QueryRecord.js" />
+    <Content Include="Scripts\script.js" />
+    <Content Include="Scripts\ValReturn.js" />
+    <Content Include="Styles\Dev\style_ipad.css" />
+    <Content Include="Styles\Dev\style_pc.css" />
+    <Content Include="Styles\Dev\style_wap.css" />
+    <Content Include="Styles\Upfile\publi.css" />
+    <Content Include="Styles\Upfile\style.css" />
+    <Content Include="tcc\css\app.css" />
+    <Content Include="tcc\css\feedback-page.css" />
+    <Content Include="tcc\css\font-awesome.min.css" />
+    <Content Include="tcc\css\iconfont.css" />
+    <Content Include="tcc\css\mui.min.css" />
+    <Content Include="tcc\images\iconfont-tianjia.png" />
+    <Content Include="tcc\index.html" />
+    <Content Include="tcc\js\common.js" />
+    <Content Include="tcc\js\jquery.js" />
+    <Content Include="tcc\js\mui.min.js" />
+    <Content Include="tcc\js\utitls.js" />
+    <Content Include="tjdetail.htm" />
+    <Content Include="UIServer\EvenDo.aspx" />
+    <Content Include="UIServer\FixOrderLists.aspx" />
+    <Content Include="UIServer\Login.aspx" />
+    <Content Include="UIServer\UpAzImg.aspx" />
+    <Content Include="UIServer\UpShImg.aspx" />
+    <Content Include="UIServer\WapFixOrder.aspx" />
+    <Content Include="UpAzImg.htm" />
+    <Content Include="UpShImg.htm" />
+    <Content Include="waz.htm" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="yaz.htm" />
+    <Content Include="yorderdetail.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ChangePasswordSuccess.aspx.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ChangePasswordSuccess.aspx.designer.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIServer\EvenDo.aspx.cs">
+      <DependentUpon>EvenDo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UIServer\EvenDo.aspx.designer.cs">
+      <DependentUpon>EvenDo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UIServer\FixOrderLists.aspx.cs">
+      <DependentUpon>FixOrderLists.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UIServer\FixOrderLists.aspx.designer.cs">
+      <DependentUpon>FixOrderLists.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UIServer\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UIServer\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UIServer\UpAzImg.aspx.cs">
+      <DependentUpon>UpAzImg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UIServer\UpAzImg.aspx.designer.cs">
+      <DependentUpon>UpAzImg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UIServer\UpShImg.aspx.cs">
+      <DependentUpon>UpShImg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UIServer\UpShImg.aspx.designer.cs">
+      <DependentUpon>UpShImg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UIServer\WapFixOrder.aspx.cs">
+      <DependentUpon>WapFixOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UIServer\WapFixOrder.aspx.designer.cs">
+      <DependentUpon>WapFixOrder.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MobileScript\jquery.mobile-1.4.5.min.map" />
+    <None Include="tcc\.project" />
+    <None Include="tcc\css\fonts\mui.ttf" />
+    <None Include="tcc\fonts\fontawesome-webfont.ttf" />
+    <None Include="tcc\fonts\iconfont.ttf" />
+    <None Include="tcc\fonts\mui.ttf" />
+    <None Include="tcc\manifest.json" />
+    <None Include="tcc\unpackage\.confirmed_dependencies" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LionvAopModel\LionvAopModel.csproj">
+      <Project>{D48CFD2F-E0B8-4017-9E61-DF9779C9120B}</Project>
+      <Name>LionvAopModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvBll\LionvBll.csproj">
+      <Project>{C0C92CA2-8739-4040-B4CE-1BED9207484D}</Project>
+      <Name>LionvBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvCommonBll\LionvCommonBll.csproj">
+      <Project>{B5C5F654-CE85-438A-9B64-49DB32E7C814}</Project>
+      <Name>LionvCommonBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvCommon\LionvCommon.csproj">
+      <Project>{220CE70E-5FEE-4CD5-944E-39270DE8446C}</Project>
+      <Name>LionvCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionVERP\LionVERP.csproj">
+      <Project>{57D5A0DB-62F9-4F89-B4B9-123097503303}</Project>
+      <Name>LionVERP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvModel\LionvModel.csproj">
+      <Project>{D06D6708-531B-46B5-8486-E623FC49B53B}</Project>
+      <Name>LionvModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>14881</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

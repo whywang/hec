@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+  <div id='loading'><img src="../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+             Instance: {
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "ctl_panel3")
+                .setZIndex(1)
+                .setOverflow("auto")
+                .setCaption("通知公告")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ctl_toolbar3")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_ctl_toolbar3_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_pane8")
+                .setLeft(1)
+                .setTop(41)
+                .setWidth(890)
+                .setHeight(100)
+            );
+
+                     host.ctl_pane8.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "Newstitle")
+                .setDock("center")
+                .setLeft(250)
+                .setTop(30)
+                .setCaption("新闻标题")
+                .setCustomStyle({ "KEY": "font-size:20px;font-weight:bolder;color:#333333" })
+            );
+
+                     host.ctl_pane8.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel6")
+                .setLeft(570)
+                .setTop(70)
+                .setCaption("发布日期：")
+            );
+
+                     host.ctl_pane8.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "PressDate")
+                .setLeft(640)
+                .setTop(70)
+                .setCaption("")
+            );
+
+                     host.ctl_pane8.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "NewsReader")
+                .setLeft(830)
+                .setTop(70)
+                .setCaption("0")
+            );
+
+                     host.ctl_pane8.append(
+                (new linb.UI.Link)
+                .setHost(host, "ctl_link2")
+                .setLeft(780)
+                .setTop(70)
+                .setCaption("<span style='color:red;cursor:pointer'>阅览者</span>：")
+                .onClick("_ctl_link2_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Div)
+                .setHost(host, "ctl_div10")
+                .setLeft(100)
+                .setTop(151)
+                .setWidth(600)
+                .setHeight("auto")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "rdlg")
+                .setLeft(509)
+                .setTop(92)
+                .setWidth(465)
+                .setHeight(399)
+                .setDisplay("none")
+                .setCaption("阅览者")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "rtreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setColResizer(false)
+                .setColSortable(false)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "部门" }, { "id": "col2", "width": 100, "type": "input", "caption": "姓名" }, { "id": "col3", "width": 140, "type": "input", "caption": "时间"}])
+            );
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../UIServer/NewsMessage/News.aspx"
+                     sid = "";
+                     var Request = new Object();
+                     Request = GetRequest();
+                     if (Request["Sid"] != null) {
+                         sid = Request["Sid"].toString();
+                         Init( sid);
+                         AddReader(sid);
+                     }
+
+                 },
+                 _ctl_toolbar3_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     window.history.back(-1)
+                 },
+                 _ctl_link2_onclick: function (profile, e) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.rdlg.setDisplay("block")
+                     LoadReader()
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function Init(sid) {
+
+             var url = preurl + "/InitNews";
+             var o = { 'id': sid }
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+
+                 ns.Newstitle.setCaption(r.ntitle);
+                 ns.PressDate.setCaption(r.cdate);
+                 ns.NewsReader.setCaption(r.nreadnum);
+                 ns.ctl_div10.setHtml(r.ncontent)
+             }
+         }
+         function LoadReader() {
+             var url = preurl + "/QueryListRead";
+             var o = { "id": sid }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.rtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2]}] })
+                 }
+                 ns.rtreegrid.setRows(arr)
+             }
+         }
+         function AddReader(sid) {
+             var url = preurl + "/SaveNewsRead";
+             var o = { 'id': sid }
+             AjaxExb(url, o);
+         }
+     </script>
+
+</body>
+</html>

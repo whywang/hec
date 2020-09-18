@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../Styles/Default/Tip.css" rel="stylesheet" />
+    <link href="../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        li {
+            height: 25px;
+            list-style: none;
+            font-size: 13px;
+            border-bottom: 1px dashed #9f7d55;
+            padding-top: 10px
+        }
+
+        .newstitle {
+            border-bottom: 1px solid #1633e6;
+            font-size: 16px;
+            font-weight: bolder;
+            height: 40px;
+            color: #333333
+        }
+
+        li span {
+            display: block;
+            float: right;
+            color: #3c3b3b
+        }
+
+        li a {
+            color: #3c3b3b
+        }
+    </style>
+</head>
+<body id="bd">
+    <div id='loading'><img src="../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../Scripts/Common/ShowTip.js"></script>
+    <script src="../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        Class('App', 'linb.Com', {
+          
+            Instance: {
+         
+                initialize: function () {
+                  
+                    this.autoDestroy = true;
+                     
+                    this.properties = {};
+                },
+               
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(50)
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:18px;color:#666666'>新闻通知</span>&nbsp;&nbsp;<span style='font-size:12px;color:#666666'>News Info</span>")
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pb")
+                .setDock("bottom")
+                .setHeight(30)
+            );
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plist")
+                .setDock("height")
+                .setLeft(30)
+                .setWidth(1000)
+            );
+            
+                    host.pb.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "pagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .onClick("_pagebar_onclick")
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+                iniExComs: function (com, threadid) { },
+                customAppend: function (parent, subId, left, top) { return false; },
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this;
+                    preurl = "../../UIServer/NewsMessage/News.aspx";
+                    Init(1);
+                    QueryNews();
+                },
+                __toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    window.history.back(-1)
+                },
+                _pagebar_onclick: function (profile, page) {
+                    var ns = this, uictrl = profile.boxing();
+                    Init(page)
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function Init(page) {
+            var url = preurl + "/CustQueryRoleList";
+            var o = { curpage: page, pagesize: "15" };
+            var b = AjaxExb(url, o)
+            var r = BackVad(b, "", false)
+            if (r) {
+                var divstr = "<div> <ul>";
+                for (var i = 2; i < r.length; i++) {
+                    var barr = r[i].toString().split(',')
+                    divstr = divstr + "<li>" + (i - 1) + "、<a href='ShowNewsDetail.htm?Sid=" + barr[0] + "'>" + barr[1] + "</a><span>" + barr[5] + "</span></li>"
+                }
+                divstr = divstr + "</ul></div>"
+                ns.pagebar.setValue("1:1:" + b[0]);
+                ns.plist.setHtml(divstr);
+                
+            }
+        }
+        function QueryNews() {
+            var url = preurl + "/QueryFristNews";
+            var b = AjaxEb(url)
+            var r = BackVad(b, "", false)
+            if (r) {
+                Show('N' + r.id, r.ntitle, r.ncontent, 'bd')
+            }
+        }
+        function ReadOver(id) {
+            HidDiv(id);
+            var nid = id.toString().replace("N", "")
+            var url = preurl + "/SaveNewsRead";
+            var o = { 'id': nid }
+            var b = AjaxExb(url, o);
+            QueryNews();
+        }
+    </script>
+</body>
+</html>

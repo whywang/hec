@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>系统管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <link href="../../../Styles/Common/Common.css" rel="stylesheet" type="text/css" />
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ISettlement.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("新增企业")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pane")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptitle")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                     host.ptitle.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='color:#474747;  font-family:微软雅黑;#font-weight:bold;font-size:20px'>企业设置</span>")
+            );
+
+                     host.ptitle.append(
+                (new linb.UI.Label)
+                .setHost(host, "ls3")
+                .setLeft(100)
+                .setTop(25)
+                .setWidth(130)
+                .setHeight(12)
+                .setCaption("Set Company Info")
+                .setCustomStyle({ "KEY": "color:#616161; font-family:Georgia" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setDataBinder("binder")
+                .setDataField("dname")
+                .setLeft(30)
+                .setTop(30)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>企业名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "daddress")
+                .setDataBinder("binder")
+                .setDataField("daddress")
+                .setLeft(30)
+                .setTop(150)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>企业地址</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "manager")
+                .setDataBinder("binder")
+                .setDataField("manager")
+                .setLeft(30)
+                .setTop(210)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>负责人</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "telephone")
+                .setDataBinder("binder")
+                .setDataField("telephone")
+                .setLeft(30)
+                .setTop(270)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>联系方式</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Label)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(580)
+                .setWidth(90)
+                .setCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>初始化部门</span>")
+            );
+
+                     host.pm.append(
+                (new linb.UI.RadioBox)
+                .setHost(host, "idep")
+                .setDataBinder("binder")
+                .setDataField("idep")
+                .setItems([{ "id": "zb", "caption": "总办" }, { "id": "dq", "caption": "销售渠道" }, { "id": "dd", "caption": "订单部" }, { "id": "cw", "caption": "财务部" }, { "id": "sc", "caption": "生产部" }, { "id": "gc", "caption": "工厂" }, { "id": "kf", "caption": "库房" }, { "id": "cg", "caption": "采购部"}])
+                .setLeft(30)
+                .setTop(600)
+                .setWidth(560)
+                .setHeight(40)
+                .setSelMode("multibycheckbox")
+                .setCheckBox(true)
+
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(90)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>企业编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dabc")
+                .setDataBinder("binder")
+                .setDataField("dabc")
+                .setLeft(30)
+                .setTop(390)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>企业简码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "iproduction")
+                .setDataBinder("binder")
+                .setDataField("iproduction")
+                .setLeft(30)
+                .setTop(450)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>初始化产品</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dtype")
+                .setDataBinder("binder")
+                .setDataField("dtype")
+                .setLeft(30)
+                .setTop(330)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>企业类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "mc", "caption": "门厂" }, { "id": "md", "caption": "门店"}])
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "iadmin")
+                .setDataBinder("binder")
+                .setDataField("iadmin")
+                .setLeft(30)
+                .setTop(510)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>管理员账号</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "aid")
+                .setDataBinder("binder")
+                .setDataField("aid")
+                .setLeft(510)
+                .setTop(30)
+                .setWidth(460)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>aid</span>")
+                .setLabelHAlign("left")
+                .setDisplay("none")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/DepManage/Depment.aspx";
+                     InitCompany("")
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveCompany()
+                     }
+                     else {
+                         window.location.href = "CompanyInfo.htm";
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitCompany(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/QueryCompany"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.dname.setValue(r.dname);
+                 ns.dcode.setValue(r.dcode);
+                 ns.daddress.setValue(r.daddress);
+                 ns.manager.setValue(r.dmanager);
+                 ns.telephone.setValue(r.dcontact);
+                 ns.dtype.setValue(r.dattr);
+                 ns.dabc.setValue(r.dabc);
+                 ns.iproduction.setValue(r.iproduction);
+                 ns.iadmin.setValue(r.iadmin);
+                 ns.idep.setValue(r.idepment);
+                 ns.aid.setValue(r.id);
+             }
+         }
+         function SaveCompany() {
+             var url = preurl + "/AddCompany"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+             window.location.href = "CompanyInfo.htm";
+         }
+     </script>
+</body>
+</html>

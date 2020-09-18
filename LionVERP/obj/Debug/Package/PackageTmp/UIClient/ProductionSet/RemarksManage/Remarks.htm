@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>备注设置</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IRemarks.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "ctl_panel3")
+                .setZIndex(1)
+                .setCaption("产品备注")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "mtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a5", "caption": "新增扩展备注", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a6", "caption": "编辑扩展备注", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a7", "caption": "删除扩展备注", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_mtoolbar_onclick")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "mtreegrid")
+                .setDock("top")
+                .setHeight(400)
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 300, "type": "input", "caption": "可编辑" }, { "id": "col3", "width": 300, "type": "input", "caption": "固定"}])
+                .setValue("")
+                .onRowSelected("_mtreegrid_onrowselected")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_pane10")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                     host.ctl_pane10.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel4")
+                .setLeft(10)
+                .setTop(10)
+                .setCaption("扩展备注")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "kmtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "条件" }, { "id": "col2", "width": 120, "type": "input", "caption": "最小值" }, { "id": "col3", "width": 120, "type": "input", "caption": "最大值" }, { "id": "col4", "width": 400, "type": "input", "caption": "备注内容"}])
+                .setValue("")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "kcdlg")
+                .setLeft(251)
+                .setTop(181)
+                .setWidth(550)
+                .setDisplay("none")
+                .setCaption("扩展备注")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "kztoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_kztoolbar_onclick")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rcname")
+                .setDataBinder("binder")
+                .setDataField("rcname")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bottomv")
+                .setDataBinder("binder")
+                .setDataField("bottomv")
+                .setLeft(10)
+                .setTop(130)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("范围")
+                .setValue("0")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rccode")
+                .setDataBinder("binder")
+                .setDataField("rccode")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setReadonly(true)
+                .setLabelCaption("编码")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "topv")
+                .setDataBinder("binder")
+                .setDataField("topv")
+                .setLeft(260)
+                .setTop(130)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("》》")
+                .setValue("0")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "rctype")
+                .setDataBinder("binder")
+                .setDataField("rctype")
+                .setLeft(10)
+                .setTop(90)
+                .setWidth(485)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("类型")
+                .setType("listbox")
+                .setValue("H")
+                .setItems([{ "id": "高", "caption": "高" }, { "id": "宽", "caption": "宽" }, { "id": "厚", "caption": "厚"}])
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rcid")
+                .setDataBinder("binder")
+                .setDataField("rcid")
+                .setLeft(270)
+                .setTop(70)
+                .setWidth(250)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rcode")
+                .setDataBinder("binder")
+                .setDataField("rcode")
+                .setLeft(270)
+                .setTop(110)
+                .setWidth(250)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("编码2")
+            );
+
+                     host.kcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rctext")
+                .setDataBinder("binder")
+                .setDataField("rctext")
+                .setLeft(10)
+                .setTop(170)
+                .setWidth(500)
+                .setHeight(80)
+                .setLabelSize(60)
+                .setLabelCaption("备注")
+                .setMultiLines(true)
+            );
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/RemarksManage/Remarks.aspx";
+                     IinvItems("", ns.ptreebar)
+                     Iremarkslist(ns.mtreegrid)
+                 },
+
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     var nv = ns.mtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.message("选择备注");
+                             return
+                         }
+                         SetProductionRemark(pv, nv)
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         IDoFun("重置产品备注？", "ReSetProductionRemark('" + pv + "')")
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreebar.setValue(item.id)
+                     IinvCItems(item, ns.ptreebar)
+                     GetProductionRemark(item.id, ns.mtreegrid)
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _mtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.mtreegrid.getUIValue();
+                     var kv = ns.kmtreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         window.location.href = "EditRemark.htm"
+                     }
+                     if (item.id == "a3") {
+                         if (v == "" || v == null) {
+                             linb.message("选择备注")
+                         }
+                         else {
+                             window.location.href = "EditRemark.htm?Sid=" + v;
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v == "" || v == null) {
+                             linb.message("选择备注")
+                         }
+                         else {
+                             IDelFun("DelRemark('" + v + "')")
+                         }
+                     }
+                     if (item.id == "a5") {
+                         if (v == "" || v == null) {
+                             linb.message("选择备注")
+                         }
+                         else {
+                             InitRemark("")
+                             ns.kcdlg.setDisplay("block")
+                         }
+                     }
+                     if (item.id == "a6") {
+                         if (kv == "" || kv == null) {
+                             linb.message("选择备注")
+                         }
+                         else {
+                             ns.kcdlg.setDisplay("block")
+                             InitRemark(kv)
+                         }
+                     }
+                     if (item.id == "a7") {
+                         if (kv == "" || kv == null) {
+                             linb.message("选择备注")
+                         }
+                         else {
+                             IDelFun("DelRemarkExp('" + kv + "')")
+                         }
+                     }
+                 },
+                 _mtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.mtreegrid.setValue(row.id);
+                     ns.rcode.setValue(row.id)
+                     QueryListExp(row.id);
+                 },
+                 _kztoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveRemarkExp();
+                     }
+                     else {
+                         ns.kcdlg.setDisplay("none");
+                         InitUnKj();
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function DelRemark(v) {
+             var o = { "rcode": v }
+             var url = preurl + "/DelRemarks"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         
+
+         function InitRemark(v) {
+             var o = { "rccode": v }
+             var url = preurl + "/InitRemarkExp"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.rcname.setValue(r.rcname)
+             ns.rccode.setValue(r.rccode)
+             ns.rctype.setValue(r.rtype)
+             ns.bottomv.setValue(r.rbottomv)
+             ns.topv.setValue(r.rtopv)
+             ns.rctext.setValue(r.rxtext)
+             if (r.rcode != "") {
+                 ns.rcode.setValue(r.rcode)
+             }
+             ns.rcid.setValue(r.id) 
+         }
+         function InitUnKj() {
+             ns.rcname.setValue()
+             ns.rccode.setValue()
+             ns.rctype.setValue()
+             ns.bottomv.setValue()
+             ns.topv.setValue()
+             ns.rctext.setValue()
+             ns.rcode.setValue()
+             ns.rcid.setValue(0)
+         }
+         function SaveRemarkExp() {
+             var url = preurl + "/SaveRemarkExp"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "Reload()", false)
+         }
+         function DelRemarkExp(v) {
+             var o = { "rccode": v }
+             var url = preurl + "/DelRemarksExp"
+             var b = AjaxExb(url, o);
+             BackVad(b, "Reload()", false)
+         }
+         function QueryListExp(v) {
+             var url = preurl + "/QueryListExp";
+             var o = {"rcode":v}
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.kmtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }] })
+                 }
+                 ns.kmtreegrid.setRows(arr)
+             }
+         }
+
+         
+         function Reload() {
+             var v = ns.mtreegrid.getUIValue();
+             QueryListExp(v);
+             ns.kcdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>

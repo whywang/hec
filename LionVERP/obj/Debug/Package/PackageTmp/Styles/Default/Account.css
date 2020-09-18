@@ -1,0 +1,82 @@
+﻿.abox {
+    width: 500px;
+    height: 300px;
+    border-radius: 9px;
+    background: #ffffff;
+    list-style: none;
+    border: 1px solid #cccccc
+}
+    .abox ul {
+        margin-left: -40px;
+        list-style: none;
+    }
+
+    .abox .titlebox {
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px solid #cccccc
+    }
+
+    .abox .closebtn {
+        float: right;
+        margin-right:10px;
+        cursor:pointer;
+    }
+
+    .abox .titlebox .title {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-left: 30px;
+        color: #666666;
+        font-family: Arial, Helvetica, sans-serif
+    }
+
+    .abox .account {
+        margin-top: 2px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #999999
+    }
+ 
+    .abox .account  table{ border-collapse:collapse ; border:1px solid #cccccc; width:100%}
+    .abox .account  td{  border:1px solid #cccccc; height:35px; font-size:14px; color:#555 ; text-align:center}
+    .abox .account  th{  border:1px solid #cccccc; height:35px; font-size:14px; color:#555; background-color:#c2d1bd; cursor:pointer}
+    .abox .mbox {
+        margin-top: 20px;
+        margin-left: 50px
+    }
+
+        .abox .mbox .kyjebox {
+            width: 35%;
+            height: 80px;
+            background-color: #449139;
+            float: left; 
+          
+        }
+
+            .abox .mbox .kyjebox #ze {
+                width: 100%;
+                
+                color: #FFFFFF;
+                font-size: 30px;
+                display:block;
+                text-align: center;
+                font-weight: bold;
+                margin-top:15px;
+            }
+
+            .abox .mbox .kyjebox .fh {
+                width: 100%;
+                color: #FFFFFF;
+                font-size: 12px;
+                margin-left: 15px
+            }
+
+            .abox .mbox .kyjebox .wz {
+                width: 100%;
+                height: 30px;
+                color: #FFFFFF;
+                font-size: 13px;
+                text-align: left;
+                margin-left: 15px
+            }

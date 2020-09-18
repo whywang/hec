@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>文本编辑</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8">
+        window.UEDITOR_HOME_URL = "";
+     </script> 
+    <script src="ueditor.config.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ueditor.all.js" type="text/javascript"></script>
+</head>
+<body >
+<div> 
+    <script  id="editor" type="text/plain" style="width:1000px; height:500px" ></script>
+</div>
+</body>
+<script type="text/javascript">
+     
+    if (parent.document.getElementsByName("dd")[0]!=undefined) {
+        var aa = parent.document.getElementsByName("dd")[0].value;
+        window.UEDITOR_CONFIG.initialContent = aa
+    }
+    else {
+        window.UEDITOR_CONFIG.initialContent = ""
+    }
+    var editor = new UE.ui.Editor();
+    editor.render("editor");
+    //实例化编辑器
+    function getContent() {
+        return UE.getEditor('editor').getContent();
+
+    }
+  
+    
+</script>
+</html>

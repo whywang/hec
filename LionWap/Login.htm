@@ -1,0 +1,54 @@
+﻿
+<!DOCTYPE  >
+<html>
+<head><title>联汇软件移动安装服务系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="联汇软件,ERP,木门ERP,整屋" />
+    <meta name="description" content="联汇软件,ERP,木门ERP,整屋" />
+    <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
+    <link href="MobileCss/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <script src="MobileScript/jquery.js" type="text/javascript"></script>
+    <script src="MobileScript/jquery.mobile-1.4.5.js" type="text/javascript"></script>
+    <link href="MobileCss/ninetable.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/Pages/Login.js" type="text/javascript"></script>
+    <script src="Scripts/Common.js" type="text/javascript"></script>
+</head>
+
+<body >
+<center>
+ <div role="page" class="ui-content" id="main">
+     <div>
+         <img src="Image/sysimg/logo_ipad.png" />
+     </div>
+     <div style="font-size:16px; font-weight:bolder">
+          博亮木门安装服务系统 
+     </div>
+     <div id="LBox" style="width:300px ; height:280px; border:1px solid #cccccc; margin-top:20px">
+       <div><img src="Image/sysimg/logobox.png" style="float:left ;" alt=""/> </div>
+       <div data-role="fieldcontain" >
+           <input type="text" name="uname" id="uname" placeholder="账号">
+           <input type="password" name="pwd" id="pwd" placeholder="密码">
+           <label id="tip" style=" color:red; width:100%" ></label>
+           <br /> 
+           <div><img src="Image/sysimg/logopic.gif" alt="" onclick="Login()"/> </div>
+      </div>
+     </div>
+ </div>
+
+<div style="font-size:16px; ">
+北京联汇软件有限公司
+</div>
+</center>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (GetCookie("cname")) {
+            AutoLogin()
+        }
+    })
+</script>
+ 

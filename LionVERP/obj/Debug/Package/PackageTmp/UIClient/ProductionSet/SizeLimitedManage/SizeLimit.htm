@@ -1,0 +1,506 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>标准尺寸</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/INomalSize.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("产品尺寸限制")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666;font-weight:bolder'>产品类别</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "itreebar")
+                 .onItemSelected("_itreebar_onitemselected")
+                .beforeExpend("_itreebar_beforeexpend")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.plt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666;font-weight:bolder'>限制条件</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pll")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ltreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "高最小值" }, { "id": "col3", "width": 80, "type": "input", "caption": "高最大值" }, { "id": "col2", "width": 80, "type": "input", "caption": "宽最小值" }, { "id": "col3", "width": 80, "type": "input", "caption": "宽最大值" }, { "id": "col2", "width": 80, "type": "input", "caption": "厚最小值" }, { "id": "col3", "width": 80, "type": "input", "caption": "厚最大值" }, { "id": "col4", "width": 200, "type": "input", "caption": "提示"}])
+                .setValue("")
+                .onRowSelected("_ltreegrid_onrowselected")
+            , "main");
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "ldlg")
+                .setLeft(180)
+                .setTop(110)
+                .setWidth(600)
+                .setHeight(400)
+                .setCaption("尺寸限制")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+               .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                 .onClick("_astoolbar_onclick")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lname")
+                .setDataBinder("binder")
+                .setDataField("lname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lcode")
+                .setDataBinder("binder")
+                .setDataField("lcode")
+                .setReadonly(true)
+                .setLeft(320)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hmin")
+                .setDataBinder("binder")
+                .setDataField("hmin")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>高最小值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hmax")
+                .setDataBinder("binder")
+                .setDataField("hmax")
+                .setLeft(320)
+                .setTop(100)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>高最大值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "kmin")
+                .setDataBinder("binder")
+                .setDataField("kmin")
+                .setLeft(50)
+                .setTop(150)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>宽最小值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "kmax")
+                .setDataBinder("binder")
+                .setDataField("kmax")
+                .setLeft(320)
+                .setTop(150)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>宽最大值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmin")
+                .setDataBinder("binder")
+                .setDataField("dmin")
+                .setLeft(50)
+                .setTop(200)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>厚最小值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmax")
+                .setDataBinder("binder")
+                .setDataField("dmax")
+                .setLeft(320)
+                .setTop(200)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>厚最大值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tip")
+                .setDataBinder("binder")
+                .setDataField("tip")
+                .setLeft(50)
+                .setTop(250)
+                .setWidth(500)
+                .setHeight(90)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>提示</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lid")
+                .setDataBinder("binder")
+                .setDataField("lid")
+                .setLeft(160)
+                .setTop(40)
+                .setWidth(230)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this, slv = "";
+                     preurl = "../../../SizeLimited";
+                     IinvItems("", ns.itreebar);
+                     QuerySizeList();
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var iv = ns.itreebar.getUIValue();
+                     var sv = ns.ltreegrid.getUIValue();
+                     if (iv == "" || iv == null) {
+                         linb.message("请选择产品");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择条件类别");
+                             return
+                         }
+                         SetSizeLimitedCate(iv, sv)
+                     }
+                     if (item.id == "a3") {
+                         IDoFun("确定要重置条件类别？", "ReSetSizeLimitedCate('" + iv + "')")
+                     }
+                 },
+                 _itreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.itreebar.setValue(item.id);
+                     IinvCItems(item, ns.itreebar);
+                     if (item.sub)
+                     { }
+                     else {
+                         GetSizeLimitedCate(item.id);
+                     }
+                 },
+                 _itreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.itreebar);
+                 },
+                 _atoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var jv = ns.ltreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.ldlg.setDisplay("block");
+                         InitLimited("");
+                     }
+                     if (item.id == "a3") {
+                         if (jv != "" || jv != null) {
+                             ns.ldlg.setDisplay("block");
+                             InitLimited(jv);
+                         }
+                         else {
+                             linb.message("请选择条件");
+                             return
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (jv != "" || jv != null) {
+                             IDoFun("确定要删除条件？", "DelLimited('" + jv + "')")
+                         }
+                         else {
+                             linb.message("请选择条件");
+                             return
+                         }
+                     }
+                 },
+                 _astoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveLimited();
+                     }
+                     ns.ldlg.setDisplay("none");
+                 },
+                 _ltreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ltreegrid.setUIValue(row.id);
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         }); 
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+      
+
+         function InitLimited(sv) {
+             var o = { "lcode": sv}
+             var url = preurl + "/InitSizeLimited"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lname.setValue(r.lname)
+                 ns.lcode.setValue(r.lcode)
+                 ns.lid.setValue(r.id)
+                 ns.hmax.setValue(r.hmax)
+                 ns.hmin.setValue(r.hmin)
+                 ns.kmax.setValue(r.kmax)
+                 ns.kmin.setValue(r.kmin)
+                 ns.dmax.setValue(r.dmax)
+                 ns.dmin.setValue(r.dmin)
+                 ns.tip.setValue(r.tip)
+             }
+         }
+         function SaveLimited() {
+             var url = preurl + "/SaveSizeLimited"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QuerySizeList()", false);
+         }
+         function QuerySizeList() {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.ltreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [ { "value": cel[1] },{ "value": cel[2] },  { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }, { "value": cel[7] }, { "value": cel[8] }, { "value": cel[9]}] })
+                 }
+                 ns.ltreegrid.setRows(arr)
+             }
+         }
+         function DelLimited(v) {
+             var o = { "lcode": v }
+             var url = preurl + "/DelSizeLimited"
+             var b = AjaxExb(url, o);
+             BackVad(b, " QuerySizeList('" + slv + "')", false)
+         }
+
+         function SetSizeLimitedCate(iv,sv) {
+             var o = { "icode": iv, "lcode": sv }
+             var url = preurl + "/SetSizeLimitedCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetSizeLimitedCate(iv) {
+             var o = { "icode": iv  }
+             var url = preurl + "/ReSetSizeLimitedCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false);
+             ns.streegrid.setValue("");
+         }
+         function GetSizeLimitedCate(iv) {
+             var o = { "icode": iv }
+             var url = preurl + "/GetSizeLimitedCate"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.ltreegrid.setUIValue(b);
+             }
+             else {
+                 linb.message("未设置条件类别");
+                 ns.ltreegrid.setUIValue("")
+             }
+         }
+     </script>
+</body>
+</html>

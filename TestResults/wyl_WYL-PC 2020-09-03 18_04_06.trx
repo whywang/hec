@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="d40238b9-2baf-485c-b4ae-76f5e2e304c5" name="wyl@WYL-PC 2020-09-03 18:04:06" runUser="wyl-PC\wyl" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="本地" id="4b0522a0-5fb1-430d-be0a-c245420a1f16">
+    <Description>这些设置为本地测试运行的默认测试设置。</Description>
+    <Deployment enabled="false" runDeploymentRoot="wyl_WYL-PC 2020-09-03 18_04_06">
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvModel\bin\Debug\LionvModel.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvFactoryDal\bin\Debug\LionvFactoryDal.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvIDal\bin\Debug\LionvIDal.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvCommonBll\bin\Debug\LionvCommonBll.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvCommonBll\bin\Debug\ThoughtWorks.QRCode.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\ViewModel\bin\Debug\ViewModel.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvBll\bin\Debug\LionvBll.dll" />
+      <DeploymentItem filename="D:\企业系统\美科多new\LionVERP\bin\Microsoft.AspNet.SignalR.Core.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvMgModel\bin\Debug\LionvMgModel.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvCommon\bin\Debug\LionvCommon.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2020-09-03T18:04:06.2168938+08:00" queuing="2020-09-03T18:04:07.8179854+08:00" start="2020-09-03T18:04:07.8939898+08:00" finish="2020-09-03T18:04:08.6050304+08:00" />
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="CreateNewOrdersTest" storage="d:\企业系统\霍尔茨售后\testproject3\bin\debug\testproject3.dll" id="127cdcdb-9903-1292-af38-fe2f731a7ba6">
+      <Execution id="dfc589be-dc0a-40cb-a425-31cfb760e8a5" />
+      <TestMethod codeBase="D:/企业系统/霍尔茨售后/TestProject3/bin/Debug/TestProject3.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject3.BusiCreateNewOrderFlowTest, TestProject3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="CreateNewOrdersTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="127cdcdb-9903-1292-af38-fe2f731a7ba6" executionId="dfc589be-dc0a-40cb-a425-31cfb760e8a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="dfc589be-dc0a-40cb-a425-31cfb760e8a5" testId="127cdcdb-9903-1292-af38-fe2f731a7ba6" testName="CreateNewOrdersTest" computerName="WYL-PC" duration="00:00:00.0478918" startTime="2020-09-03T18:04:07.8879894+08:00" endTime="2020-09-03T18:04:08.4350207+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfc589be-dc0a-40cb-a425-31cfb760e8a5">
+      <Output>
+        <ErrorInfo>
+          <Message>测试方法 TestProject3.BusiCreateNewOrderFlowTest.CreateNewOrdersTest 引发了异常: 
+System.TypeInitializationException: “LionvFactoryDal.DataAccess”的类型初始值设定项引发异常。 ---&gt; System.NullReferenceException: 未将对象引用设置到对象的实例。</Message>
+          <StackTrace>    在 LionvCommon.Cache..ctor() 位置 D:\企业系统\霍尔茨售后\LionvCommon\Cache.cs:行号 12
+   在 LionvFactoryDal.DataAccess..cctor() 位置 D:\企业系统\霍尔茨售后\LionvFactoryDal\DataAccess.cs:行号 16
+ --- 内部异常堆栈跟踪的末尾 ---
+    在 LionvFactoryDal.DataAccess.CreateSys_SubWorkFlow()
+   在 LionvBll.SysInfo.Sys_SubWorkFlowBll..ctor() 位置 D:\企业系统\霍尔茨售后\LionvBll\SysInfo\Sys_SubWorkFlowBll.cs:行号 13
+   在 LionvCommonBll.BusiCreateNewOrderFlow..ctor() 位置 D:\企业系统\霍尔茨售后\LionvCommonBll\BusiCreateNewOrderFlow.cs:行号 17
+   在 TestProject3.BusiCreateNewOrderFlowTest.CreateNewOrdersTest() 位置 D:\企业系统\霍尔茨售后\TestProject3\BusiCreateNewOrderFlowTest.cs:行号 73
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>

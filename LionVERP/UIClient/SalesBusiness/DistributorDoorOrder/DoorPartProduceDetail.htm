@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>加工明细</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+   .customtable{}
+   .customtable table{ border-collapse:collapse ; border:1px solid #68957f}
+   .customtable td{  border:1px solid #68957f; font-size:14px}
+   </style>
+</head>
+<body>
+    <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js?V=201927" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IWorkLine.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/IImg.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LodopFuncs.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/IExport.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LvPrint.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/SysMenuCode.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+                .setOverflow("auto")
+            );
+
+                    host.pa.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "保存" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(50)
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='color:#666666;font-weight:bolder;font-size:20px'>加工明细</span>")
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(110)
+                .setTop(25)
+                .setCaption("<span style='color:#666666;font-size:12px'>Product Detail</span>")
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdetail")
+                .setDock("top")
+                .setHeight("auto")
+                .setCustomClass({ "KEY": "customtable" })
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", pgcode = "0003", pbgcode = "0006", emcode = "", embcode = "", bcode = "";
+                    secobj = SysEmCode;
+                    emcode = secobj.IQueryCode(pgcode);
+                    embcode = secobj.IQueryCode(pbgcode);
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"];
+                        LoadProductionHtml()
+                    }
+                    SinglePageBar(embcode, sid, ns.toolbar)
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    BtnDo("", emcode, item);
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function LoadProductionHtml() {
+            var o = { "sid": sid, "emcode": emcode ,"ttype":"gd"}
+            var url ="../../../UIServer/CommonFile/CommonTempProduction.aspx/ProductionProduceDetail"
+            var b = AjaxExb(url, o);
+            if (b) {
+                ns.pdetail.setHtml(b)
+            }
+            else {
+                return "";
+            }
+        } 
+</script>
+</body>
+</html>

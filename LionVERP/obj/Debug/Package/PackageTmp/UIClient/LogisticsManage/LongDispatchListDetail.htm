@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+  <link href="../../../Styles/Common/Common.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'>
+        <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+               
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Block)
+                .setHost(host, "bg_block")
+                .setDock("fill")
+            );
+
+                    host.bg_block.append(
+                (new linb.UI.Panel)
+                .setHost(host, "Ctps_Panel")
+                .setZIndex(1)
+                .setCaption("长途配送详情")
+                .setOverflow("auto")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                    host.Ctps_Panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "Ctps_ToolBar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "Re", "caption": "返回" }, { "id": "l1", "type": "split", "split": true }, { "id": "Y", "caption": "确认配送" }, { "id": "l2", "type": "split", "split": true}], "caption": "grp"}])
+                .onClick("_ctps_toolbar_onclick")
+            );
+
+                    host.Ctps_Panel.append(
+                (new linb.UI.Group)
+                .setHost(host, "order_Group")
+                .setDock("width")
+                .setTop(31)
+                .setHeight(280)
+                .setCaption("订单详情")
+                .setToggleBtn(false)
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "OrderNumber")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(10)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("201607010001")
+                .setLabelCaption("订单编号")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "Data")
+                .setReadonly(true)
+                .setLeft(290)
+                .setTop(110)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("2016-7-8")
+                .setLabelCaption("下单日期")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "OrderType")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(110)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("平台销售订单")
+                .setLabelCaption("订单类型")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "Platform")
+                .setReadonly(true)
+                .setLeft(560)
+                .setTop(60)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("平台A")
+                .setLabelCaption("平&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;台")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "Region")
+                .setReadonly(true)
+                .setLeft(290)
+                .setTop(60)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("A区")
+                .setLabelCaption("区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "City")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(60)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("北京")
+                .setLabelCaption("城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "CustomerPhone")
+                .setReadonly(true)
+                .setLeft(560)
+                .setTop(10)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("13645268968")
+                .setLabelCaption("客户电话")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "Customer")
+                .setReadonly(true)
+                .setLeft(290)
+                .setTop(10)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setValue("李四")
+                .setLabelCaption("客户姓名")
+            );
+
+                    host.order_Group.append(
+                (new linb.UI.Input)
+                .setHost(host, "Remarks")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(160)
+                .setWidth(740)
+                .setHeight(80)
+                .setLabelSize(60)
+                .setValue("此处是备注！")
+                .setLabelCaption("备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注")
+                .setMultiLines(true)
+            );
+
+                    host.Ctps_Panel.append(
+                (new linb.UI.Group)
+                .setHost(host, "psxx_group")
+                .setCustomClass({ "KEY": "customtable" })
+                .setDock("width")
+                .setTop(321)
+                .setHeight("auto")
+                .setCaption("配送信息")
+                .setToggleBtn(false)
+            );
+
+                    return children;
+                     
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    var ns = this;
+
+                    var tabstr = '<table id="PL" border="1"   style="width:100%" ><tr><td rowspan="2" align="center"><strong>序号</strong></td><td rowspan="2" align="center"><strong>位置</strong></td><td rowspan="2" align="center"><strong>产品名称</strong></td><td colspan="3" align="center"><strong>门/套尺寸</strong></td><td rowspan="2" align="center"><strong>数量</strong></td><td rowspan="2" align="center" ><strong>贴脸</strong></td><td rowspan="2" align="center" ><strong>开向</strong></td><td rowspan="2" align="center" ><strong>锁孔</strong></td><td rowspan="2" align="center"><strong>门扇型号</strong></td><td colspan="2" rowspan="2" align="center"><strong>组件名称</strong></td><td colspan="3" align="center" ><strong>组件尺寸</strong></td><td rowspan="2" align="center"><strong>数量</strong></td><td rowspan="2" align="center"><strong>材质</strong></td><td rowspan="2" align="center"><strong>贴金</strong></td><td rowspan="2" align="center"><strong>操作</strong></td></tr><tr><td align="center"><strong>高</strong></td><td align="center"><strong>宽</strong></td><td align="center"><strong>厚/深</strong></td><td align="center"><strong>高</strong></td><td align="center"><strong>宽</strong></td><td align="center"><strong>厚</strong></td></tr><tr><td rowspan="5" align="center">1</td><td rowspan="4" align="center">位置1</td><td rowspan="3" align="center">单开门套</td><td rowspan="3" align="center">2200</td><td rowspan="3" align="center">1200</td><td rowspan="3" align="center">300</td> <td rowspan="3" align="center">1</td><td rowspan="4" align="center">单贴脸</td><td rowspan="4" align="center">左手推开</td><td rowspan="4" align="center">标准锁具</td> <td rowspan="4" align="center">单开门扇</td> <td rowspan="2" align="center">套板</td><td align="center">码头</td><td align="center">222</td><td align="center">111</td> <td align="center">123</td><td align="center">1]</td><td align="center">魔法系列</td><td rowspan="5" align="center">贴金箔</td><td rowspan="5" align="center"></td></tr><tr><td align="center">立边</td> <td align="center">231</td><td align="center">223</td><td align="center">123</td><td align="center">1</td> <td align="center">[BL]</td></tr><tr><td rowspan="2" align="center">贴脸</td> <td align="center">上贴脸</td><td align="center">345</td><td align="center">123</td><td align="center">12</td><td align="center">1</td><td rowspan="2" align="center">魔法系列</td></tr><tr><td align="center">单开门扇</td><td align="center">2100</td><td align="center">900</td><td align="center">300</td><td align="center">1</td><td align="center">立贴脸</td><td align="center">202</td><td align="center">234</td><td align="center">123</td><td align="center">123</td></tr><tr><td align="center">备注</td><td colspan="16" align="left">无</td></tr></table>';
+
+                    ns.psxx_group.setHtml(tabstr)
+                },
+                _ctps_toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "Y") {
+                        window.location.href = 'LongDispatchList.htm';
+                    }
+                    if (item.id == "Re") {
+                        window.location.href = 'LongDispatchList.htm';
+                    }
+                }
+
+            },
+            Static: {
+                viewSize: { "width": 1024, "height": 768 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+       
+       
+        
+    
+    </script>
+</body>
+</html>

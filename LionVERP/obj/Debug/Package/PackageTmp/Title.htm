@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>联汇软件</title>
+    <link href="Styles/Default/Title.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="Scripts/Default/Title.js" type="text/javascript"></script>
+     <script src="Scripts/Api/ILogoImg.js" type="text/javascript"></script>
+    <script src="Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+</head>
+<body onload="GetUser();LogoImg('limg',2)">
+<div style="width:100%; border :none">
+<table style="width:100%; border :none;height:70px">
+<tr>
+<td width="190" ><img  id='limg' src="Image/System/logo2.png" alt="" class="logoimg" /> </td>
+<td width="30" valign="bottom"><img src="Image/System/treehide.png" alt="收起" id="treecontrol" onclick="ControlTree(this.id)"/> </td>
+<td width="800">&nbsp;</td>
+<td width="100"> <span style='color:#a38978'>当前日期</span><br/><label id='Rq' style='color:#a38978'></label></td>
+<td width="30"> <img src="Image/System/tx.gif" style="height:30px; padding-top:0px" alt=""/></td>
+<td width="130"><span style='color:#a38978'> 部门：</span><label id='udep' ></label><br/><span style='color:#a38978'>人员：</span> <label id='uname' style='color:#a38978'></label></td>
+<td width="50"> <a href="Main.htm"  target="Main"><img id="zy" src="Image/System/fz.gif" onclick="" alt="" style="width:25px;height:25px"/></a></td>
+<td width="50"> <a href="UIClient/BaseSet/EmploeeManage/SetPassWord.htm"  target="Main"><img id='sz' src="Image/System/sz.gif" alt="" style="width:25px;height:25px;margin-top:-5px"/></a></td>
+<td width="50"> <img id='sx' src="Image/System/sx.gif" alt="" style="width:22px;height:22px;margin-top:-5px" onclick="Reflash()"/></td>
+<td width="50"><a href="UIClient/Helper/Helpers.htm"  target="Main"> <img id='help' src="Image/System/help.png" onclick="" alt="" style="width:22px;height:22px;padding-top:3px"/></a></td>
+<td width="40"> <img id='gb' src="Image/System/gb.gif" onclick="OutSystem()" alt="" style="width:22px;height:22px;padding-top:3px"/></td>
+</tr>
+</table>
+
+<div>
+</body>
+</html>

@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>发货地址管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+     <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+     <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("发货地址管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Layout)
+                .setHost(host, "layout")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.layout.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "atreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "城市" }, { "id": "col2", "width": 200, "type": "input", "caption": "地址" }, { "id": "col1", "width": 120, "type": "input", "caption": "联系方式" }, { "id": "col3", "width": 80, "type": "input", "caption": "是否默认"}])
+                .setValue("")
+                .onRowSelected("_atreegrid_onrowselected")
+            , "main");
+
+                     host.layout.append(
+                (new linb.UI.Pane)
+                .setHost(host, "b1")
+                .setDock("top")
+                .setHeight(38)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.b1.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>城市列表</span>")
+            );
+
+                     host.layout.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .onItemSelected("_dtreebar_onitemselected")
+                .beforeExpend("_dtreebar_beforeexpend")
+            , "before");
+
+                     host.layout.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pal")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.layout.append(
+                (new linb.UI.Pane)
+                .setHost(host, "par")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "adlg")
+                .setLeft(120)
+                .setTop(80)
+                .setWidth(579)
+                .setHeight(446)
+                .setDisplay("none")
+                .setCaption("发货地址")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.adlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_astoolbar_onclick")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gperson")
+                .setDataBinder("binder")
+                .setDataField("gperson")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>收货人</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setDataBinder("binder")
+                .setDataField("dname")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(150)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>城市</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "address")
+                .setDataBinder("binder")
+                .setDataField("address")
+                .setLeft(60)
+                .setTop(250)
+                .setWidth(420)
+                .setHeight(90)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>地址</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.adlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "fsel")
+                .setDataBinder("binder")
+                .setDataField("fsel")
+                .setLeft(60)
+                .setTop(340)
+                .setWidth(405)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>首选</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aid")
+                .setDataBinder("binder")
+                .setDataField("aid")
+                .setLeft(40)
+                .setTop(70)
+                .setWidth(420)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "sacode")
+                .setDataBinder("binder")
+                .setDataField("sacode")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(200)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(150)
+                .setWidth(420)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "telephone")
+                .setDataBinder("binder")
+                .setDataField("telephone")
+                .setLeft(60)
+                .setTop(100)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>联系方式</span>")
+                .setLabelHAlign("left")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     IdepItemsByAtrr("cs", ns.dtreebar) 
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         var sv = ns.dtreebar.getUIValue();
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择城市");
+                             return
+                         }
+                         ns.adlg.setDisplay("block")
+                         InitSendAddr(sv, "")
+                     }
+                     if (item.id == "a3") {
+                         var av = ns.atreegrid.getUIValue();
+                         if (av == "" || av == null) {
+                             linb.message("请选择记录");
+                             return
+                         }
+                         ns.adlg.setDisplay("block")
+                         InitSendAddr('', av)
+                     }
+                     if (item.id == "a4") {
+                         var av = ns.atreegrid.getUIValue();
+                         if (av == "" || av == null) {
+                             linb.message("请选择记录");
+                             return
+                         }
+                         IDelFun("DelSendAddr('" + av + "')")
+                     }
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     QueryList(item.id)
+                     IdepCItems(item, ns.dtreebar)
+                     ns.dtreebar.setValue(item.id)
+                 },
+                 _astoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveSendAddr()
+                     }
+                     ns.adlg.setDisplay("none")
+                 },
+                 _atreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.atreegrid.setValue(row.id)
+                 },
+                 _dtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdepCItems(item, ns.dtreebar)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitSendAddr(sc,sa) {
+             var o = { 'dcode': sc, "sacode": sa }
+             var url = "../../../CityGetAddress/InitAddr"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function SaveSendAddr() {
+             var sv = ns.dtreebar.getUIValue();
+             var url = "../../../CityGetAddress/SaveAddr"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList('"+sv+"')", false)
+         }
+         function DelSendAddr(v) {
+             var sv = ns.dtreebar.getUIValue();
+             var o = { "sacode": v }
+             var url = "../../../CityGetAddress/DelAddr"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList('" + sv + "')", false)
+         }
+         function QueryList(dcode) {
+             var url = "../../../CityGetAddress/QueryList";
+             var o = { "dcode": dcode };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.atreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.atreegrid.setRows(arr)
+             }
+         }
+         function InitKj(r) {
+             ns.aid.setValue(r.id)
+             ns.dcode.setValue(r.dcode)
+             ns.dname.setValue(r.dname)
+             ns.telephone.setValue(r.telephone)
+             ns.sacode.setValue(r.sacode)
+             ns.fsel.setValue(r.isfrist == true ? 1 : 0)
+             ns.address.setValue(r.address)
+             ns.gperson.setValue(r.gperson)
+         }
+         function InitUnKj() {
+             ns.aid.setValue(0)
+             ns.dcode.setValue()
+             ns.dname.setValue()
+             ns.sacode.setValue()
+             ns.fsel.setValue(1)
+             ns.address.setValue()
+             ns.gperson.setValue()
+         }
+     </script>
+</body>
+</html>

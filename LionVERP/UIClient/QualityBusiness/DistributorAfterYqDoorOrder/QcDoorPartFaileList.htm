@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>验收不合格详情</title>
+    <link href="../../../Styles/Common/Common.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IWorkLine.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/INotify.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IPageMenu.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pbtn")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.pbtn.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+            );
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(50)
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:18px;color:#333333'>检验不合格记录</span> <span style='font-size:12px;color:#666666'>InHouse OrderList</span>")
+            );
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "tp")
+                .setLeft(680)
+                .setTop(30)
+                .setCaption("※点击订单查看明细")
+            );
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pm.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                 .onRowSelected("_treegrid_onrowselected")
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "验收编号" }, { "id": "col2", "width": 100, "type": "input", "caption": "操作员" }, { "id": "col3", "width": 160, "type": "input", "caption": "日期" }, { "id": "col4", "width": 200, "type": "input", "caption": "说明"}])
+            );
+
+                    host.pm.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pdlg")
+                .setLeft(30)
+                .setTop(80)
+                .setWidth(770)
+                .setHeight(480)
+                .setCaption("验收产品明细")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                    host.pdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col4", "width": 120, "type": "input", "caption": "序号" }, { "id": "col2", "width": 160, "type": "input", "caption": "名称" }, { "id": "col3", "width": 200, "type": "input", "caption": "尺寸" }, { "id": "col3", "width": 80, "type": "input", "caption": "数量"}])
+            );
+
+                    return children;
+
+                },
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", pcode = "0005", emcode = QueryEmcodeByPmcode(pcode), bcode = "";
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"]
+                        QueryList();
+                    }
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    bcode = item.bcode;
+                    if (item.btip == 1) {
+                        BtnDoTip(sid, emcode, item, false)
+                    }
+                    else {
+                        BtnDo(sid, emcode, item)
+                    }
+                },
+
+                _rtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        ProductionInHouse();
+                    }
+                    else {
+                        ns.rkdlg.setDisplay("none")
+                    }
+                },
+                _treegrid_onrowselected: function (profile, row, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    ShowYs(row.id)
+                }
+            },
+            Static: {
+                viewSize: { "width": 1024, "height": 768 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function QueryList() {
+            var url = '../../../UIServer/QualityBusiness/DistributorDoorOrder/QcDoorOrderDetail.aspx/QueryQualityList';
+            var o = { 'sid': sid, "qtype": -1 }
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.treegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                }
+                ns.treegrid.setRows(arr)
+            }
+        }
+        function ShowYs(id) {
+            ns.pdlg.setDisplay("block");
+            QueryShowYsList(id)
+        }
+        function QueryShowYsList(sid) {
+            var url = '../../../UIServer/QualityBusiness/DistributorDoorOrder/QcDoorOrderDetail.aspx/QueryQualityProductionList';
+            var o = { 'sid': sid }
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.ptreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                }
+                ns.ptreegrid.setRows(arr)
+            }
+        }
+    </script>
+</body>
+</html>

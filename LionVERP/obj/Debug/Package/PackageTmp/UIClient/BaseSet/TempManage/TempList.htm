@@ -1,0 +1,482 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>表格设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("显示模板管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a5", "caption": "传图", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "表单" }, { "id": "col2", "width": 120, "type": "input", "caption": "类型" }, { "id": "col3", "width": 300, "type": "input", "caption": "模板内容" }, { "id": "col4", "width": 120, "type": "input", "caption": "应用类型" }, { "id": "col4", "width": 120, "type": "input", "caption": "产品类型" }, { "id": "col4", "width": 120, "type": "input", "caption": "图片"}])
+                .setValue("")
+                .onRowSelected("_treegrid_onrowselected")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dlg")
+                .setLeft(47)
+                .setTop(105)
+                .setWidth(890)
+                .setHeight(618)
+                .setDisplay("none")
+                .setCaption("表格样式")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                     host.p1.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "查看" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2")
+                .setDock("top")
+                .setHeight(288)
+                .setCustomStyle({ "KEY": "border-bottom:5px solid #f2f2f2;" })
+            );
+
+                     host.p2.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "emenu")
+                .setDataBinder("binder")
+                .setDataField("emenu")
+                .setLeft(60)
+                .setTop(20)
+                .setWidth(180)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.p2.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ttype")
+                .setDataBinder("binder")
+                .setDataField("ttype")
+                .setLeft(270)
+                .setTop(20)
+                .setWidth(170)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("表格类型")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "h", "caption": "表头" }, { "id": "b", "caption": "表体" }, { "id": "f", "caption": "表尾"}])
+            );
+
+                     host.p2.append(
+                (new linb.UI.Input)
+                .setHost(host, "tbody")
+                .setDataBinder("binder")
+                .setDataField("tbody")
+                .setLeft(60)
+                .setTop(70)
+                .setWidth(780)
+                .setHeight(190)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("表格内容")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+                .onChange("_tbody_onchange")
+            );
+
+                     host.p2.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(480)
+                .setTop(30)
+                .setWidth(190)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("表格编码")
+                .setValue("0")
+            );
+
+                     host.p2.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "utype")
+                .setDataBinder("binder")
+                .setDataField("utype")
+                .setLeft(470)
+                .setTop(20)
+                .setWidth(170)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("应用类型")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "xq", "caption": "详情" }, { "id": "gd", "caption": "工单" }, { "id": "xs", "caption": "销售合同" }, { "id": "gh", "caption": "供货报价" }, { "id": "cg", "caption": "采购报价" }, { "id": "fh", "caption": "发货" }, { "id": "qt", "caption": "其他"}])
+            );
+
+                     host.p2.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ptype")
+                .setDataBinder("binder")
+                .setDataField("ptype")
+                .setLeft(670)
+                .setTop(20)
+                .setWidth(170)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("产品类型")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "mzp", "caption": "木制品" }, { "id": "wj", "caption": "五金" }, { "id": "qt", "caption": "其他"}])
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p3")
+                .setDock("top")
+                .setHeight(250)
+            );
+
+                     host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>订单显示模板</span>")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "udlg")
+                .setLeft(210)
+                .setTop(100)
+                .setWidth(540)
+                .setHeight(210)
+                .setDisplay("none")
+                .setCaption("上传订单Logo")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.udlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "utoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_utoolbar_onclick")
+            );
+
+                     host.udlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ttext")
+                .setLeft(100)
+                .setTop(50)
+                .setWidth(340)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("表单名")
+                .setLabelHAlign("left")
+            );
+                     host.udlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tid")
+                .setLeft(100)
+                .setTop(50)
+                .setWidth(340)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setDisplay("none")
+                .setValue(0)
+                .setLabelCaption("表单名")
+                .setLabelHAlign("left")
+            );
+
+                     host.udlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ubox")
+                .setLeft(100)
+                .setTop(130)
+                .setWidth(340)
+                .setHeight(30)
+                .setHtml("<input type='file' name='afile' id='afile'  accept='Image/*'  style='height:28px; width:340px'/>")
+            );
+
+                     host.udlg.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls2")
+                .setLeft(100)
+                .setTop(110)
+                .setCaption("选择图片")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     QueryList();
+                 },
+
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveTemp();
+                         ns.dlg.setDisplay("none");
+                     }
+                     if (item.id == "a3") {
+                         ShowTemp();
+                     }
+                     if (item.id == "a4") {
+                         ns.dlg.setDisplay("none");
+                     }
+
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.dlg.setDisplay("block");
+                         InitTemp("0")
+                         IeventmenuItems("1", "", "", "", ns.emenu)
+                     }
+                     if (item.id == "a3") {
+                         var v = ns.treegrid.getUIValue();
+                         IeventmenuItems("1", "", "", "", ns.emenu)
+                         if (v != "") {
+                             ns.dlg.setDisplay("block");
+                             InitTemp(v)
+                         }
+                         else {
+                             linb.message("请选择记录")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         var av = ns.treegrid.getUIValue();
+                         if (av == "" || av == null) {
+                             linb.message("请选择记录");
+                             return
+                         }
+                         linb.confirms("确定删除？","DelTemp('" + av + "')")
+                     }
+                     if (item.id == "a5") {
+                         var av = ns.treegrid.getUIValue();
+                         if (av == "" || av == null) {
+                             linb.message("请选择记录");
+                             return
+                         }
+                         ns.tid.setUIValue(av);
+                         ns.udlg.setDisplay("block");
+                     }
+                 },
+                 _treegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.treegrid.setValue(row.id)
+                 },
+                 _tbody_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     ShowTemp();
+                 },
+                 _utoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         var fname = ns.treegrid.getUIValue();
+                         var tid = ns.tid.getUIValue();
+                         if (fname == "" || fname == null) {
+                             linb.message("请选择记录")
+                             return;
+                         }
+                         var url = "../../../Templet/Imports?fname=" + fname + "&tid=" + tid;
+                         UpFile(null, "afile", url, "");
+                         ns.udlg.setDisplay("none");
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitTemp(id) {
+             var o = { "id": id }
+             var url = "../../../Templet/InitTemp"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitKj(r) {
+             ns.id.setValue(r.id)
+             ns.emenu.setValue(r.emcode)
+             ns.ttype.setValue(r.ttype)
+             ns.utype.setValue(r.utype)
+             ns.tbody.setValue(r.ttext)
+             ns.ptype.setValue(r.ptype)
+             if (r.ttype == "h") {
+                 ns.p3.setHtml(r.ttext + "</table>")
+             }
+             if (r.ttype == "b") {
+                 ns.p3.setHtml("<table width='100%' border='1' cellspacing='1' cellpadding='1'>" + r.ttext + "</table>")
+             }
+             if (r.ttype == "f") {
+                 ns.p3.setHtml("<table>" + r.ttext)
+             }
+         }
+
+         function SaveTemp() {
+             var url = "../../../Templet/SaveTemp"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList() ", false)
+         }
+         function DelTemp(tv) {
+             var o = { "id": tv }
+             var url = "../../../Templet/DelTemp"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList() ", false)
+         }
+         function QueryList() {
+             var url = "../../../Templet/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.treegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.treegrid.setRows(arr)
+             }
+         }
+         function ShowTemp() {
+             var ttype = ns.ttype.getUIValue();
+             var ttext = ns.tbody.getUIValue()
+             if (ttype == "") {
+                 linb.message("选择表格类型");
+                 return false;
+             }
+             if (ttext == "") {
+                 linb.message("输入表格内容");
+                 return false;
+             }
+             if (ttype == "h") {
+                 ns.p3.setHtml(ttext + "</table>")
+             }
+             if (ttype == "b") {
+                 ns.p3.setHtml("<table width='100%' border='1' cellspacing='1' cellpadding='1'>" + ttext + "</table>")
+             }
+             if (ttype == "f") {
+                 ns.p3.setHtml("<table>" + ttext)
+             }
+         }
+     </script>
+</body>
+</html>

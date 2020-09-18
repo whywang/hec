@@ -1,0 +1,2243 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>减尺管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setOverflow("auto")
+                .setCaption("编辑套减尺")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pcjp")
+                .setDock("top")
+                .setHeight(52)
+            );
+
+                     host.pcjp.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjcname")
+                .setDataBinder("binder")
+                .setDataField("tjcname")
+                .setLeft(30)
+                .setTop(20)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+
+                     host.pcjp.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjid")
+                .setDataBinder("binder")
+                .setDataField("tjid")
+                .setLeft(30)
+                .setTop(0)
+                .setWidth(250)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+                .setValue("0")
+            );
+
+                     host.pcjp.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjccode")
+                .setDataBinder("binder")
+                .setDataField("tjccode")
+                .setReadonly(true)
+                .setLeft(310)
+                .setTop(20)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("编码")
+            );
+
+                     host.pcjp.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "tjcazfs")
+                .setDataBinder("binder")
+                .setDataField("tjcazfs")
+                .setLeft(630)
+                .setTop(20)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("安装方式")
+                .setType("listbox")
+                .setItems([{ "id": "90°", "caption": "90°" }, { "id": "45°", "caption": "45°"}])
+            );
+
+                     host.pcjp.append(
+                (new linb.UI.Label)
+                .setHost(host, "ls1")
+                .setLeft(880)
+                .setTop(20)
+                .setWidth(340)
+                .setCaption("（尺寸参数F:总高1; B:总高2;H:洞高; W:洞口;D:洞厚）")
+                .setFontSize("14px")
+                .setCustomStyle({ "KEY": "color:red" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg1")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gtb")
+                .setDock("top")
+                .setHeight(260)
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtk")
+                .setDataBinder("binder")
+                .setDataField("mtk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbge")
+                .setDataBinder("binder")
+                .setDataField("lbge")
+                .setLeft(90)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("立挺二 高")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mth")
+                .setDataBinder("binder")
+                .setDataField("mth")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtsl")
+                .setDataBinder("binder")
+                .setDataField("mtsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbg")
+                .setDataBinder("binder")
+                .setDataField("lbg")
+                .setLeft(90)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("立挺&nbsp;&nbsp;&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbk")
+                .setDataBinder("binder")
+                .setDataField("lbk")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbh")
+                .setDataBinder("binder")
+                .setDataField("lbh")
+                .setLeft(510)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbsl")
+                .setDataBinder("binder")
+                .setDataField("lbsl")
+                .setLeft(720)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtge")
+                .setDataBinder("binder")
+                .setDataField("mtge")
+                .setLeft(90)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("横挺二 高")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtke")
+                .setDataBinder("binder")
+                .setDataField("mtke")
+                .setLeft(300)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mthe")
+                .setDataBinder("binder")
+                .setDataField("mthe")
+                .setLeft(510)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtsle")
+                .setDataBinder("binder")
+                .setDataField("mtsle")
+                .setLeft(720)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtg")
+                .setDataBinder("binder")
+                .setDataField("mtg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("横挺&nbsp;&nbsp;&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbke")
+                .setDataBinder("binder")
+                .setDataField("lbke")
+                .setLeft(300)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbhe")
+                .setDataBinder("binder")
+                .setDataField("lbhe")
+                .setLeft(510)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbsle")
+                .setDataBinder("binder")
+                .setDataField("lbsle")
+                .setLeft(720)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtgs")
+                .setDataBinder("binder")
+                .setDataField("mtgs")
+                .setLeft(90)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("横挺三 高")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbgs")
+                .setDataBinder("binder")
+                .setDataField("lbgs")
+                .setLeft(90)
+                .setTop(220)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("立挺三 高")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtks")
+                .setDataBinder("binder")
+                .setDataField("mtks")
+                .setLeft(300)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbks")
+                .setDataBinder("binder")
+                .setDataField("lbks")
+                .setLeft(300)
+                .setTop(220)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mths")
+                .setDataBinder("binder")
+                .setDataField("mths")
+                .setLeft(510)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbhs")
+                .setDataBinder("binder")
+                .setDataField("lbhs")
+                .setLeft(510)
+                .setTop(220)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtsls")
+                .setDataBinder("binder")
+                .setDataField("mtsls")
+                .setLeft(720)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbsls")
+                .setDataBinder("binder")
+                .setDataField("lbsls")
+                .setLeft(720)
+                .setTop(220)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtb.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>套板</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg2")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "glx")
+                .setDock("top")
+                .setHeight(179)
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stleg")
+                .setDataBinder("binder")
+                .setDataField("stleg")
+                .setLeft(90)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("上贴脸2高")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stlg")
+                .setDataBinder("binder")
+                .setDataField("stlg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("上贴脸高")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stlh")
+                .setDataBinder("binder")
+                .setDataField("stlh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stlsl")
+                .setDataBinder("binder")
+                .setDataField("stlsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltlg")
+                .setDataBinder("binder")
+                .setDataField("ltlg")
+                .setLeft(90)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("立贴脸高")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltlk")
+                .setDataBinder("binder")
+                .setDataField("ltlk")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltlh")
+                .setDataBinder("binder")
+                .setDataField("ltlh")
+                .setLeft(510)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltlsl")
+                .setDataBinder("binder")
+                .setDataField("ltlsl")
+                .setLeft(720)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stlk")
+                .setDataBinder("binder")
+                .setDataField("stlk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltleg")
+                .setDataBinder("binder")
+                .setDataField("ltleg")
+                .setLeft(90)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("立贴脸2高")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stlek")
+                .setDataBinder("binder")
+                .setDataField("stlek")
+                .setLeft(300)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltlek")
+                .setDataBinder("binder")
+                .setDataField("ltlek")
+                .setLeft(300)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stleh")
+                .setDataBinder("binder")
+                .setDataField("stleh")
+                .setLeft(510)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltleh")
+                .setDataBinder("binder")
+                .setDataField("ltleh")
+                .setLeft(510)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "stlesl")
+                .setDataBinder("binder")
+                .setDataField("stlesl")
+                .setLeft(720)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.Input)
+                .setHost(host, "ltlesl")
+                .setDataBinder("binder")
+                .setDataField("ltlesl")
+                .setLeft(720)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.glx.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s2")
+                .setLeft(940)
+                .setTop(50)
+                .setCaption("(贴脸2高度度为公式如F-D)")
+                .setCustomStyle({ "KEY": "color:red" })
+            );
+
+                     host.glx.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>套线</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg3")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gmd")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                     host.gmd.append(
+                (new linb.UI.Input)
+                .setHost(host, "mdg")
+                .setDataBinder("binder")
+                .setDataField("mdg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高")
+                .setValue("0")
+            );
+
+                     host.gmd.append(
+                (new linb.UI.Input)
+                .setHost(host, "mdk")
+                .setDataBinder("binder")
+                .setDataField("mdk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gmd.append(
+                (new linb.UI.Input)
+                .setHost(host, "mdh")
+                .setDataBinder("binder")
+                .setDataField("mdh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gmd.append(
+                (new linb.UI.Input)
+                .setHost(host, "mdsl")
+                .setDataBinder("binder")
+                .setDataField("mdsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gmd.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>门墩</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg4")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gmdx")
+                .setDock("top")
+                .setHeight(100)
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "hmdxg")
+                .setDataBinder("binder")
+                .setDataField("hmdxg")
+                .setLeft(70)
+                .setTop(20)
+                .setWidth(230)
+                .setHeight(25)
+                .setLabelSize(80)
+                .setLabelCaption("横门档线&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "hmdxk")
+                .setDataBinder("binder")
+                .setDataField("hmdxk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "hmdxh")
+                .setDataBinder("binder")
+                .setDataField("hmdxh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "hmdxsl")
+                .setDataBinder("binder")
+                .setDataField("hmdxsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmdxg")
+                .setDataBinder("binder")
+                .setDataField("lmdxg")
+                .setLeft(70)
+                .setTop(60)
+                .setWidth(230)
+                .setHeight(25)
+                .setLabelSize(80)
+                .setLabelCaption("竖门档线&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmdxk")
+                .setDataBinder("binder")
+                .setDataField("lmdxk")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmdxh")
+                .setDataBinder("binder")
+                .setDataField("lmdxh")
+                .setLeft(510)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmdxsl")
+                .setDataBinder("binder")
+                .setDataField("lmdxsl")
+                .setLeft(720)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gmdx.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl5")
+                .setLeft(30)
+                .setTop(30)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>门档线</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg5")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gtlh")
+                .setDock("top")
+                .setHeight(220)
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhdh")
+                .setDataBinder("binder")
+                .setDataField("tlhdh")
+                .setLeft(510)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhyg")
+                .setDataBinder("binder")
+                .setDataField("tlhyg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhyh")
+                .setDataBinder("binder")
+                .setDataField("tlhyh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhysl")
+                .setDataBinder("binder")
+                .setDataField("tlhysl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlheg")
+                .setDataBinder("binder")
+                .setDataField("tlheg")
+                .setLeft(90)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("前挡板高")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhek")
+                .setDataBinder("binder")
+                .setDataField("tlhek")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlheh")
+                .setDataBinder("binder")
+                .setDataField("tlheh")
+                .setLeft(510)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhesl")
+                .setDataBinder("binder")
+                .setDataField("tlhesl")
+                .setLeft(720)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhdg")
+                .setDataBinder("binder")
+                .setDataField("tlhdg")
+                .setLeft(90)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("吊板    高")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhdk")
+                .setDataBinder("binder")
+                .setDataField("tlhdk")
+                .setLeft(300)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhyk")
+                .setDataBinder("binder")
+                .setDataField("tlhyk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhdsl")
+                .setDataBinder("binder")
+                .setDataField("tlhdsl")
+                .setLeft(720)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhcg")
+                .setDataBinder("binder")
+                .setDataField("tlhcg")
+                .setLeft(90)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("侧堵板高")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhgg")
+                .setDataBinder("binder")
+                .setDataField("tlhgg")
+                .setLeft(90)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("固定料")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhck")
+                .setDataBinder("binder")
+                .setDataField("tlhck")
+                .setLeft(300)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhgk")
+                .setDataBinder("binder")
+                .setDataField("tlhgk")
+                .setLeft(300)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhch")
+                .setDataBinder("binder")
+                .setDataField("tlhch")
+                .setLeft(510)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhgh")
+                .setDataBinder("binder")
+                .setDataField("tlhgh")
+                .setLeft(510)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhcsl")
+                .setDataBinder("binder")
+                .setDataField("tlhcsl")
+                .setLeft(720)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.Input)
+                .setHost(host, "tlhgsl")
+                .setDataBinder("binder")
+                .setDataField("tlhgsl")
+                .setLeft(720)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s")
+                .setLeft(930)
+                .setTop(30)
+                .setWidth(166)
+                .setHeight(12)
+                .setCaption("(推拉盒宽度为公式如W*2)")
+                .setCustomStyle({ "KEY": "color:red" })
+            );
+
+                     host.gtlh.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl6")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>推拉盒</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg6")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gdmx")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                     host.gdmx.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmxg")
+                .setDataBinder("binder")
+                .setDataField("dmxg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高")
+                .setValue("0")
+            );
+
+                     host.gdmx.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmxk")
+                .setDataBinder("binder")
+                .setDataField("dmxk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gdmx.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmxh")
+                .setDataBinder("binder")
+                .setDataField("dmxh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gdmx.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmxsl")
+                .setDataBinder("binder")
+                .setDataField("dmxsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gdmx.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl7")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>顶帽线</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg7")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_group10")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                     host.ctl_group10.append(
+                (new linb.UI.Input)
+                .setHost(host, "mentg")
+                .setDataBinder("binder")
+                .setDataField("mentg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高")
+                .setValue("0")
+            );
+
+                     host.ctl_group10.append(
+                (new linb.UI.Input)
+                .setHost(host, "mentk")
+                .setDataBinder("binder")
+                .setDataField("mentk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.ctl_group10.append(
+                (new linb.UI.Input)
+                .setHost(host, "menth")
+                .setDataBinder("binder")
+                .setDataField("menth")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.ctl_group10.append(
+                (new linb.UI.Input)
+                .setHost(host, "mentsl")
+                .setDataBinder("binder")
+                .setDataField("mentsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.ctl_group10.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl8")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>门头</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg7")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gsl")
+                .setDock("top")
+                .setHeight(220)
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slslg")
+                .setDataBinder("binder")
+                .setDataField("slslg")
+                .setLeft(90)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("竖梁&nbsp;&nbsp;&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slslh")
+                .setDataBinder("binder")
+                .setDataField("slslh")
+                .setLeft(510)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slblh")
+                .setDataBinder("binder")
+                .setDataField("slblh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slblgsl")
+                .setDataBinder("binder")
+                .setDataField("slblgsl")
+                .setLeft(720)
+                .setTop(20)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slhlg")
+                .setDataBinder("binder")
+                .setDataField("slhlg")
+                .setLeft(90)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("横梁&nbsp;&nbsp;&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slhlk")
+                .setDataBinder("binder")
+                .setDataField("slhlk")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slhlh")
+                .setDataBinder("binder")
+                .setDataField("slhlh")
+                .setLeft(510)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slhlsl")
+                .setDataBinder("binder")
+                .setDataField("slhlsl")
+                .setLeft(720)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slblg")
+                .setDataBinder("binder")
+                .setDataField("slblg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("玻璃&nbsp;&nbsp;&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slslk")
+                .setDataBinder("binder")
+                .setDataField("slslk")
+                .setLeft(300)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slblk")
+                .setDataBinder("binder")
+                .setDataField("slblk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slslsl")
+                .setDataBinder("binder")
+                .setDataField("slslsl")
+                .setLeft(720)
+                .setTop(100)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "slblsl")
+                .setDataBinder("binder")
+                .setDataField("slblsl")
+                .setLeft(870)
+                .setTop(20)
+                .setWidth(60)
+                .setHeight(25)
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blytg")
+                .setDataBinder("binder")
+                .setDataField("blytg")
+                .setLeft(70)
+                .setTop(140)
+                .setWidth(230)
+                .setHeight(25)
+                .setLabelSize(80)
+                .setLabelCaption("压条     高")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blytk")
+                .setDataBinder("binder")
+                .setDataField("blytk")
+                .setLeft(300)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blyth")
+                .setDataBinder("binder")
+                .setDataField("blyth")
+                .setLeft(510)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blytsl")
+                .setDataBinder("binder")
+                .setDataField("blytsl")
+                .setLeft(720)
+                .setTop(140)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blytke")
+                .setDataBinder("binder")
+                .setDataField("blytke")
+                .setLeft(300)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blythe")
+                .setDataBinder("binder")
+                .setDataField("blythe")
+                .setLeft(510)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blytsle")
+                .setDataBinder("binder")
+                .setDataField("blytsle")
+                .setLeft(720)
+                .setTop(180)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.Input)
+                .setHost(host, "blytge")
+                .setDataBinder("binder")
+                .setDataField("blytge")
+                .setLeft(70)
+                .setTop(180)
+                .setWidth(230)
+                .setHeight(25)
+                .setLabelSize(80)
+                .setLabelCaption("压条2 高")
+                .setValue("0")
+            );
+
+                     host.gsl.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl9")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>上亮</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg8")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gmtb")
+                .setDock("top")
+                .setHeight(100)
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbg")
+                .setDataBinder("binder")
+                .setDataField("mtbg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("门头1&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbh")
+                .setDataBinder("binder")
+                .setDataField("mtbh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbsl")
+                .setDataBinder("binder")
+                .setDataField("mtbsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbk")
+                .setDataBinder("binder")
+                .setDataField("mtbk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbeg")
+                .setDataBinder("binder")
+                .setDataField("mtbeg")
+                .setLeft(90)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("门头2&nbsp;&nbsp;高")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbek")
+                .setDataBinder("binder")
+                .setDataField("mtbek")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbeh")
+                .setDataBinder("binder")
+                .setDataField("mtbeh")
+                .setLeft(510)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.Input)
+                .setHost(host, "mtbesl")
+                .setDataBinder("binder")
+                .setDataField("mtbesl")
+                .setLeft(720)
+                .setTop(60)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gmtb.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl10")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>门头板</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg9")
+                .setDock("top")
+                .setHeight(10)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "gskx")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                     host.gskx.append(
+                (new linb.UI.Input)
+                .setHost(host, "skxg")
+                .setDataBinder("binder")
+                .setDataField("skxg")
+                .setLeft(90)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高")
+                .setValue("0")
+            );
+
+                     host.gskx.append(
+                (new linb.UI.Input)
+                .setHost(host, "skxk")
+                .setDataBinder("binder")
+                .setDataField("skxk")
+                .setLeft(300)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽")
+                .setValue("0")
+            );
+
+                     host.gskx.append(
+                (new linb.UI.Input)
+                .setHost(host, "skxh")
+                .setDataBinder("binder")
+                .setDataField("skxh")
+                .setLeft(510)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("厚")
+                .setValue("0")
+            );
+
+                     host.gskx.append(
+                (new linb.UI.Input)
+                .setHost(host, "skxsl")
+                .setDataBinder("binder")
+                .setDataField("skxsl")
+                .setLeft(720)
+                .setTop(20)
+                .setWidth(210)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+                .setValue("0")
+            );
+
+                     host.gskx.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl11")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>收口线</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg10")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/SizeTransformManage/JianChis.aspx";
+                     var Request = new Object();
+                     Request = GetRequest();
+                     if (Request["Sid"] != null) {
+                         sid = Request["Sid"];
+                         InitJc(sid)
+                     }
+                     else {
+                         InitJc("")
+                     }
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveJc();
+                     }
+                     if (item.id == "a3") {
+                         window.location.href = 'JianChis.htm'
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitJc(v) {
+             var o = { "jcode": v }
+             var url = preurl + "/InitJc"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.tjcname.setValue(r.jname)
+             ns.tjccode.setValue(r.jcode)
+             ns.tjcazfs.setValue("90°")
+             ns.mtg.setValue(r.mtg)
+             ns.mtk.setValue(r.mtk)
+             ns.mth.setValue(r.mth)
+             ns.mtsl.setValue(r.mtsl)
+             ns.mtge.setValue(r.mtge)
+             ns.mtke.setValue(r.mtke)
+             ns.mthe.setValue(r.mthe)
+             ns.mtsle.setValue(r.mtsle)
+             ns.mtgs.setValue(r.mtsg)
+             ns.mtks.setValue(r.mtsk)
+             ns.mths.setValue(r.mtsh)
+             ns.mtsls.setValue(r.mtssl)
+             ns.lbg.setValue(r.lbg)
+             ns.lbk.setValue(r.lbk)
+             ns.lbh.setValue(r.lbh)
+             ns.lbsl.setValue(r.lbsl)
+             ns.lbge.setValue(r.lbge)
+             ns.lbke.setValue(r.lbke)
+             ns.lbhe.setValue(r.lbhe)
+             ns.lbsle.setValue(r.lbsle)
+             ns.lbgs.setValue(r.lbsg)
+             ns.lbks.setValue(r.lbsk)
+             ns.lbhs.setValue(r.lbsh)
+             ns.lbsls.setValue(r.lbssl)
+             ns.stlg.setValue(r.stlg)
+             ns.stlk.setValue(r.stlk)
+             ns.stlh.setValue(r.stlh)
+             ns.stlsl.setValue(r.stlsl)
+             ns.stleg.setValue(r.stleg)
+             ns.stlek.setValue(r.stlek)
+             ns.stleh.setValue(r.stleh)
+             ns.stlesl.setValue(r.stlesl)
+             ns.ltlg.setValue(r.ltlg)
+             ns.ltlk.setValue(r.ltlk)
+             ns.ltlh.setValue(r.ltlh)
+             ns.ltlsl.setValue(r.ltlsl)
+             ns.ltleg.setValue(r.ltleg)
+             ns.ltlek.setValue(r.ltlek)
+             ns.ltleh.setValue(r.ltleh)
+             ns.ltlesl.setValue(r.ltlesl)
+             ns.tlhyg.setValue(r.tlhg)
+             ns.tlhyk.setValue(r.tlhk)
+             ns.tlhyh.setValue(r.tlhh)
+             ns.tlhysl.setValue(r.tlhsl)
+             ns.tlheg.setValue(r.tlh2g)
+             ns.tlhek.setValue(r.tlh2k)
+             ns.tlheh.setValue(r.tlh2h)
+             ns.tlhesl.setValue(r.tlh2sl)
+             ns.tlhdg.setValue(r.tlhdg)
+             ns.tlhdk.setValue(r.tlhdk)
+             ns.tlhdh.setValue(r.tlhdh)
+             ns.tlhdsl.setValue(r.tlhdsl)
+             ns.tlhcg.setValue(r.tlhcg)
+             ns.tlhck.setValue(r.tlhck)
+             ns.tlhch.setValue(r.tlhch)
+             ns.tlhcsl.setValue(r.tlhcsl)
+             ns.tlhgg.setValue(r.tlhgg)
+             ns.tlhgk.setValue(r.tlhgk)
+             ns.tlhgh.setValue(r.tlhgh)
+             ns.tlhgsl.setValue(r.tlhgsl)
+             ns.mdg.setValue(r.dzg)
+             ns.mdk.setValue(r.dzk)
+             ns.mdh.setValue(r.dzh)
+             ns.mdsl.setValue(r.dzsl)
+             ns.dmxg.setValue(r.dmxg)
+             ns.dmxk.setValue(r.dmxk)
+             ns.dmxh.setValue(r.dmxh)
+             ns.dmxsl.setValue(r.dmxsl)
+             ns.mentg.setValue(r.mentg)
+             ns.mentk.setValue(r.mentk)
+             ns.menth.setValue(r.menth)
+             ns.mentsl.setValue(r.mentsl)
+             ns.slblg.setValue(r.slg)
+             ns.slblk.setValue(r.slk)
+             ns.slblh.setValue(r.slh)
+             ns.slblsl.setValue(r.slsl)
+             ns.slblgsl.setValue(r.sljs)
+             ns.slhlg.setValue(r.slhlg)
+             ns.slhlk.setValue(r.slhlk)
+             ns.slhlh.setValue(r.slhlh)
+             ns.slhlsl.setValue(r.slhlsl)
+             ns.slslg.setValue(r.slslg)
+             ns.slslk.setValue(r.slslk)
+             ns.slslh.setValue(r.slslh)
+             ns.slslsl.setValue(r.slslsl)
+             ns.hmdxg.setValue(r.hmdxg)
+             ns.hmdxk.setValue(r.hmdxk)
+             ns.hmdxh.setValue(r.hmdxh)
+             ns.hmdxsl.setValue(r.hmdxsl)
+             ns.lmdxg.setValue(r.lmdxg)
+             ns.lmdxk.setValue(r.lmdxk)
+             ns.lmdxh.setValue(r.lmdxh)
+             ns.lmdxsl.setValue(r.lmdxsl)
+             ns.mtbg.setValue(r.mtbg)
+             ns.mtbk.setValue(r.mtbk)
+             ns.mtbh.setValue(r.mtbh)
+             ns.mtbsl.setValue(r.mtbsl)
+             ns.mtbeg.setValue(r.mtbeg)
+             ns.mtbek.setValue(r.mtbek)
+             ns.mtbeh.setValue(r.mtbeh)
+             ns.mtbesl.setValue(r.mtbesl)
+             ns.blytg.setValue(r.blytg)
+             ns.blytk.setValue(r.blytk)
+             ns.blyth.setValue(r.blyth)
+             ns.blytsl.setValue(r.blytsl)
+             ns.blytge.setValue(r.blyteg)
+             ns.blytke.setValue(r.blytek)
+             ns.blythe.setValue(r.blyteh)
+             ns.blytsle.setValue(r.blytesl)
+             ns.tjid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.tjid.setValue(0)
+             ns.tjcname.setValue(0)
+             ns.tjccode.setValue(0)
+             ns.tjcazfs.setValue("90°")
+             ns.mtg.setValue(0)
+             ns.mtk.setValue(0)
+             ns.mth.setValue(0)
+             ns.mtsl.setValue(0)
+             ns.mtgs.setValue(0)
+             ns.mtks.setValue(0)
+             ns.mths.setValue(0)
+             ns.mtsls.setValue(0)
+             ns.lbg.setValue(0)
+             ns.lbk.setValue(0)
+             ns.lbh.setValue(0)
+             ns.lbsl.setValue(0)
+             ns.lbgs.setValue(0)
+             ns.lbks.setValue(0)
+             ns.lbhs.setValue(0)
+             ns.lbsls.setValue(0)
+             ns.stlg.setValue(0)
+             ns.stlk.setValue(0)
+             ns.stlh.setValue(0)
+             ns.stlsl.setValue(0)
+             ns.ltlg.setValue(0)
+             ns.ltlk.setValue(0)
+             ns.ltlh.setValue(0)
+             ns.ltlsl.setValue(0)
+             ns.tlhyg.setValue(0)
+             ns.tlhyk.setValue(0)
+             ns.tlhyh.setValue(0)
+             ns.tlhysl.setValue(0)
+             ns.tlheg.setValue(0)
+             ns.tlhek.setValue(0)
+             ns.tlheh.setValue(0)
+             ns.tlhesl.setValue(0)
+             ns.tlhdg.setValue(0)
+             ns.tlhdk.setValue(0)
+             ns.tlhdh.setValue(0)
+             ns.tlhdsl.setValue(0)
+             ns.tlhcg.setValue(0)
+             ns.tlhck.setValue(0)
+             ns.tlhch.setValue(0)
+             ns.tlhcsl.setValue(0)
+             ns.tlhgg.setValue(0)
+             ns.tlhgk.setValue(0)
+             ns.tlhgh.setValue(0)
+             ns.tlhgsl.setValue(0)
+             ns.mdg.setValue(0)
+             ns.mdk.setValue(0)
+             ns.mdh.setValue(0)
+             ns.mdsl.setValue(0)
+             ns.dmxg.setValue(0)
+             ns.dmxk.setValue(0)
+             ns.dmxh.setValue(0)
+             ns.dmxsl.setValue(0)
+             ns.mentg.setValue(0)
+             ns.mentk.setValue(0)
+             ns.menth.setValue(0)
+             ns.mentsl.setValue(0)
+             ns.slblg.setValue(0)
+             ns.slblk.setValue(0)
+             ns.slblh.setValue(0)
+             ns.slblsl.setValue(0)
+             ns.slblgsl.setValue(0)
+             ns.slhlg.setValue(0)
+             ns.slhlk.setValue(0)
+             ns.slhlh.setValue(0)
+             ns.slhlsl.setValue(0)
+             ns.slslg.setValue(0)
+             ns.slslk.setValue(0)
+             ns.slslh.setValue(0)
+             ns.slslsl.setValue(0)
+             ns.mtbg.setValue(0)
+             ns.mtbk.setValue(0)
+             ns.mtbh.setValue(0)
+             ns.mtbsl.setValue(0)
+             ns.stleg.setValue(0)
+             ns.stlek.setValue(0)
+             ns.stleh.setValue(0)
+             ns.stlesl.setValue(0)
+             ns.mtbeg.setValue(0)
+             ns.mtbek.setValue(0)
+             ns.mtbeh.setValue(0)
+             ns.mtbesl.setValue(0)
+             ns.ltleg.setValue(0)
+             ns.ltlek.setValue(0)
+             ns.ltleh.setValue(0)
+             ns.ltlesl.setValue(0)
+             ns.blytg.setValue(0)
+             ns.blytk.setValue(0)
+             ns.blyth.setValue(0)
+             ns.blytsl.setValue(0)
+             ns.blytge.setValue(0)
+             ns.blytke.setValue(0)
+             ns.blythe.setValue(0)
+             ns.blytsle.setValue(0)
+         }
+         function SaveJc() {
+             var url = preurl + "/SaveTJc"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "GoBack()", false)
+         }
+ 
+     </script>
+</body>
+</html>

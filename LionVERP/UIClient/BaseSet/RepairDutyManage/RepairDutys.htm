@@ -1,0 +1,534 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>返修责任管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IDuty.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "lbbinder")
+                .setName("lbbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "zrbinder")
+                .setName("zrbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("售后责任管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "layout")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.layout.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_ltoolbar_onclick")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ltreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ltreebar_onitemselected")
+                .beforeExpend("_ltreebar_beforeexpend")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pzt")
+                .setDock("top")
+                .setHeight(41)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pzt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>责任类别</span>")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pzl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pzr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.layout.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "xtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_xtoolbar_onclick")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "xtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(30)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "类别名称" }, { "id": "col2", "width": 200, "type": "input", "caption": "责任名称"}])
+                .setValue("")
+                .onRowSelected("_xtreegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "lbdlg")
+                .setLeft(121)
+                .setTop(111)
+                .setWidth(550)
+                .setDisplay("none")
+                .setCaption("责任类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_lstoolbar_onclick")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lname")
+                .setDataBinder("lbbinder")
+                .setDataField("lname")
+                .setLeft(100)
+                .setTop(50)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("类别名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lid")
+                .setDataBinder("lbbinder")
+                .setDataField("lid")
+                .setLeft(50)
+                .setTop(60)
+                .setWidth(410)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("类别名称")
+                .setValue("0")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lcode")
+                .setDataBinder("lbbinder")
+                .setDataField("lcode")
+                .setReadonly(true)
+                .setLeft(100)
+                .setTop(100)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("类别编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lpname")
+                .setDataBinder("lbbinder")
+                .setDataField("lpname")
+                .setReadonly(true)
+                .setLeft(100)
+                .setTop(150)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("父级类别")
+                .setLabelHAlign("left")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lpcode")
+                .setDataBinder("lbbinder")
+                .setDataField("lpcode")
+                .setReadonly(true)
+                .setLeft(100)
+                .setTop(200)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("父级编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "zrdlg")
+                .setLeft(114)
+                .setTop(110)
+                .setWidth(550)
+                .setDisplay("none")
+                .setCaption("责任")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.zrdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "zrstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_zrstoolbar_onclick")
+            );
+
+                     host.zrdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zrcode")
+                .setDataBinder("zrbinder")
+                .setDataField("zrcode")
+                .setLeft(90)
+                .setTop(100)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("责任编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.zrdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zrlname")
+                .setDataBinder("zrbinder")
+                .setDataField("zrlname")
+                .setReadonly(true)
+                .setLeft(90)
+                .setTop(150)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("类别名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.zrdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zrlcode")
+                .setDataBinder("zrbinder")
+                .setDataField("zrlcode")
+                .setReadonly(true)
+                .setLeft(90)
+                .setTop(200)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("类别编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.zrdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zrid")
+                .setDataBinder("zrbinder")
+                .setDataField("zrid")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(220)
+                .setWidth(440)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("类别编码")
+                .setValue("0")
+            );
+
+                     host.zrdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zrname")
+                .setDataBinder("zrbinder")
+                .setDataField("zrname")
+                .setLeft(90)
+                .setTop(50)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("责任名称")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/RepairDutyManage/RepairDutys.aspx";
+                     IdutyItems("", ns.ltreebar)
+                 },
+
+
+                 _ltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.ltreebar.getUIValue();
+                     if (item.id == "a1") {
+                         ns.lbdlg.setDisplay("block")
+                         InitDutyClass(v, "")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.lbdlg.setDisplay("block")
+                             InitDutyClass("", v)
+                         }
+                         else {
+                             linb.warn("请选择责任类别")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("确定删除","DelDutyClass('" + v + "')")
+                         }
+                         else {
+                             linb.warn("请选择责任类别")
+                         }
+                     }
+                 },
+                 _ltreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdutyCItems(item, ns.ltreebar)
+                     ns.ltreebar.setValue(item.id)
+                     QueryDList(item.id)
+                 },
+                 _ltreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdutyCItems(item, ns.ltreebar)
+                 },
+                 _xtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var lv = ns.ltreebar.getUIValue();
+                     var v = ns.xtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (lv != null && lv != "") {
+                             ns.zrdlg.setDisplay("block")
+                             InitDuty(lv, "")
+                         }
+                         else {
+                             linb.warn("请选择责任类别")
+                         }
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.zrdlg.setDisplay("block")
+                             InitDuty("", v)
+                         }
+                         else {
+                             linb.warn("请选择责任")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("确定删除", "DelDuty('" + v + "')")
+                         }
+                         else {
+                             linb.message("请选择产品价格类别")
+                         }
+                     }
+                 },
+                 _xtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.xtreegrid.setValue(row.id)
+                 },
+                 _lstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveDutyClass()
+                     }
+                     if (item.id == "a3") {
+                         ns.lbdlg.setDisplay("none")
+                     }
+                 },
+                 _zrstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveDuty()
+                     }
+                     if (item.id == "a3") {
+                         ns.zrdlg.setDisplay("none")
+                     }
+                 }
+             }
+         });
+   
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitDutyClass(pv,dv) {
+             var o = { "rcpcode": pv ,"rccode":dv}
+             var url = preurl + "/InitDutyCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitKj(r) {
+            ns.lname.setValue(r.rcname)
+            ns.lcode.setValue(r.rccode)
+            ns.lpname.setValue(r.rcpname)
+            ns.lpcode.setValue(r.rcpcode)
+            ns.lid.setValue(r.id)
+         }
+         function DelDutyClass(v) {
+             var o = { "rccode": v }
+             var url = preurl + "/DelDutyCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, " ReLoadTree()", false)
+         }
+         function SaveDutyClass() {
+             var url = preurl + "/SaveDutyCate"
+             var db = linb.DataBinder.getFromName("lbbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoadTree()", false)
+         }
+         function InitDuty(pv,dv) {
+             var o = { "rccode": pv, "rcode": dv }
+             var url = preurl + "/InitDuty"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitZKj(r)
+             }
+         }
+         function InitZKj(r) {
+             ns.zrname.setValue(r.rdetail)
+             ns.zrcode.setValue(r.rcode)
+             ns.zrlname.setValue(r.rcname)
+             ns.zrlcode.setValue(r.rccode)
+             ns.zrid.setValue(r.id)
+         }
+         function DelDuty(v) {
+             var o = { "rcode": v }
+             var url = preurl + "/DelDuty"
+             var b = AjaxExb(url, o);
+             BackVad(b, " ReLoadGrid()", false)
+         }
+         function SaveDuty() {
+             var url = preurl + "/SaveDuty"
+             var db = linb.DataBinder.getFromName("zrbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoadGrid()", false)
+         }
+         function QueryDList(v) {
+             var url = preurl + "/QueryDutyList";
+             var o = {"rccode":v}
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.xtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2]}] })
+                 }
+                 ns.xtreegrid.setRows(arr)
+             }
+         }
+         function ReLoadTree() {
+             IdutyItems('', ns.ltreebar)
+             ns.lbdlg.setDisplay("none")
+         }
+         function ReLoadGrid() {
+             var rcode = ns.ltreebar.getUIValue();
+             QueryDList(rcode)
+             ns.zrdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>
+

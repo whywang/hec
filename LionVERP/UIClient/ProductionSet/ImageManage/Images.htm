@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品图片</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IimageList.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("图片管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 200, "type": "input", "caption": "正图片" }, { "id": "col2", "width": 200, "type": "input", "caption": "反图片"}])
+                .setValue("")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "imgtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_imgtoolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pdlg")
+                .setLeft(160)
+                .setTop(140)
+                .setWidth(550)
+                .setHeight(250)
+                .setDisplay("none")
+                .setCaption("产品图片")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pstoolbar_onclick")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "iname")
+                .setLeft(70)
+                .setTop(40)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>产品名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "icode")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(360)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Div)
+                .setHost(host, "ctl_div10")
+                .setLeft(70)
+                .setTop(170)
+                .setWidth(360)
+                .setHeight(30)
+                .setHtml("<input type='file' name='imagefile' accept='Image/*' id='imagefile' style='margin-left:0px;border:none; height:25px; width:360px; background:#ffffff'/>")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel1")
+                .setLeft(70)
+                .setTop(150)
+                .setCaption("<span style='font-size:14px;color:#666666'>产品图片</span>")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "imtype")
+                .setLeft(70)
+                .setTop(90)
+                .setWidth(345)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>方向</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "z", "caption": "正" }, { "id": "f", "caption": "反"}])
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/ImageManage/ImageFile.aspx";
+                     IinvItems("", ns.ptreebar)
+                     Iimglist(ns.ptreegrid)
+                 },
+
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     var nv = ns.ptreegrid.getUIValue();
+                     var svi = ns.ptreebar.getItemByItemId(pv);
+                     if (svi.sub) {
+                         linb.warn("选择产品末级类别");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         if (pv == "" || pv == null) {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.warn("选择图片");
+                             return
+                         }
+                         SetProductionImg(pv, nv)
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "" || pv == null) {
+                             linb.warn("选择产品类别或产品");
+                             return
+                         }
+                         linb.confirms("重置产品图片？", "ReSetProductionImg('" + pv + "')")
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreebar.setUIValue(item.id)
+                     IinvCItems(item, ns.ptreebar);
+                     if (!item.sub) {
+                         GetProductionImg(item.id, ns.ptreegrid);
+                     }
+                 },
+
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _pstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     UpImage();
+                 },
+                 _imgtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.ptreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.pdlg.setDisplay("block");
+                         InitImage("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != "") {
+                             ns.pdlg.setDisplay("block");
+                             InitImage(v)
+                         }
+                         else {
+                             linb.warn("请选择图片")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != "") {
+                             linb.confirms("重置产品图片？", "DelImage('" + v + "')")
+                         }
+                         else {
+                             linb.warn("请选择图片")
+                         }
+                     }
+                 },
+                 _pitreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     GetProductionImg(row.id);
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitImage(v) {
+             var o = { "icode": v }
+             var url = preurl + "/InitImage"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.iname.setValue(r.iname)
+             ns.icode.setValue(r.icode)
+         }
+         function InitUnKj() {
+             ns.iname.setValue()
+             ns.icode.setValue()
+         }
+         function DelImage(v) {
+             var o = { "icode": v }
+             var url = preurl + "/DelImage"
+             var b = AjaxExb(url, o);
+             BackVad(b, "ReLoad()", false)
+         }
+         function UpImage() {
+             var fname = ns.iname.getUIValue();
+             var fcode = ns.icode.getUIValue();
+             var fx = ns.imtype.getUIValue();
+             var url = "../../../UIServer/ProductionSet/ImageManage/Images.aspx?fx="+fx+"&iname=" + fname + "&icode=" + fcode
+             UpFile(ns.pdlg, "imagefile", url, innerupimage);
+         }
+         function innerupimage() {
+             Iimglist(ns.ptreegrid);
+             ns.pdlg.setDisplay("none")
+         }
+        
+         
+         function ReLoad() {
+             Iimglist(ns.ptreegrid);
+             ns.pdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>

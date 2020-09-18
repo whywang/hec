@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>新闻管理</title>
+    <link href="../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "ctl_panel3")
+                .setZIndex(1)
+                .setCaption("新闻管理")
+                 .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ntoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true}], "caption": "grp1"}])
+                .onClick("_ntoolbar_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ntreegrid")
+                .setSelMode("single")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "标题" },
+                { "id": "col2", "width": 120, "type": "input", "caption": "类型" },
+                { "id": "col2", "width": 120, "type": "input", "caption": "状态" },
+                { "id": "col2", "width": 120, "type": "input", "caption": "发布人" },
+                { "id": "col3", "width": 140, "type": "input", "caption": "发布日期" },
+                { "id": "col4", "width": 200, "type": "input", "caption": "操作"}])
+                .setValue("")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "pagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .onClick("_pagebar_onclick")
+            );
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../UIServer/NewsMessage/News.aspx";
+                     QueryList(1)
+                     pages = 1;
+                 },
+
+                 _ntoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         window.location.href = 'EditNews.htm'
+                     }
+                 },
+                 _pagebar_onclick: function (profile, page) {
+                     var ns = this, uictrl = profile.boxing();
+                     QueryList(page);
+                     pages = page;
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function QueryList(page) {
+             var url = preurl + "/QueryListAll";
+             var o = { "curpage": page, "pagesize": "15" };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.ntreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 2; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3]}, { "value": cel[4]}, { "value": cel[5]}, { "value": cel[6]}] })
+                 }
+                 ns.pagebar.setValue("1:1:" + r[1] + "")
+                 ns.ntreegrid.setRows(arr)
+             }
+         }
+         function DelNews(id) {
+             linb.confirms("确定删除新闻", "Del('"+id+"')")
+         }
+         function Del(id) {
+             var o = { "id": id }
+             var url = preurl + "/DelNews"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList("+pages+")", false)
+         }
+     </script>
+</body>
+</html>

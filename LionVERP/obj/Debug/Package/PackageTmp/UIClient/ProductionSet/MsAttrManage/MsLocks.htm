@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>门扇玻璃设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/INomalSize.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("门扇锁孔管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "锁孔类型"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sjsoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_sjsoolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "tly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1t")
+                .setDock("top")
+                .setHeight(60)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.p1t.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666'>门扇分类</span>")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2t")
+                .setDock("top")
+                .setHeight(60)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.p2t.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666'>锁孔类型</span>")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1l")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1r")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2l")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2r")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ijtreebar")
+                .onItemSelected("_ijtreebar_onitemselected")
+                .beforeExpend("_ijtreebar_beforeexpend")
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "编码"}])
+                .setValue("")
+            , "main");
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../MsAttr";
+                     IinvItems("00010001001", ns.ijtreebar);
+                     QuerySjTable(ns.jtreegrid) 
+                 },
+
+                 _ijtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ijtreebar);
+                     ns.ijtreebar.setValue(item.id);
+                     if (!item.sub) {
+                         GetMsLock(item.id);
+                     }
+                 },
+                 _ijtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ijtreebar);
+                 },
+                 _sjsoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var mv = ns.ijtreebar.getUIValue();
+                     if (mv == "" || mv == null) {
+                         linb.warn("请选择门扇产品");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var jsv = ns.jtreegrid.getUIValue();
+                         if (jsv == "" || jsv == null) {
+                             linb.warn("请选择金属条");
+                             return
+                         }
+                         SetMsLock(mv, jsv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("确定要重置条件类别？", "ReSetMsLock('" + mv + "')")
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetMsLock(mv, jsv) {
+             var o = { "mscode": mv, "lname": jsv }
+             var url = preurl + "/SetMsLock"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetMsLock(mv) {
+             var o = { "mscode": mv }
+             var url = preurl + "/ReSetMsLock"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetMsLock(mv) {
+             var o = { "mscode": mv }
+             var url = preurl + "/GetMsLock"
+             var b = AjaxExb(url, o);
+             if (b) {
+                // ns.jtreegrid.setUIValue(b);
+             }
+             else {
+                 linb.warn("未设置");
+               //  ns.jtreegrid.setUIValue("")
+             }
+         }
+         function QuerySjTable(kj) {
+             var url ="../../../LocksType/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 kj.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[1], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2]}] })
+                 }
+                 kj.setRows(arr)
+             }
+         }
+     </script>
+</body>
+</html>

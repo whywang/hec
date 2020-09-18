@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="ed631eb3-225c-4ff0-a2b3-ff7f7c50b3e1" name="wyl@WYL-PC 2020-08-03 23:43:21" runUser="wyl-PC\wyl" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="本地" id="4b0522a0-5fb1-430d-be0a-c245420a1f16">
+    <Description>这些设置为本地测试运行的默认测试设置。</Description>
+    <Deployment enabled="false" runDeploymentRoot="wyl_WYL-PC 2020-08-03 23_43_21">
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvIDal\bin\Debug\LionvIDal.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvCommon\bin\Debug\LionvCommon.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvSqlServerDal\bin\Debug\LionvSqlServerDal.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\ViewModel\bin\Debug\ViewModel.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvModel\bin\Debug\LionvModel.dll" />
+      <DeploymentItem filename="D:\企业系统\霍尔茨售后\LionvCommonDal\bin\Debug\LionvCommonDal.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2020-08-03T23:43:21.3772646+08:00" queuing="2020-08-03T23:43:21.4662697+08:00" start="2020-08-03T23:43:21.4932713+08:00" finish="2020-08-03T23:43:21.7202843+08:00" />
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="GetOrderNumTest" storage="d:\企业系统\霍尔茨售后\testproject2\bin\debug\testproject2.dll" id="1e3a4382-7b3d-7a4f-8282-9ae893b1c4bd">
+      <Execution id="cf9d97e4-b48f-4520-8d73-e6987b4cb5f7" />
+      <TestMethod codeBase="D:/企业系统/霍尔茨售后/TestProject2/bin/Debug/TestProject2.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject2.B_AfterReModifyOrderDalTest, TestProject2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="GetOrderNumTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="1e3a4382-7b3d-7a4f-8282-9ae893b1c4bd" executionId="cf9d97e4-b48f-4520-8d73-e6987b4cb5f7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="cf9d97e4-b48f-4520-8d73-e6987b4cb5f7" testId="1e3a4382-7b3d-7a4f-8282-9ae893b1c4bd" testName="GetOrderNumTest" computerName="WYL-PC" duration="00:00:00.0351404" startTime="2020-08-03T23:43:21.5012717+08:00" endTime="2020-08-03T23:43:21.7102837+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf9d97e4-b48f-4520-8d73-e6987b4cb5f7">
+      <Output>
+        <ErrorInfo>
+          <Message>测试方法 TestProject2.B_AfterReModifyOrderDalTest.GetOrderNumTest 引发了异常: 
+System.TypeInitializationException: “LionvCommon.SqlHelp”的类型初始值设定项引发异常。 ---&gt; System.NullReferenceException: 未将对象引用设置到对象的实例。</Message>
+          <StackTrace>    在 LionvCommon.SqlHelp..cctor() 位置 D:\企业系统\霍尔茨售后\LionvCommon\SqlHelp.cs:行号 17
+ --- 内部异常堆栈跟踪的末尾 ---
+    在 LionvSqlServerDal.BusiOrderInfo.B_AfterReModifyOrderDal.GetOrderNum() 位置 D:\企业系统\霍尔茨售后\LionvSqlServerDal\BusiOrderInfo\B_AfterReModifyOrderDal.cs:行号 473
+   在 TestProject2.B_AfterReModifyOrderDalTest.GetOrderNumTest() 位置 D:\企业系统\霍尔茨售后\TestProject2\B_AfterReModifyOrderDalTest.cs:行号 76
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>

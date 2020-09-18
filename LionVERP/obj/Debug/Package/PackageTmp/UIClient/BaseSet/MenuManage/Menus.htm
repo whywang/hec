@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>菜单管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IMenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IGroup.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block2")
+                .setDock("fill")
+            );
+
+                     host.ctl_block2.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "ty")
+                .setItems([{ "id": "a", "caption": "角色权限"}])
+                .setValue("a")
+                .onItemSelected("_ctl_tabs2_onitemselected")
+            );
+
+                     host.ty.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block5")
+                .setDock("fill")
+            , "b");
+
+                     host.ctl_block5.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout4")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout4.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block8")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block8.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "gtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_gtreebar_onitemselected")
+            );
+
+                     host.ctl_block8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_pane13")
+                .setDock("top")
+                .setHeight(30)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            );
+
+                     host.ctl_pane13.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel8")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("***权限组***")
+            );
+
+                     host.ctl_layout4.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block9")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block9.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mgtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_mgtreebar_onitemselected")
+                .beforeExpend("_mgtreebar_beforeexpend")
+            );
+
+                     host.ctl_block5.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "gtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_gtoolbar_onclick")
+            );
+
+                     host.ty.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("cover")
+            , "a");
+
+                     host.ctl_block4.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block6")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block6.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "rtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_rtreebar_onitemselected")
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(40)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>角色列表")
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setDockFloat(true)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block7")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block7.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mrtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_mrtreebar_onitemselected")
+                .beforeExpend("_mrtreebar_beforeexpend")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "rtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_rtoolbar_onclick")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/MenuManage/Menus.aspx";
+                     gpreurl = "../../../UIServer/BaseSet/GroupManage/Groups.aspx";
+
+                 },
+                 _rtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var rv = ns.rtreebar.getUIValue();
+                     var mv = ns.mrtreebar.getUIValue();
+                     if (item.id == "a1") {
+                         if (rv == "") {
+                             linb.warn("请选择角色")
+                             return
+                         }
+                         if (mv == "") {
+                             linb.warn("请选择菜单")
+                             return
+                         }
+                         SetRoleMenu(rv, mv);
+                     }
+                     if (item.id == "a3") {
+                         if (rv == "") {
+                             linb.warn("请选择角色")
+                             return
+                         }
+                         IDoFun("确定重置角色菜单？", "ReSetRoleMenu('" + rv + "')")
+                         ;
+                     }
+                 },
+                 _gtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var gv = ns.gtreebar.getUIValue();
+                     var mv = ns.mgtreebar.getUIValue();
+                     if (item.id == "a1") {
+                         if (gv == "") {
+                             linb.warn("请选择组")
+                             return
+                         }
+                         if (mv == "") {
+                             linb.warn("请选择菜单")
+                             return
+                         }
+                         SetGroupMenu(gv, mv);
+                     }
+                     if (item.id == "a3") {
+                         if (gv == "") {
+                             linb.warn("请选择组")
+                             return
+                         }
+                         IDoFun("确定重置组菜单？", "ReSetGroupMenu('" + gv + "')")
+                         ;
+                     }
+                 },
+                 _gtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.gtreebar.setValue(item.id)
+                     GetGroupMenu(item.id)
+                 },
+                 _rtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     GetRoleMenu(item.id)
+                 },
+                 _mrtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IMenuCItems(item, ns.mrtreebar)
+
+                 },
+                 _mrtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IMenuCItems(item, ns.mrtreebar)
+                 },
+                 _mgtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IMenuCItems(item, ns.mgtreebar)
+                 },
+                 _mgtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IMenuCItems(item, ns.mgtreebar)
+                 },
+                 _ctl_tabs2_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IroleItems(ns.rtreebar);
+                         IMenuItems("", ns.mrtreebar)
+                     }
+                     if (item.id == "b") {
+                         IGroupItems(ns.gtreebar)
+                         IMenuItems("", ns.mgtreebar)
+                     }
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetRoleMenu(rv, mv)
+         {
+             var o = { "rcode": rv ,"menulist":mv}
+             var url = preurl + "/SetRoleMenu"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetRoleMenu(rv) {
+             var o = { "rcode": rv}
+             var url = preurl + "/ReSetRoleMenu"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetRoleMenu(rv) {
+             var o = { "rcode": rv }
+             var url = preurl + "/GetRoleMenu"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+               linb.warn("未设置")
+             }
+             else {
+                 ns.mrtreebar.setValue(b)
+             }
+         }
+
+         function SetGroupMenu(rv, mv) {
+             var o = { "gcode": rv, "menulist": mv }
+             var url = gpreurl + "/SetGroupMenu"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetGroupMenu(rv) {
+             var o = { "gcode": rv }
+             var url = gpreurl + "/ReSetGroupMenu"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", true)
+         }
+         function GetGroupMenu(rv) {
+             var o = { "gcode": rv }
+             var url = gpreurl + "/GetGroupMenu"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.warn("未设置")
+             }
+             else {
+                 ns.mgtreebar.setValue(b)
+             }
+         }
+     </script>
+</body>
+</html>
+

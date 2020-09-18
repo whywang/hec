@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>销售付款单</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/IImg.js" type="text/javascript"></script>
+    <script type="text/javascript">
+     
+        Class('App', 'linb.Com', {
+           
+            Instance: {
+               
+                initialize: function () {
+              
+                    this.autoDestroy = true;
+                
+                    this.properties = {};
+                },
+                
+                iniComponents: function () {
+               
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(90)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-size:20px;font-weight:bolder;color:#666666'>收款记录</span>")
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(110)
+                .setTop(55)
+                .setCaption("<span style='font-size:12px;color:#666666'>Pay RecoderList</span>")
+            );
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pm.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col2", "width": 140, "type": "input", "caption": "收款金额" }, { "id": "col3", "width": 140, "type": "input", "caption": "收款日期" }, { "id": "col4", "width": 140, "type": "input", "caption": "收款人" }, { "id": "col5", "width": 400, "type": "input", "caption": "备注"}])
+            );
+
+                    return children;
+                
+                },
+             
+                iniExComs: function (com, threadid) {
+                },
+              
+                customAppend: function (parent, subId, left, top) {
+                   
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this; sid = "";
+                    prelurl = "../../../UIServer/FinanceBusiness/DistributorDoorReceipt/ReceiptList.aspx";
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"].toString();
+                        LoadPayList();
+                    }
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    bcode = item.bcode;
+                    if (item.btip == "1") {
+                        BtnDoTip(sid, emcode, item, true)
+                    }
+                    else {
+                        BtnDo(sid, emcode, item)
+                    }
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+ 
+        function LoadPayList() {
+            var o = { "sid": sid }
+            var url = prelurl + "/QueryPayRecorderList"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.treegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4]}] })
+                }
+                ns.treegrid.setRows(arr)
+            }
+        }
+    </script>
+</body>
+</html>

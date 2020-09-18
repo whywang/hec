@@ -1,0 +1,619 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品包装设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+  
+     <script type="text/javascript">
+
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "cbinder")
+                .setName("cbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "dbinder")
+                .setName("dbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("玻璃属性设置")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "玻璃工艺设置" }, { "id": "b", "caption": "玻璃朝向设置"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "mly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.mly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>玻璃列表</span>")
+            );
+
+                     host.mly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.mly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.mly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ctoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_ctoolbar_onclick")
+            , "main");
+
+                     host.mly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 300, "type": "input", "caption": "工艺名称"}])
+                .setValue("")
+            , "main");
+
+                     host.mly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "cbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "玻璃"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+                .onRowSelected("_cbtreegrid_onrowselected")
+            , "before");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "mtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_mtoolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "cdlg")
+                .setLeft(150)
+                .setTop(100)
+                .setWidth(550)
+                .setHeight(160)
+                .setCaption("玻璃工艺")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            , "a");
+
+                     host.cdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_cstoolbar_onclick")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gcname")
+                .setDataBinder("cbinder")
+                .setDataField("gcname")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>工艺名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gccode")
+                .setDataBinder("cbinder")
+                .setDataField("gccode")
+                .setReadonly(true)
+                .setLeft(300)
+                .setTop(50)
+                .setWidth(220)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gcid")
+                .setDataBinder("cbinder")
+                .setDataField("gcid")
+                .setLeft(160)
+                .setTop(30)
+                .setWidth(250)
+                .setHeight(50)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>工艺名称</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "dly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.dly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pdt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>玻璃列表</span>")
+            );
+
+                     host.dly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.dly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.dly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_dtoolbar_onclick")
+            , "main");
+
+                     host.dly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "dtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 300, "type": "input", "caption": " 玻璃朝向"}])
+                .setValue("")
+            , "main");
+
+                     host.dly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "dbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "玻璃"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+                .onRowSelected("_dbtreegrid_onrowselected")
+            , "before");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sdtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_sdtoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "ddlg")
+                .setLeft(190)
+                .setTop(110)
+                .setWidth(550)
+                .setHeight(170)
+                .setCaption("玻璃朝向")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            , "b");
+
+                     host.ddlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_dstoolbar_onclick")
+            );
+
+                     host.ddlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gdname")
+                .setDataBinder("dbinder")
+                .setDataField("gdname")
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>玻璃方向</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ddlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gdcode")
+                .setDataBinder("dbinder")
+                .setDataField("gdcode")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ddlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gdid")
+                .setDataBinder("dbinder")
+                .setDataField("gdid")
+                .setReadonly(true)
+                .setLeft(160)
+                .setTop(30)
+                .setWidth(230)
+                .setHeight(50)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                 },
+                 iniExComs: function (com, threadid) {
+                 },
+                 customAppend: function (parent, subId, left, top) {
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../GlassAttr";
+
+                 },
+
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         QuerySearingList("00010001005", "", "", ns.cbtreegrid);
+                         QueryList();
+                     }
+                     if (item.id == "b") {
+                         QuerySearingList("00010001005", "", "", ns.dbtreegrid);
+                         QueryDireList()
+                     }
+                 },
+                 _mtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.cbtreegrid.getUIValue();
+                     var nv = ns.ctreegrid.getUIValue();
+                     if (pv == null || pv == "") {
+                         linb.warn("请选择产品")
+                     }
+                     if (item.id == "a1") {
+                         if (nv == null || nv == "") {
+                             linb.warn("请选择玻璃工艺")
+                         }
+                         SetGlassCraft(pv, nv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms('确定重置？', "ReSetGlassCraft('" + pv + "')")
+                     }
+                 },
+                 _sdtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.dbtreegrid.getUIValue();
+                     var nv = ns.dtreegrid.getUIValue();
+                     if (pv == null || pv == "") {
+                         linb.warn("请选择产品")
+                     }
+                     if (item.id == "a1") {
+                         if (nv == null || nv == "") {
+                             linb.warn("请选择玻璃朝向")
+                         }
+                         SetGlassDire(pv, nv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms('确定重置？', "ReSetGlassDire('" + pv + "')")
+                     }
+                 },
+                 _ctoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.ctreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.cdlg.setDisplay("block");
+                         InitCraft("");
+                     }
+                     if (item.id == "a3") {
+                         ns.cdlg.setDisplay("block");
+                         InitCraft(sv);
+                     }
+                     if (item.id == "a4") {
+                         if (sv != null && sv != "") {
+                             linb.confirms('确定删除？', "DelCraft('" + sv + "')")
+                         }
+                         else {
+                             linb.warn("请选择玻璃工艺")
+                         }
+                     }
+                 },
+                 _cstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveCraft()
+                     }
+                     ns.cdlg.setDisplay("none");
+                 },
+                 _dtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.dtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.ddlg.setDisplay("block");
+                         InitDirection("");
+                     }
+                     if (item.id == "a3") {
+                         ns.ddlg.setDisplay("block");
+                         InitDirection(sv);
+                     }
+                     if (item.id == "a4") {
+                         if (sv != null && sv != "") {
+                             linb.confirms('确定删除？', "DelDirection('" + sv + "')")
+                         }
+                         else {
+                             linb.warn("请选择玻璃朝向")
+                         }
+                     }
+                 },
+
+                 _dstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveDirection()
+                     }
+                     ns.ddlg.setDisplay("none");
+                 },
+                 _cbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.cbtreegrid.setUIValue(row.id)
+                     GetGlassCraft(row.id)
+                 },
+                 _dbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.dbtreegrid.setUIValue(row.id)
+                     GetGlassDire(row.id)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitCraft(v) {
+             var o = { "gccode": v }
+             var url = preurl + "/InitCraft"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.gccode.setValue(r.gccode);
+                 ns.gcname.setValue(r.gcname);
+                 ns.gcid.setValue(r.id);
+             }
+         }
+         function SaveCraft() {
+             var url = preurl + "/SaveCraft"
+             var db = linb.DataBinder.getFromName("cbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList()", false);
+         }
+         function QueryList() {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.ctreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0]}] })
+                 }
+                 ns.ctreegrid.setRows(arr)
+             }
+         }
+         function DelCraft(v) {
+             var o = { "gccode": v }
+             var url = preurl + "/DelCraft"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList()", false)
+         }
+
+         function InitDirection(v) {
+             var o = { "gdcode": v }
+             var url = preurl + "/InitDirection"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.gdid.setValue(r.id);
+                 ns.gdname.setValue(r.gdname);
+                 ns.gdcode.setValue(r.gdcode);
+             }
+         }
+         function SaveDirection() {
+             var url = preurl + "/SaveDirection"
+             var db = linb.DataBinder.getFromName("dbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryDireList()", false);
+         }
+         function QueryDireList() {
+             var url = preurl + "/QueryDirectionList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.dtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2]}] })
+                 }
+                 ns.dtreegrid.setRows(arr)
+             }
+         }
+         function DelDirection(v) {
+             var o = { "gdcode": v }
+             var url = preurl + "/DelDirection"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryDireList()", false)
+         }
+
+         //设置属性类包含属性
+         function SetGlassDire(cv, av) {
+             var o = { "pcode": cv, "gdcode": av }
+             var url = preurl + "/SetGlassDire"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetGlassDire(cv) {
+             var o = { "pcode": cv }
+             var url = preurl + "/ReSetGlassDire"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetGlassDire(cv) {
+             var o = { "pcode": cv }
+             var url = preurl + "/GetGlassDire"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.dtreegrid.setValue(b);
+             }
+             else {
+                 ns.dtreegrid.setValue("");
+                 linb.warn("未设置属性")
+             }
+         }
+
+         //设置产品属性类 
+         function SetGlassCraft(cv, av) {
+             var o = { "pcode": cv, "gccode": av }
+             var url = preurl + "/SetGlassCraft"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetGlassCraft(cv) {
+             var o = { "pcode": cv }
+             var url = preurl + "/ReSetGlassCraft"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetGlassCraft(cv) {
+             var o = { "pcode": cv }
+             var url = preurl + "/GetGlassCraft"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.ctreegrid.setValue(b);
+             }
+             else {
+                 ns.ctreegrid.setValue("");
+                 linb.warn("未设置属性")
+             }
+         }
+     </script>
+</body>
+</html>

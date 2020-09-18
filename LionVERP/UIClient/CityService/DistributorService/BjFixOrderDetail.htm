@@ -1,0 +1,1205 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../../Styles/Common/Common.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IWorkLine.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEmployee.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LodopFuncs.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LvPrint.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "pbinder")
+                .setName("pbinder")
+            );
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "psbinder")
+                .setName("psbinder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("北京安装详情")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "订单信息" }, { "id": "b", "caption": "报价信息"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                    host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            , "a");
+                    
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g1")
+                .setDock("top")
+                .setHeight(72)
+                .setCaption("订单状态")
+                .setToggleBtn(false)
+            , "a");
+
+                    host.g1.append(
+                (new linb.UI.StatusButtons)
+                .setHost(host, "orderstate")
+                .setLeft(60)
+                .setTop(10)
+                .setWidth(780)
+                .setHeight(30)
+                .setSelMode("multibycheckbox")
+                .setBorderType("none")
+                .setValue("a")
+                .setCustomStyle({ "KEY": "border:none" })
+            );
+
+                    host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1")
+                .setDock("top")
+                .setHeight(10)
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g2")
+                .setDock("top")
+                .setHeight(189)
+                .setCaption("订单信息")
+                .setToggleBtn(false)
+            , "a");
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "code")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(10)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("订单编号")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "customer")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(10)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("客户名称")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "telephone")
+                .setReadonly(true)
+                .setLeft(520)
+                .setTop(10)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("客户电话")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "cdate")
+                .setReadonly(true)
+                .setLeft(760)
+                .setTop(10)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("单据日期")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "address")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(480)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("客户地址")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "remark")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(130)
+                .setWidth(960)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("订单备注")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "city")
+                .setReadonly(true)
+                .setLeft(760)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "fixer")
+                .setReadonly(true)
+                .setLeft(520)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("安装师")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "spsy")
+                .setReadonly(true)
+                .setLeft(40)
+                .setTop(90)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("配送员")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "yyrq")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(90)
+                .setWidth(240)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("预约日期")
+            );
+
+                    host.g2.append(
+                (new linb.UI.Input)
+                .setHost(host, "yysm")
+                .setReadonly(true)
+                .setLeft(520)
+                .setTop(90)
+                .setWidth(480)
+                .setHeight(26)
+                .setLabelSize(60)
+                .setLabelCaption("预约说明")
+            );
+
+                    host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2")
+                .setDock("top")
+                .setHeight(12)
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "g3")
+                .setDock("top")
+                .setHeight("auto")
+                .setCaption("产品信息")
+                .setToggleBtn(false)
+                .setCustomClass({ "KEY": "customtable" })
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "apdlg")
+                .setLeft(220)
+                .setTop(210)
+                .setWidth(550)
+                .setHeight(410)
+                .setDisplay("none")
+                .setCaption("产品管理")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.apdlg.append(
+                (new linb.UI.Block)
+                .setHost(host, "ab")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.ab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pstoolbar_onclick")
+            );
+
+                    host.apdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "eptreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setEditable(true)
+                .setHeaderHeight(27)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "label", "caption": "产品" }, { "id": "col2", "width": 100, "type": "label", "caption": "编码" }, { "id": "col2", "width": 120, "type": "number", "caption": "数量"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dfdlg")
+                .setLeft(220)
+                .setTop(120)
+                .setWidth(550)
+                .setHeight(360)
+                .setDisplay("none")
+                .setCaption("分配安装任务")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.dfdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.pa.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dftoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_dftoolbar_onclick")
+            );
+
+                    host.dfdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "sazstreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 260, "type": "input", "caption": "安装师"}])
+                .setValue("")
+            );
+
+                    host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pprice")
+                .setDock("fill")
+                .setCustomClass({ "KEY": "ctable" })
+            , "b");
+
+                    host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "printp")
+                .setDock("top")
+                .setHeight(29)
+                .setDisplay("none")
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "gsh")
+                .setDock("top")
+                .setHeight("auto")
+                .setDisplay("none")
+                .setCaption("收货信息")
+                .setToggleBtn(false)
+                .setCustomClass({ "KEY": "customtable" })
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "gazg")
+                .setDock("top")
+                .setHeight("auto")
+                .setDisplay("none")
+                .setCaption("安装信息")
+                .setToggleBtn(false)
+                .setCustomClass({ "KEY": "customtable" })
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "cvdlg")
+                .setLeft(250)
+                .setTop(250)
+                .setWidth(550)
+                .setHeight(240)
+                .setDisplay("none")
+                .setCaption("客户回访")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.cvdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "vctoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_vctoolbar_onclick")
+            );
+
+                    host.cvdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "vcinfo")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(470)
+                .setHeight(140)
+                .setLabelSize(60)
+                .setLabelCaption("回访信息")
+                .setMultiLines(true)
+            );
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "shdlg")
+                .setLeft(341)
+                .setTop(151)
+                .setWidth(550)
+                .setHeight(230)
+                .setDisplay("none")
+                .setCaption("审核")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.shdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "shtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_shtoolbar_onclick")
+            );
+
+                    host.shdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "checkstate")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(395)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("处理结果")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "通过" }, { "id": "-1", "caption": "驳回"}])
+            );
+
+                    host.shdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "checkbz")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(410)
+                .setHeight(80)
+                .setLabelSize(60)
+                .setLabelCaption("处理意见")
+                .setMultiLines(true)
+            );
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pridlg")
+                .setLeft(218)
+                .setTop(160)
+                .setWidth(620)
+                .setHeight(440)
+                .setDisplay("none")
+                .setCaption("金额编辑")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.pridlg.append(
+                (new linb.UI.Block)
+                .setHost(host, "b1")
+                .setDock("top")
+                .setHeight(35)
+            );
+
+                    host.b1.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pritoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pritoolbar_onclick")
+            );
+
+                    host.pridlg.append(
+                (new linb.UI.Block)
+                .setHost(host, "b2")
+                .setDock("top")
+                .setHeight(130)
+            );
+
+                    host.b2.append(
+                (new linb.UI.Input)
+                .setHost(host, "amoney")
+                .setDataBinder("pbinder")
+                .setDataField("amoney")
+                .setLeft(20)
+                .setTop(20)
+                .setWidth(270)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("增加费用")
+                .setValue("0")
+            );
+
+                    host.b2.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmoney")
+                .setDataBinder("pbinder")
+                .setDataField("dmoney")
+                .setLeft(290)
+                .setTop(20)
+                .setWidth(270)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("扣减费用")
+                .setValue("0")
+            );
+
+                    host.b2.append(
+                (new linb.UI.Input)
+                .setHost(host, "mremark")
+                .setDataBinder("pbinder")
+                .setDataField("mremark")
+                .setLeft(20)
+                .setTop(70)
+                .setWidth(540)
+                .setHeight(50)
+                .setLabelSize(60)
+                .setLabelCaption("备注说明")
+                .setMultiLines(true)
+            );
+
+                    host.pridlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "b3")
+                .setDock("fill")
+            );
+
+                    host.b3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ppritreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setEditable(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "label", "caption": "产品" }, { "id": "col2", "width": 120, "type": "label", "caption": "数量" }, { "id": "col3", "width": 120, "type": "number", "caption": "单价"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "azfdlg")
+                .setLeft(220)
+                .setTop(130)
+                .setWidth(700)
+                .setHeight(410)
+                .setDisplay("none")
+                .setCaption("安装费分配")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.azfdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "azp")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                    host.azp.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "azftoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_azftoolbar_onclick")
+            );
+
+                    host.azfdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "azp1")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "border:1px solid #cccccc" })
+            );
+
+                    host.azp1.append(
+                (new linb.UI.Input)
+                .setHost(host, "azfmoney")
+                .setReadonly(true)
+                .setLeft(90)
+                .setTop(10)
+                .setWidth(290)
+                .setHeight(26)
+                .setLabelSize(80)
+                .setLabelCaption("安装费总额")
+                .setValue("0")
+            );
+
+                    host.azfdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "azfdtreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setEditable(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "label", "type": "label", "width": 140, "caption": "安装师" }, { "id": "listbox", "type": "listbox", "width": 160, "caption": "安装类型", "editorListKey": "placelist" }, { "id": "azmoney", "type": "number", "width": 120, "caption": "安装金额" }, { "id": "remark", "type": "input", "width": 200, "caption": "备注"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Group)
+                .setHost(host, "vg")
+                .setDock("top")
+                .setHeight(240)
+                .setDisplay("block")
+                .setCaption("回访记录")
+                .setToggleBtn(false)
+                .setCustomClass({ "KEY": "customtable" })
+            , "a");
+
+                    host.vg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "vtreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 400, "type": "input", "caption": "回访信息" }, { "id": "col2", "width": 120, "type": "input", "caption": "回访人" }, { "id": "col3", "width": 140, "type": "input", "caption": "回访时间"}])
+            );
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "sdlg")
+                .setLeft(210)
+                .setTop(150)
+                .setWidth(600)
+                .setHeight(230)
+                .setDisplay("none")
+                .setCaption("配送预约")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.sdlg.append(
+                (new linb.UI.Block)
+                .setHost(host, "sb")
+                .setDock("top")
+                .setHeight(33)
+            );
+
+                    host.sb.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "psytoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_psytoolbar_onclick")
+            );
+
+                    host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "psy")
+                .setDataBinder("psbinder")
+                .setDataField("psy")
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("配送员")
+            );
+
+                    host.sdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "psdate")
+                .setDataBinder("psbinder")
+                .setDataField("psdate")
+                .setLeft(280)
+                .setTop(50)
+                .setWidth(255)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("配送日期")
+                .setType("date")
+            );
+
+                    host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "psbz")
+                .setDataBinder("psbinder")
+                .setDataField("psbz")
+                .setLeft(20)
+                .setTop(100)
+                .setWidth(530)
+                .setHeight(60)
+                .setLabelSize(60)
+                .setLabelCaption("备&nbsp;&nbsp;&nbsp;注")
+                .setMultiLines(true)
+            );
+                   
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "usdlg")
+                .setLeft(200)
+                .setTop(160)
+                .setWidth(580)
+                .setHeight(250)
+                .setDisplay("none")
+                .setCaption("收货图片")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.usdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ustoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .setDisplay("none")
+                .onClick("_ustoolbar_onclick")
+            );
+
+                    host.usdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "shup")
+                .setDock("top")
+                .setHeight(80)
+                .setDisplay("block")
+                .setHtml("<input type='file' id='shimg' name='shimg' style='display:none' onchange='imgshchange()'/><img src='../../../Image/opeimage/addimg.png' style='cursor:pointer' onclick='Upclick()'/> ")
+            );
+
+                    host.usdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "shsip")
+                .setDock("top")
+                .setHeight(130)
+                .setDisplay("block")
+            );
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fzdlg")
+                .setLeft(200)
+                .setTop(160)
+                .setWidth(580)
+                .setHeight(237)
+                .setDisplay("none")
+                .setCaption("安装图片")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                    host.fzdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fxtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .setDisplay("none")
+                .onClick("_fxtoolbar_onclick")
+            );
+
+                    host.fzdlg.append(
+                (new linb.UI.Block)
+                .setHost(host, "azup")
+                .setDock("top")
+                .setHeight(85)
+                .setHtml("<input type='file' id='azimg' name='azimg' style='display:none' onchange='imgazchange()'/><img src='../../../Image/opeimage/addimg.png' style='cursor:pointer' onclick='Upazclick()'/> ")
+            );
+
+                    host.fzdlg.append(
+                (new linb.UI.Block)
+                .setHost(host, "azusp")
+                .setDock("top")
+                .setHeight(110)
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                }
+,
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    linb.UI.cacheData('placelist', [{ "id": "", "caption": "" }, { "id": "金额", "caption": "金额" }, { "id": "比例", "caption": "比例"}]);
+                    ns = this, sid = "", menucode = "0077", bcode = "", dazs = 0;
+
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"]
+                    }
+                },
+                _tab_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a") {
+                        WorkFlowBar(menucode, sid, ns.toolbar);
+                        WorkLine(sid, menucode, ns.orderstate)
+                        LoadOrder();
+                        LoadProductionHtml();
+                        QueryShList();
+                        QueryAzList();
+                        QueryVisitList();
+                        QuerySendyy();
+                    }
+                    if (item.id == "b") {
+                        QueryProductionPrice();
+                    }
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    bcode = item.bcode;
+                    BtnDo(sid, menucode, item)
+
+                },
+                _dftoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        SetFixter()
+                    }
+                    ns.dfdlg.setDisplay("none")
+                },
+                _pstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        SaveproductionList();
+                    }
+                    ns.apdlg.setDisplay("none")
+                },
+                _ustoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _fxtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _vctoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        SaveVisitInfo();
+                    }
+                    ns.cvdlg.setDisplay("none")
+                },
+                _shtoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        var bzt = ns.checkstate.getUIValue();
+                        var bdt = ns.checkbz.getUIValue();
+                        if (!CheckInput(ns, ns.checkstate, true, "", "选择审核状态！", "", "", "")) {
+                            return
+                        }
+                        FireCheckBtn(sid, bcode, bzt, bdt)
+                    }
+                    else {
+                        ns.shdlg.setDisplay("none");
+                    }
+                },
+                _pritoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        UpdateMoney();
+                    }
+                    ns.pridlg.setDisplay("none");
+                },
+                _azftoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        SaveAzfMoney();
+                    }
+                    ns.azfdlg.setDisplay("none");
+                },
+                _psytoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        if (!CheckInput(ns, ns.psy, true, "", "配送员不能为空！", "", "", "")) {
+                            return
+                        }
+                        if (!CheckInput(ns, ns.psdate, true, "date", "配送日期不能为空！", "", "", "")) {
+                            return
+                        }
+                        SaveSendyy();
+                    }
+                    else {
+                        ns.sdlg.setDisplay("none");
+                    }
+                }
+
+            },
+            Static: {
+                viewSize: { "width": 1024, "height": 768 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function LoadProductionHtml() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixProduction/QueryFixProductionList";
+            var hstr = "序号,名称,数量"
+            var o = { "sid": sid }
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2]}] })
+                }
+                var btstr = "<table style='width:600px'>";
+                var thstr = StringToHead(hstr)
+                var tbstr = ArrToRow(arr);
+                var etstr = "</table>";
+                ns.g3.setHtml(btstr + thstr + tbstr + etstr)
+            }
+        }
+        function LoadOrder() {
+            var o = { "sid": sid }
+            var url =  "../../../BjFixOrders/QueryFixOrder"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.code.setValue(r.scode);
+                ns.customer.setValue(r.customer);
+                ns.telephone.setValue(r.telephone);
+                ns.address.setValue(r.address);
+                ns.city.setValue(r.city);
+                ns.cdate.setValue(r.cdate);
+                ns.remark.setValue(r.remark)
+                ns.fixer.setValue(r.fixter);
+                ns.remark.setValue(r.remark)
+            }
+        }
+        function AddFxProduction() {
+            ns.apdlg.setDisplay("block");
+            EditproductionList();
+        }
+        function EditproductionList() {
+            var url = "../../../BjFixProduction/InitFixProduction";
+            var o = { "sid": sid }
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.eptreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2] }] })
+                }
+                ns.eptreegrid.setRows(arr)
+            }
+        }
+        function SaveproductionList() {
+            var url = "../../../BjFixProduction/SaveFixProduction"
+            var plist = ns.eptreegrid.getRows('min');
+            var o = { "sid": sid,'prow':plist };
+            var b = AjaxExb(url, o)
+            BackVad(b, "LoadProductionHtml();WorkFlowBar(menucode, sid, ns.toolbar);", false)
+        }
+        function QueryProductionPrice() {
+            var o = { "sid": sid,"emcode":"0080" }
+            var url = "../../../BjFixProduction/PriceFixProduction"
+            var b = AjaxExb(url, o);
+            ns.pprice.setHtml(b)
+        }
+        function DisTask() {
+            ns.dfdlg.setDisplay("block");
+            IEmployeeRowsEx("0012", "0107", ns.sazstreegrid) 
+        }
+        function Print() {
+            var o = { "sid": sid, "emcode": "0077" }
+            var url = "../../../BjFixProduction/PrintFixProduction"
+            var b = AjaxExb(url, o);
+            PrintStr(b)
+        }
+        function SetFixter() {
+            var ft = ns.sazstreegrid.getUIValue();
+            if (ft == "") {
+                linb.message("请选择安装师");
+                return
+            }
+            var o = { "sid": sid, 'fixter': ft, 'dtype': dazs }
+            var url = "../../../BjFixOrders/DistributionFixTask"
+            var b = AjaxExb(url, o);
+            BackVad(b, "LoadOrder(); WorkFlowBar(menucode, sid, ns.toolbar);", false)
+        }
+        function UpShImg() {
+            ns.usdlg.setDisplay("block");
+            QueryShImgList();
+        }
+        function UpFixImg() {
+            ns.fzdlg.setDisplay("block");
+            QueryAzImgList();
+        }
+        function Upclick() {
+            $("#shimg").click();
+        }
+        function imgshchange() {
+            var url = "../../../UIServer/CityService/DistributorService/UpFixShImg.aspx?sid=" + sid;
+            UpFile(null, "shimg", url, QueryShImgList);
+        }
+        function QueryShImgList() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryShFixImgListZip"
+            var b = AjaxExb(url, o);
+            ns.shsip.setHtml(b)
+        }
+        function DelShImg(id) {
+            var o = { "id": id }
+            var url = "../../../BjFixOrders/DelShFixImg"
+            var b = AjaxExb(url, o);
+            BackVad(b, "QueryShImgList()", false)
+        }
+        function Upazclick() {
+            $("#azimg").click();
+        }
+        function imgazchange() {
+            var url = "../../../UIServer/CityService/DistributorService/UpFixImg.aspx?sid=" + sid;
+            UpFile(null, "azimg", url, QueryAzImgList);
+        }
+        function QueryAzImgList() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryAzFixImgListZip"
+            var b = AjaxExb(url, o);
+            ns.azusp.setHtml(b)
+        }
+        function DelAzImg(id) {
+            var o = { "id": id }
+            var url = "../../../BjFixOrders/DelAzFixImg"
+            var b = AjaxExb(url, o);
+            BackVad(b, "QueryAzImgList()", false)
+        }
+        function QueryShList() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryShFixImgList"
+            var b = AjaxExb(url, o);
+            if (b.length > 20) {
+                ns.gsh.setDisplay("block")
+                ns.gsh.setHtml(b)
+            }
+        }
+        function QueryAzList() {
+         var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryAzFixImgList"
+            var b = AjaxExb(url, o);
+            if (b.length > 20) {
+                ns.gazg.setDisplay("block")
+                ns.gazg.setHtml(b)
+            }
+        }
+        function VisitCustomer() {
+            ns.cvdlg.setDisplay("block")
+        }
+        function SaveVisitInfo() {
+            var vinfo=ns.vcinfo.getUIValue();
+            if (!CheckInput(ns, ns.vcinfo, true, "", "回访信息不能为空", "", "", "")) {
+                return
+            }
+            var o = { "sid": sid, 'vinfo': vinfo }
+            var url = "../../../BjFixOrders/AddVisitInfo"
+            var b = AjaxExb(url, o);
+            BackVad(b, "", true)
+        }
+        function QueryVisitList() {
+            var url = "../../../BjFixOrders/QueryVisitInfoList";
+            var o = { "sid": sid }
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                if (r.length > 1) {
+                    ns.vg.setDisplay("block")
+                }
+                else {
+                    ns.vg.setDisplay("none")
+                }
+                ns.vtreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[1], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2]}] })
+                }
+                ns.vtreegrid.setRows(arr)
+            }
+        }
+        function CheckOrder() {
+            ns.shdlg.setDisplay("block")
+        }
+        //订单金额编辑
+        function EditMoney() {
+            ns.pridlg.setDisplay("block");
+            QueryOrderMoney();
+            MoneyproductionList();
+        }
+        function QueryOrderMoney() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryFixOrderMoney"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.amoney.setValue(r.amoney);
+                ns.dmoney.setValue(r.dmoney);
+                ns.mremark.setValue(r.premark);
+            }
+        }
+        function MoneyproductionList() {
+            var url = "../../../BjFixProduction/QueryFixProductionList";
+            var o = { "sid": sid }
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.ppritreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3]}] })
+                }
+                ns.ppritreegrid.setRows(arr)
+            }
+        }
+        function UpdateMoney() {
+            if (!CheckInput(ns, ns.amoney, true, "number", "请输入增加金额！", "请正确输入增加金额！", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.dmoney, true, "number", "请输入减扣金额！", "请正确输入减扣金额！", "", "")) {
+                return
+            }
+            var amoney = ns.amoney.getUIValue();
+            var dmoney = ns.dmoney.getUIValue();
+            var mremark = ns.mremark.getUIValue();
+            var plist = ns.ppritreegrid.getRows('min');
+            var o = { "sid": sid, "amoney": amoney, "dmoney": dmoney, "mremark": mremark, "prow": plist }
+            var url = "../../../BjFixOrders/UpdateFixOrderMoney"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+
+        }
+
+        function DMoney() {
+            ns.azfdlg.setDisplay("block");
+            QueryDmoney();
+            QueryAzsMoney();
+        }
+        function QueryDmoney() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryFixAllMoney"
+            var b = AjaxExb(url, o);
+            if (b) {
+                ns.azfmoney.setValue(b);
+            }
+        }
+        function QueryAzsMoney() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryAzsFixListMoney"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.azfdtreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 0; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4]}] })
+                }
+                ns.azfdtreegrid.setRows(arr)
+            }
+        }
+
+        function ADisTask() {
+            ns.dfdlg.setDisplay("block");
+            IEmployeeRowsEx("0012", "0107", ns.sazstreegrid);
+            dazs = 1;
+        }
+        function SaveAzfMoney() {
+            var fmoney=ns.azfmoney.getUIValue();
+            var url = "../../../BjFixOrders/SaveAzsFixListMoney"
+            var plist = ns.azfdtreegrid.getRows('min');
+            var o = { "sid": sid, 'prow': plist, 'fmoney': fmoney };
+            var b = AjaxExb(url, o)
+            BackVad(b, "", false)
+        }
+
+        //预约配送
+        function Sendyy() {
+            ns.sdlg.setDisplay("block")
+        }
+        function SaveSendyy() {
+            var arg1 = { "sid": sid }
+            var db = linb.DataBinder.getFromName("psbinder");
+            var arg2 = db.updateDataFromUI().getData();
+            var o = $.extend(arg1, arg2);
+            var url = "../../../BjFixOrders/SaveYySend"
+            var b = AjaxExb(url, o)
+            BackVad(b, "QuerySendyy()", false);
+            ns.sdlg.setDisplay("none");
+        }
+        function QuerySendyy() {
+            var o = { "sid": sid }
+            var url = "../../../BjFixOrders/QueryYySend"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.spsy.setValue(r.sperson);
+                ns.yyrq.setValue(r.pdate);
+                ns.yysm.setValue(r.pbz);
+            }
+        }
+    </script>
+</body>
+</html>

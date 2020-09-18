@@ -1,0 +1,974 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产能管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "zbinder")
+                .setName("zbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "cbinder")
+                .setName("cbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "lbinder")
+                .setName("lbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("工厂产能设置")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "产能设置" }, { "id": "b", "caption": "产品类别"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly2")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pft")
+                .setDock("top")
+                .setHeight(70)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pft.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            );
+
+                     host.pft.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(40)
+                .setCaption("<span style='font-size:16px;color:#999999;font-weight:bolder'>生产类别</span>")
+            );
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ctreebar")
+                .onItemSelected("_ctreebar_onitemselected")
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "spane")
+                .setDock("top")
+                .setHeight(110)
+                .setCustomStyle({ "KEY": "background:#ffffff;border:5px solid #f2f2f2" })
+            , "main");
+
+                     host.spane.append(
+                (new linb.UI.Input)
+                .setHost(host, "spv")
+                .setDock("width")
+                .setTop(10)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("已选产品类别")
+                .setLabelHAlign("left")
+            );
+
+                     host.ly2.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "itreebar")
+                .onItemSelected("_itreebar_onitemselected")
+                .beforeExpend("_itreebar_beforeexpend")
+                .setSelMode("multibycheckbox")
+                .setUIValue()
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "ldlg")
+                .setLeft(80)
+                .setTop(110)
+                .setWidth(560)
+                .setHeight(160)
+                .setDisplay("none")
+                .setCaption("生产类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "b");
+
+                     host.ldlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_astoolbar_onclick")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lname")
+                .setDataBinder("lbinder")
+                .setDataField("lname")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>生产类别</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lcode")
+                .setDataBinder("lbinder")
+                .setDataField("lcode")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>类别编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lid")
+                .setDataBinder("lbinder")
+                .setDataField("lid")
+                .setLeft(170)
+                .setTop(80)
+                .setWidth(230)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>生产类别</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 410, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pot")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pot.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#999999;font-weight:bolder'>工厂列表</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pol")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "por")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .onItemSelected("_dtreebar_onitemselected")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                     host.ptt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ztoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_ztoolbar_onclick")
+            );
+
+                     host.ptt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-size:16px;color:#999999;font-weight:bolder'>工厂总产能</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ztreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "工厂" }, { "id": "col2", "width": 100, "type": "input", "caption": "总产能" }, { "id": "col3", "width": 100, "type": "input", "caption": "产能预警"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+                 .onRowSelected("_ztreegrid_onrowselected")
+            , "before1");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pst")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pst.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ctoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_ctoolbar_onclick")
+            );
+
+                     host.pst.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-size:16px;color:#999999;font-weight:bolder'>产品类产能</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "工厂" }, { "id": "col2", "width": 140, "type": "input", "caption": "产品类别" }, { "id": "col3", "width": 100, "type": "input", "caption": "产能"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "zdlg")
+                .setLeft(290)
+                .setTop(90)
+                .setWidth(510)
+                .setHeight(280)
+                .setDisplay("none")
+                .setCaption("总产能")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                     host.zdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "zstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_zstoolbar_onclick")
+            );
+
+                     host.zdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fname")
+                .setDataBinder("zbinder")
+                .setDataField("fname")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(50)
+                .setWidth(330)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>工厂</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.zdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "znum")
+                .setDataBinder("zbinder")
+                .setDataField("znum")
+                .setLeft(80)
+                .setTop(110)
+                .setWidth(330)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>总产能</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.zdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lnum")
+                .setDataBinder("zbinder")
+                .setDataField("lnum")
+                .setLeft(80)
+                .setTop(170)
+                .setWidth(330)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>预警值</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.zdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcode")
+                .setDataBinder("zbinder")
+                .setDataField("fcode")
+                .setLeft(70)
+                .setTop(210)
+                .setWidth(330)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("工厂")
+                .setLabelHAlign("left")
+            );
+
+                     host.zdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zid")
+                .setDataBinder("zbinder")
+                .setDataField("zid")
+                .setLeft(90)
+                .setTop(200)
+                .setWidth(330)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("预警值")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "cdlg")
+                .setLeft(480)
+                .setTop(110)
+                .setWidth(510)
+                .setHeight(290)
+                .setDisplay("none")
+                .setCaption("类别产能")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                     host.cdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_cstoolbar_onclick")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "plcode")
+                .setDataBinder("cbinder")
+                .setDataField("plcode")
+                .setLeft(70)
+                .setTop(110)
+                .setWidth(345)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>生产类别</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcnum")
+                .setDataBinder("cbinder")
+                .setDataField("pcnum")
+                .setLeft(-720)
+                .setTop(-50)
+                .setWidth(360)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产能</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cid")
+                .setDataBinder("cbinder")
+                .setDataField("cid")
+                .setLeft(120)
+                .setTop(80)
+                .setWidth(360)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产能</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            ); host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cccode")
+                .setDataBinder("cbinder")
+                .setDataField("cccode")
+                .setLeft(120)
+                .setTop(80)
+                .setWidth(360)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产能</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdname")
+                .setDataBinder("cbinder")
+                .setDataField("pdname")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(50)
+                .setWidth(340)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>工厂</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdcode")
+                .setDataBinder("cbinder")
+                .setDataField("pdcode")
+                .setLeft(80)
+                .setTop(70)
+                .setWidth(340)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>工厂</span>")
+                .setLabelHAlign("left")
+                .setDisplay("none")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pnum")
+                .setDataBinder("cbinder")
+                .setDataField("pnum")
+                .setLeft(70)
+                .setTop(170)
+                .setWidth(340)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产能</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pid")
+                .setDataBinder("cbinder")
+                .setDataField("pid")
+                .setLeft(80)
+                .setTop(180)
+                .setWidth(340)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>产能</span>")
+                .setLabelHAlign("left")
+                .setDisplay("none")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../ProduceCapacity";
+
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IdepItemsByAtrr("gc", ns.dtreebar)
+                     }
+                     if (item.id == "b") {
+                        IinvItems('', ns.itreebar);
+                         QueryCateList();
+                     }
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.dtreebar.setUIValue(item.id)
+                     QueryList(item.id)
+                 },
+                 _ztoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sdv = ns.dtreebar.getUIValue();
+                     var sv = ns.ztreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (sdv == null || sdv == "") {
+                             linb.warn("请选择工厂");
+                             return
+                         }
+                         ns.zdlg.setDisplay("block");
+                         InitZCapacity(sdv);
+                     }
+                     if (item.id == "a3") {
+                         if (sv == null || sv == "") {
+                             linb.warn("请选择总产能");
+                             return
+                         }
+                         ns.zdlg.setDisplay("block");
+                         InitZCapacity(sv);
+                     }
+                     if (item.id == "a4") {
+                         if (sv == null || sv == "") {
+                             linb.warn("请选择总产能");
+                             return
+                         }
+                         linb.confirms("确定删除？", "DelZCapacity('" + sv + "')");
+                     }
+                 },
+                 _zstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         var zn = ns.znum.getUIValue();
+                         var an = ns.lnum.getUIValue();
+                         if (parseInt(zn) < parseInt(an)) {
+                             linb.warn("总产能不能低于预警产能");
+                             return
+                         }
+                         SaveZCapacity();
+                     }
+                     ns.zdlg.setDisplay("none");
+                 },
+                 _ctoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var dv = ns.ztreegrid.getUIValue();
+                     var sv = ns.ctreegrid.getUIValue();
+                     QueryCateItem()
+
+                     if (item.id == "a1") {
+                         if (dv == null || dv == "") {
+                             linb.warn("请选择工厂产能");
+                             return
+                         }
+                         ns.cdlg.setDisplay("block");
+                         InitProduce(dv, "");
+                     }
+                     if (item.id == "a3") {
+                         if (sv == null || sv == "") {
+                             linb.warn("请选择生产类别");
+                             return
+                         }
+                         ns.cdlg.setDisplay("block");
+                         InitProduce("", sv);
+                     }
+                     if (item.id == "a4") {
+                         if (sv == null || sv == "") {
+                             linb.warn("请选择生产类别");
+                             return
+                         }
+                         linb.confirms("确定删除？", "DelProduce('" + sv + "')");
+                     }
+                 },
+                 _cstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveProduce();
+                     }
+                     ns.cdlg.setDisplay("none");
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var cv = ns.ctreebar.getUIValue();
+                     if (cv == null || cv == "") {
+                         linb.warn("请选择生产类别");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var iv = ns.itreebar.getUIValue();
+                         if (iv == null || iv == "") {
+                             linb.warn("请选择产品");
+                             return
+                         }
+                         SetProductionCate(cv, iv)
+                     }
+                     if (item.id == "a3") {
+                         ReSetProductionCate(cv)
+                     }
+                 },
+                 _atoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.ctreebar.getUIValue();
+                     if (item.id == "a1") {
+                         ns.ldlg.setDisplay("block");
+                         InitProduceCate("");
+                     }
+                     if (item.id == "a3") {
+                         if (sv == null || sv == "") {
+                             linb.warn("请选择生产类别");
+                             return
+                         }
+                         ns.ldlg.setDisplay("block");
+                         InitProduceCate(sv);
+                     }
+                     if (item.id == "a4") {
+                         if (sv == null || sv == "") {
+                             linb.warn("请选择生产类别");
+                             return
+                         }
+                         linb.confirms("确定删除？", "DelProduceCate('" + sv + "')");
+                     }
+                 },
+                 _ctreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     GetProductionCate(item.id)
+                 },
+                 _astoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveProduceCate();
+                     }
+                     ns.ldlg.setDisplay("none");
+                 },
+                 _itreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var cv = ns.itreebar.getUIValue()
+                     IinvCItems(item, ns.itreebar);
+                     QueryProductions(cv)
+                 },
+                 _itreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.itreebar)
+                 },
+                 _ztreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     QueryCList(row.id)
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+
+         function InitZCapacity(dv) {
+             var o = { "dcode": dv}
+             var url = preurl + "/InitACapacity"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fname.setUIValue(r.dname);
+                 ns.fcode.setUIValue(r.dcode);
+                 ns.znum.setUIValue(r.cnum);
+                 ns.lnum.setUIValue(r.alnum);
+                 ns.zid.setValue(r.id);
+             }
+         }
+         function SaveZCapacity() {
+             var v = ns.fcode.getUIValue();
+             var url = preurl + "/SaveACapacity"
+             var db = linb.DataBinder.getFromName("zbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList('" + v + "')", false)
+         }
+         function QueryList(dv) {
+                 var url = preurl + "/QueryAList";
+                 var o = {"dcode":dv}
+                 var b = AjaxExb(url,o);
+                 var r = BackVad(b, "", false)
+                 if (r) {
+                     ns.ztreegrid.removeAllRows();
+                     var arr = new Array();
+                     for (i = 1; i < r.length; i++) {
+                         var cel = r[i].toString().split(',')
+                         arr.push({ "id": cel[0], "cells": [{ "value": cel[1] },   { "value": cel[2] }, { "value": cel[3]}] })
+                     }
+                     ns.ztreegrid.setRows(arr)
+                 }
+             }
+         function DelZCapacity(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/DelACapacity"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList('"+v+"')", false)
+         }
+         function InitProduceCate(dv) {
+             var o = { "lcode": dv }
+             var url = preurl + "/InitProduceCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lname.setUIValue(r.lname);
+                 ns.lcode.setUIValue(r.lcode);
+                 ns.lid.setValue(r.id);
+             }
+         }
+         function SaveProduceCate() {
+             var url = preurl + "/SaveProduceCate"
+             var db = linb.DataBinder.getFromName("lbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryCateList()", false)
+         }
+         function DelProduceCate(v) {
+             var o = { "lcode": v }
+             var url = preurl + "/DelProduceCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryCateList()", false)
+         }
+         function QueryCateList() {
+             var url = preurl + "/QueryCateList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.ctreebar.setItems(arr)
+             }
+         }
+         function QueryCateItem() {
+             var url = preurl + "/QueryCateList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.plcode.setItems(arr)
+             }
+         }
+         function InitProduce(dv,cv) {
+             var o = { "dcode": dv,"cccode":cv }
+             var url = preurl + "/InitProduce"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.pdname.setUIValue(r.dname);
+                 ns.pdcode.setUIValue(r.dcode);
+                 ns.plcode.setUIValue(r.lcode);
+                 ns.cccode.setUIValue(r.cccode);
+                 ns.pnum.setUIValue(r.cnum);
+                 ns.cid.setValue(r.id);
+             }
+         }
+         function SaveProduce() {
+             var url = preurl + "/SaveProduce"
+             var db = linb.DataBinder.getFromName("cbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryCList()", false)
+         }
+         function DelProduce(v) {
+             var o = { "cccode": v }
+             var url = preurl + "/DelProduce"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryCList()", false)
+         }
+         function QueryCList(dv) {
+             var url = preurl + "/QueryCList";
+             var o = { "dcode": dv }
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.ctreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3]}] })
+                 }
+                 ns.ctreegrid.setRows(arr)
+             }
+         }
+         function QueryProductions(v) {
+             var o = { "icode": v }
+             var url = "../../../UIServer/ProductionSet/ProductionManage/Productions.aspx/QueryProductions"
+             var b = AjaxExb(url, o);
+             ns.spv.setUIValue(b)
+         }
+         function SetProductionCate(cv,iv) {
+             var o = { "lcode":cv,"icode": iv }
+             var url = preurl + "/SetProductionCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetProductionCate(cv) {
+             var o = { "lcode": cv }
+             var url = preurl + "/ReSetProductionCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetProductionCate(cv) {
+             var o = { "lcode": cv }
+             var url = preurl + "/GetProductionCate"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.itreebar.setUIValue(b);
+                 QueryProductions(b)
+             }
+             else {
+                 linb.warn("未设置");
+                 ns.itreebar.setUIValue("");
+             }
+         }
+     </script>
+</body>
+</html>

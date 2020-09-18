@@ -1,0 +1,541 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>售后收款单</title>
+    <link href="../../../Styles/Default/Account.css" rel="stylesheet" />
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEmployee.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ISettlement.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/SysMenuCode.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("订单收款")
+            );
+
+                    host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定收款" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:20px;font-weight:bolder;color:#666666'> 订单收款</span> <span style='font-size:12px;color:#666666'>Order Price</span>")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "code")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(20)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>订单编号</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "city")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(20)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "customer")
+                .setReadonly(true)
+                .setLeft(530)
+                .setTop(20)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>客户姓名</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "arje")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(80)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>应收金额</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "recje")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(80)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>已收金额</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "unaje")
+                .setDataBinder("binder")
+                .setDataField("unaje")
+                .setReadonly(true)
+                .setLeft(530)
+                .setTop(80)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>未收金额</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "acje")
+                .setDataBinder("binder")
+                .setDataField("acje")
+                .setLeft(30)
+                .setTop(140)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>收款金额</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+                .onChange("_shoukuan_onchange")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dxje")
+                .setDataBinder("binder")
+                .setDataField("dxje")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(140)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>大写金额</span>")
+                .setLabelHAlign("left")
+                .setValue("零")
+            );
+
+                    host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "settlement")
+                .setDataBinder("binder")
+                .setDataField("settlement")
+                .setLeft(530)
+                .setTop(140)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>结算方式</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "aperson")
+                .setDataBinder("binder")
+                .setDataField("aperson")
+                .setLeft(30)
+                .setTop(200)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>收款人</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "priperson")
+                .setDataBinder("binder")
+                .setDataField("priperson")
+                .setReadonly(true)
+                .setLeft(280)
+                .setTop(200)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>报价人</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "acdate")
+                .setDataBinder("binder")
+                .setDataField("acdate")
+                .setLeft(530)
+                .setTop(200)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>收款日期</span>")
+                .setLabelHAlign("left")
+                .setType("date")
+                .setValue(new Date())
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "remark")
+                .setDataBinder("binder")
+                .setDataField("remark")
+                .setLeft(30)
+                .setTop(260)
+                .setWidth(720)
+                .setHeight(90)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#555555;font-size:14px'>收款备注</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "sid")
+                .setDataBinder("binder")
+                .setDataField("sid")
+                .setReadonly(true)
+                .setLeft(150)
+                .setTop(-10)
+                .setWidth(300)
+                .setHeight(50)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("SID")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "bcode")
+                .setDataBinder("binder")
+                .setDataField("bcode")
+                .setReadonly(true)
+                .setLeft(150)
+                .setTop(-10)
+                .setWidth(300)
+                .setHeight(50)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("BCODE")
+                .setLabelHAlign("left")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "paccount")
+                .setDataBinder("binder")
+                .setDataField("paccount")
+                .setReadonly(true)
+                .setLeft(980)
+                .setTop(130)
+                .setWidth(250)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("支付账户")
+                .setValue("0")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Image)
+                .setHost(host, "aimg")
+                .setLeft(760)
+                .setTop(150)
+                .setWidth(16)
+                .setHeight(30)
+                .setSrc("../../../Image/System/makep.png")
+                .setCursor("pointer")
+                .onShowTips("_aimg_onshowtips")
+                .onClick("_aimg_onclick")
+            );
+
+                    host.pm.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls2")
+                .setLeft(780)
+                .setTop(160)
+                .setCaption("<span style='color:#666666;font-size:16px;'>查看账户</span>")
+                .setCustomStyle({ "KEY": "font-family:汉仪细中圆简;cursor:pointer" })
+            );
+
+                    host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "b3")
+                .setDock("center")
+                .setLeft(380)
+                .setTop(190)
+                .setWidth(666)
+                .setHeight(360)
+                .setDisplay("none")
+                .setHtml("<div class='abox'><ul><li class='titlebox'><span class='closebtn'><img id='cbtn' src='../../../Image/opeimage/close.gif' onclick='CloseInfo()'/></span> <span class='title'>账户信息</span><li class='account' id='pinfo'></li></ul></div>")
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "",bcode = "", telephone = '', yfje = 0, dcode = "";
+                    sebobj = SysEmCode, emcode = "", pgcode = "0010",
+                    emcode = sebobj.IQueryCode(pgcode),
+                    preurl = "../../../UIServer/FinanceBusiness/DistributorYqDoorReceipt/ReceiptDetail.aspx";
+                    IEmployeeItemsEx2("", "0001000100030001", ns.aperson)
+                    ISettlementItems(ns.settlement);
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"]
+                        LoadPayOrder()
+                        ns.sid.setValue(sid)
+                        ns.bcode.setValue(Request["Bcode"])
+                    }
+                    SinglePageBar(emcode, sid, ns.toolbar)
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.btype == "pop") {
+                        bcode = item.bcode;
+                    }
+                    else {
+                        BtnDo(sid, emcode, item)
+                    }
+                },
+                _shoukuan_onchange: function (profile, oldValue, newValue) {
+                    var ns = this, uictrl = profile.boxing();
+                    var wsmoney = ns.weishou.getValue();
+                    var pmoney = newValue;
+                    if (parseInt(pmoney) > parseInt(wsmoney)) {
+                        ns.shoukuan.setValue("1")
+                        linb.warn("收款金额超出应收金额")
+                    }
+                    else {
+                        ns.dxjine.setValue(upDigit(newValue))
+                    }
+                },
+                _qaccount_onclick: function (profile, e, src, value) {
+                    var ns = this, uictrl = profile.boxing();
+                    ns.b3.setDisplay("block");
+                    QueryAccount();
+                },
+                _settlement_onchange: function (profile, oldValue, newValue) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (newValue == "账户结算") {
+                        ns.paccount.setDisplay("block")
+                    }
+                    else {
+                        ns.paccount.setDisplay("none");
+                        ns.paccount.setValue("")
+                    }
+                },
+                _aimg_onclick: function (profile, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _aimg_onshowtips: function (profile, node, pos) {
+                    var ns = this, uictrl = profile.boxing();
+                }
+            },
+            Static: {
+                viewSize: { "width": 1280, "height": 1024 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function LoadPayOrder() {
+            var o = { "sid": sid }
+            var url = preurl + "/SalePayOperator"
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.code.setValue(r.code);
+                ns.city.setValue(r.dname);
+                ns.customer.setValue(r.customer);
+                ns.arje.setValue(r.yingshou);
+                ns.recje.setValue(r.yishou);
+                ns.unaje.setValue(r.weishou);
+                ns.settlement.setValue(r.settlment);
+                ns.priperson.setValue(r.bjr);
+                telephone = r.telephone;
+                dcode = r.dcode;
+            }
+        }
+        function SaveOrder() {
+            var jsfs = ns.settlement.getUIValue();
+            if (jsfs == "预付") {
+                var skje = ns.shoukuan.getUIValue()
+                if (parseFloat(skje) > parseFloat(yfje)) {
+                    linb.warn("账户金额不足");
+                    return;
+                }
+            }
+            if (!CheckInput(ns, ns.acje, true, "number", "收款金额不能为空！", "正确输入收款金额", "0", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.settlement, true, "", "请选择结算方式！", "", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.aperson, true, "", "收款人不能为空！", "", "", "")) {
+                return
+            }
+            if (!CheckInput(ns, ns.acdate, true, "date", "收款日期不能为空！", "", "", "")) {
+                return
+            }
+            var url = preurl + "/SavePayOperator"
+            var db = linb.DataBinder.getFromName("binder");
+            var o = db.updateDataFromUI().getData();
+            var b = AjaxExb(url, o)
+            if (b) {
+                if (b == "S") {
+                    linb.msg("操作成功！")
+
+                    window.location.href = 'RDoorFrameDetail.htm?Sid=' + sid
+                }
+                if (b == "ML") {
+                    linb.warn("账户余额不足！")
+                }
+            }
+            else {
+                linb.warn("操作失败！")
+            }
+        }
+        function QueryAccount() {
+            var url = "../../../CityAccount/PayQueryCityDetail"
+            var o = { "dcode": dcode }
+            var b = AjaxExb(url, o);
+            $("#pinfo").html(b)
+        }
+        function CloseInfo() {
+            ns.b3.setDisplay("none");
+        }
+        function GetRowValue(id) {
+            var cels = $("#" + id + " td");
+            var sm = ns.settlement.getUIValue();
+            if (sm == "账户结算") {
+                sav = cels[1].innerHTML;
+                ns.paccount.setValue(sav);
+                ns.b3.setDisplay("none");
+            }
+        }
+    </script>
+</body>
+</html>

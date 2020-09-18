@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>系统管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <link href="../../../Styles/Common/Common.css" rel="stylesheet" type="text/css" />
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("系统初始设置")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "设置状态"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "treebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_treebar_onitemselected")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pd")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptitle")
+                .setDock("top")
+                .setHeight(60)
+            );
+
+                     host.ptitle.append(
+                (new linb.UI.Label)
+                .setHost(host, "sl1")
+                .setLeft(0)
+                .setTop(20)
+                .setCaption("企业信息")
+                .setFontSize("20px")
+                .setCustomStyle({ "KEY": "color:#474747;  font-family:微软雅黑" })
+            );
+
+                     host.ptitle.append(
+                (new linb.UI.Label)
+                .setHost(host, "ls2")
+                .setLeft(120)
+                .setTop(30)
+                .setWidth(100)
+                .setHeight(12)
+                .setCaption("Company Info")
+                .setCustomStyle({ "KEY": "color:#616161; font-family:Georgia" })
+            );
+
+                     host.pd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(20)
+            );
+
+                     host.pd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(20)
+            );
+
+                     host.pd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "cpname")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(20)
+                .setWidth(550)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>公司名称</span>")
+                .setLabelHAlign("left")
+                .setCustomStyle({ "KEY": "font-size:20px" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "cpaddress")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(80)
+                .setWidth(550)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>公司地址</span>")
+                .setLabelHAlign("left")
+                .setCustomStyle({ "KEY": "font-size:20px" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "cpmanager")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(140)
+                .setWidth(550)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>负责人</span>")
+                .setLabelHAlign("left")
+                .setCustomStyle({ "KEY": "font-size:20px" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "cptelephone")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(200)
+                .setWidth(550)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>联系方式</span>")
+                .setLabelHAlign("left")
+                .setCustomStyle({ "KEY": "font-size:20px" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "cptype")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(260)
+                .setWidth(550)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>公司类型</span>")
+                .setLabelHAlign("left")
+                .setCustomStyle({ "KEY": "font-size:20px" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(50)
+                .setTop(380)
+                .setCaption("<span style='color:#656468;#font-weight:bold;font-size:16px'>企业LOGO</span>")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "limg")
+                .setLeft(50)
+                .setTop(410)
+                .setWidth(300)
+                .setHeight(100)
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "cpstate")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(320)
+                .setWidth(550)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#33911d;#font-weight:bold;font-size:16px'>运行状态</span>")
+                .setLabelHAlign("left")
+                .setCustomStyle({ "KEY": "font-size:20px" })
+            );
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     IdepItems("0001", ns.treebar)
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         window.location.href = "InitCompany.htm";
+                     }
+                     if (item.id == "a3") {
+                         window.location.href = "InitCompany.htm?Code=";
+                     }
+                     if (item.id == "a4") {
+                         window.location.href = "InitCompany.htm?Code=";
+                     }
+                 },
+                 _treebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+
+         function LoadImg(v) {
+             var o = { "mtype": v }
+             var url = preurl + "/InitImg"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 if (v == "1") {
+                     $("#imgsy").attr('src', r.murl);
+
+                 }
+                 else {
+                     $("#imgzy").attr("src", r.murl)
+                 }
+             }
+
+         }
+         function BackUp() {
+             var burl = ns.adr.getUIValue()
+             var o = { "burl": burl, 'btype': optype }
+             var url = preurl + "/BackDataBase"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+
+         }
+         function UpMeasureImg() {
+             var url = "../../../UIServer/SystemInfo/UpLogoImg.aspx?mtype=" + optype;
+             UpFile(ns.imgdlg, "imagefile", url, Reload);
+         }
+         function _btnbbf_onclick() {
+             optype = 1;
+             ns.sjkdlg.setDisplay("block")
+         }
+         function _btnbbbf_onclick() {
+             optype = 2;
+             ns.sjkdlg.setDisplay("block")
+         }
+         function _flbtn_onclick() {
+             optype = 1;
+             ns.imgdlg.setDisplay("block")
+         }
+         function _zybtn_onclick() {
+             optype = 2;
+             ns.imgdlg.setDisplay("block")
+         }
+     </script>
+</body>
+</html>

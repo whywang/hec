@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>菜单管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/DataSource.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("单据类型")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                    host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "coftreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "表单" }, { "id": "col2", "width": 160, "type": "input", "caption": "订单类型" }, { "id": "col3", "width": 120, "type": "input", "caption": "编码"}])
+                .setValue("")
+                .onRowSelected("_coftreegrid_onrowselected")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "odlg")
+                .setLeft(161)
+                .setTop(91)
+                .setWidth(550)
+                .setHeight(289)
+                .setDisplay("none")
+                .setCaption("单据类型")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                    host.odlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                    host.odlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "emcode")
+                .setDataBinder("binder")
+                .setDataField("emcode")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(360)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("表单")
+                .setType("listbox")
+            );
+
+                    host.odlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ofname")
+                .setDataBinder("binder")
+                .setDataField("ofname")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(370)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+
+                    host.odlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ofcode")
+                .setDataBinder("binder")
+                .setDataField("ofcode")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(150)
+                .setWidth(370)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("编码")
+            );
+
+                    host.odlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ofid")
+                .setDataBinder("binder")
+                .setDataField("ofid")
+                .setLeft(50)
+                .setTop(170)
+                .setWidth(370)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                    host.odlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dsource")
+                .setDataBinder("binder")
+                .setDataField("dsource")
+                .setLeft(50)
+                .setTop(200)
+                .setWidth(360)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("数据源")
+                .setType("listbox")
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this; objds = DataSource;
+                    preurl = "../../../UIServer/BaseSet/OrderTypeManage/OrderTypes.aspx";
+                    ImeventmenuItems("m", ns.emcode);
+                    QueryList()
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    objds.IDataSourceItems(ns.dsource)
+                    var ov = ns.coftreegrid.getUIValue()
+                    if (item.id == "a1") {
+                        ns.odlg.setDisplay("block")
+                        InitOrderType("")
+                    }
+                    if (item.id == "a3") {
+                        if (ov != "" && ov != null) {
+                            ns.odlg.setDisplay("block")
+                            InitOrderType(ov)
+                        }
+                        else {
+                            linb.message("请选择单据类型")
+                        }
+                    }
+                    if (item.id == "a4") {
+                        if (ov != "" && ov != null) {
+                            IDelFun("DelOrderType('" + ov + "')")
+                        }
+                        else {
+                            linb.message("请选择单据类型")
+                        }
+                    }
+                },
+                _coftreegrid_onrowselected: function (profile, row, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                },
+                _stoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        SaveOrderType()
+                    }
+                    if (item.id == "a3") {
+                        ns.odlg.setDisplay("none")
+                    }
+                }
+            }
+        });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitOrderType( tv) {
+             var o = {"tcode": tv }
+             var url = preurl + "/InitOrderType"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.emcode.setValue(r.emcode)
+             ns.ofname.setValue(r.tname)
+             ns.ofcode.setValue(r.tcode)
+             ns.dsource.setValue(r.tsource)
+             ns.ofid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.emcode.setValue()
+             ns.ofname.setValue()
+             ns.ofcode.setValue()
+             ns.ofid.setValue(0)
+         }
+         function SaveOrderType() {
+
+             var url = preurl + "/SaveOrderType"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "reload()", false)
+         }
+         function DelOrderType(tv) {
+             var o = { "tcode": tv }
+             var url = preurl + "/DelOrderType"
+             var b = AjaxExb(url, o);
+             BackVad(b, "reload()", false)
+         }
+         function QueryList() {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.coftreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[0]}] })
+                 }
+                 ns.coftreegrid.setRows(arr)
+             }
+         }
+         function reload() {
+             QueryList()
+             ns.odlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>
+

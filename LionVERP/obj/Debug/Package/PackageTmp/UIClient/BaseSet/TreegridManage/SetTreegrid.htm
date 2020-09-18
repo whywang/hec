@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>表格设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("表格设计")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptt")
+                .setDock("top")
+                .setHeight(39)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ptt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>列表单</span>")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "lbtreebar")
+                 .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_lbtreebar_onitemselected")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block5")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block5.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}, { "id": "a2", "type": "split", "split": true }, { "id": "a5", "caption": "复制", "image": "../../../Image/opeimage/copy.gif"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            );
+
+                     host.ctl_block5.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "lbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "角色" }, { "id": "col3", "width": 300, "type": "input", "caption": "列" }, { "id": "col4", "width": 300, "type": "input", "caption": "Sql"}])
+                .setValue("")
+                .onRowSelected("_lbtreegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "lbdlg")
+                .setLeft(125)
+                .setTop(38)
+                .setWidth(810)
+                .setHeight(662)
+                .setDisplay("none")
+                .setCaption("表格")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_astoolbar_onclick")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lbrole")
+                .setDataBinder("binder")
+                .setDataField("lbrole")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色")
+                .setType("listbox")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbtitle")
+                .setDataBinder("binder")
+                .setDataField("lbtitle")
+                .setLeft(10)
+                .setTop(130)
+                .setWidth(740)
+                .setHeight(90)
+                .setLabelSize(60)
+                .setLabelCaption("表&nbsp;&nbsp;单&nbsp;列")
+                .setMultiLines(true)
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbsql")
+                .setDataBinder("binder")
+                .setDataField("lbsql")
+                .setLeft(10)
+                .setTop(240)
+                .setWidth(740)
+                .setHeight(100)
+                .setLabelSize(60)
+                .setLabelCaption("ViewSql")
+                .setMultiLines(true)
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lbyq")
+                .setDataBinder("binder")
+                .setDataField("lbyq")
+                .setLeft(510)
+                .setTop(50)
+                .setWidth(220)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "a" }, { "id": "b", "caption": "b" }, { "id": "c", "caption": "c" }, { "id": "d", "caption": "d" }, { "id": "e", "caption": "e" }, { "id": "f", "caption": "f" }, { "id": "g", "caption": "g" }, { "id": "h", "caption": "h" }, { "id": "j", "caption": "j" }, { "id": "k", "caption": "k"}])
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbtj")
+                .setDataBinder("binder")
+                .setDataField("lbtj")
+                .setLeft(10)
+                .setTop(550)
+                .setWidth(740)
+                .setHeight(60)
+                .setLabelSize(60)
+                .setLabelCaption("查询条件")
+                .setMultiLines(true)
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbemname")
+                .setDataBinder("binder")
+                .setDataField("lbemname")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("列&nbsp;&nbsp;表&nbsp;单")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbemcode")
+                .setDataBinder("binder")
+                .setDataField("lbemcode")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(270)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("列&nbsp;&nbsp;表&nbsp;单")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbtcode")
+                .setDataBinder("binder")
+                .setDataField("lbtcode")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(270)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("列&nbsp;&nbsp;表&nbsp;单")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbyqname")
+                .setDataBinder("binder")
+                .setDataField("lbyqname")
+                .setLeft(260)
+                .setTop(90)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption(" 标签名称")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbid")
+                .setDataBinder("binder")
+                .setDataField("lbid")
+                .setLeft(310)
+                .setTop(100)
+                .setWidth(270)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbtable")
+                .setDataBinder("binder")
+                .setDataField("lbtable")
+                .setLeft(10)
+                .setTop(90)
+                .setWidth(250)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("表/视图")
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dctitle")
+                .setDataBinder("binder")
+                .setDataField("dctitle")
+                .setLeft(10)
+                .setTop(360)
+                .setWidth(740)
+                .setHeight(70)
+                .setLabelSize(60)
+                .setLabelCaption("导&nbsp;&nbsp;单&nbsp;出")
+                .setMultiLines(true)
+            );
+
+                     host.lbdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcsql")
+                .setDataBinder("binder")
+                .setDataField("dcsql")
+                .setLeft(10)
+                .setTop(450)
+                .setWidth(740)
+                .setHeight(80)
+                .setLabelSize(60)
+                .setLabelCaption("导出Sql")
+                .setMultiLines(true)
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/TreegridManage/Treegrids.aspx";
+                     IeventmenuItems("", "1", "", "", ns.lbtreebar);
+                     IroleItems(ns.lbrole);
+
+                 },
+
+                 _lbtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.lbtreebar.setValue(item.id)
+                     QueryList(item.id)
+                 },
+                 _atoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var ev = ns.lbtreebar.getUIValue()
+                     var tv = ns.lbtreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         if (ev != "" && ev != null) {
+                             ns.lbdlg.setDisplay("block");
+                             InitTreegrid(ev, "")
+                         }
+                         else {
+                             linb.message("请选择表单")
+                         }
+                     }
+                     if (item.id == "a3") {
+                         if (tv != "" && tv != null) {
+                             ns.lbdlg.setDisplay("block");
+                             InitTreegrid("", tv)
+                         }
+                         else {
+                             linb.message("请选择表单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (tv != "" && tv != null) {
+                             linb.confirms("确定要删除?","DelTreegrid('" + tv + "')")
+                         }
+                         else {
+                             linb.message("请选择表单")
+                         }
+                     } 
+                     if (item.id == "a5") {
+                         if (tv != "" && tv != null) {
+                            CopyTreegrid(tv)
+                         }
+                         else {
+                             linb.message("请选择表单")
+                         }
+                     }
+                 },
+                 _astoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveTreegrid()
+                     }
+                     if (item.id == "a3") {
+                         ns.lbdlg.setDisplay("none")
+                     }
+                 },
+                 _lbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.lbtreegrid.setValue(row.id)
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitTreegrid(ev,tv) {
+             var o = { "emcode":ev,"tcode": tv }
+             var url = preurl + "/InitTree"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.lbemcode.setValue(r.emcode)
+             ns.lbemname.setValue(r.emname)
+             ns.lbtcode.setValue(r.tcode)
+             ns.lbrole.setValue(r.rcode)
+             ns.lbyq.setValue(r.tabcode)
+             ns.lbyqname.setValue(r.tabname)
+             ns.lbtitle.setValue(r.cols)
+             ns.lbsql.setValue(r.sqlcols)
+             ns.dctitle.setValue(r.ecols)
+             ns.dcsql.setValue(r.esqlcols)
+             ns.lbtj.setValue(r.sqlcondition)
+             ns.lbid.setValue(r.id)
+             ns.lbtable.setValue(r.tname)
+         }
+         function InitUnKj() {
+             ns.lbemcode.setValue()
+             ns.lbemname.setValue()
+             ns.lbtcode.setValue()
+             ns.lbrole.setValue()
+             ns.lbyq.setValue()
+             ns.lbyqname.setValue()
+             ns.lbtitle.setValue()
+             ns.lbsql.setValue()
+             ns.lbtj.setValue()
+             ns.lbid.setValue(0)
+         }
+         function SaveTreegrid() {
+             
+             var url = preurl + "/SaveTree"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "reload()", false)
+         }
+         function CopyTreegrid(tv) {
+             var o = { "tcode": tv }
+             var url = preurl + "/CopyTree"
+             var b = AjaxExb(url, o);
+             BackVad(b, "reload()", false)
+         }
+         function DelTreegrid(tv) {
+             var o = { "tcode": tv }
+             var url = preurl + "/DelTree"
+             var b = AjaxExb(url, o);
+             BackVad(b, "reload()", false)
+         }
+         function QueryList(ev) {
+             var url = preurl + "/QueryList";
+             var o = {"emcode":ev}
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lbtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3]}] })
+                 }
+                 ns.lbtreegrid.setRows(arr)
+             }
+         }
+         function reload() {
+             var ev = ns.lbtreebar.getUIValue()
+             QueryList(ev)
+             ns.lbdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>

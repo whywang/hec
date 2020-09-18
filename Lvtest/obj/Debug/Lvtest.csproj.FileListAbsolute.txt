@@ -1,0 +1,5 @@
+D:\企业系统\LionVERP\Lvtest\obj\Debug\Lvtest.csprojResolveAssemblyReference.cache
+D:\企业系统\LionVERP\Lvtest\bin\Debug\Lvtest.dll
+D:\企业系统\LionVERP\Lvtest\bin\Debug\Lvtest.pdb
+D:\企业系统\LionVERP\Lvtest\obj\Debug\Lvtest.dll
+D:\企业系统\LionVERP\Lvtest\obj\Debug\Lvtest.pdb

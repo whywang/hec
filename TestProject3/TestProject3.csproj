@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9BDB2A7C-D281-4E5C-B04C-35C461EDC474}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestProject3</RootNamespace>
+    <AssemblyName>TestProject3</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\..\美科多new\LionVERP\bin\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="ThoughtWorks.QRCode">
+      <HintPath>..\LionvCommonBll\bin\Debug\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusiCreateNewOrderFlowTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LionvBll\LionvBll.csproj">
+      <Project>{C0C92CA2-8739-4040-B4CE-1BED9207484D}</Project>
+      <Name>LionvBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvCommonBll\LionvCommonBll.csproj">
+      <Project>{B5C5F654-CE85-438A-9B64-49DB32E7C814}</Project>
+      <Name>LionvCommonBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvCommon\LionvCommon.csproj">
+      <Project>{220CE70E-5FEE-4CD5-944E-39270DE8446C}</Project>
+      <Name>LionvCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvFactoryDal\LionvFactoryDal.csproj">
+      <Project>{A807EE62-1E43-4137-AFBF-EA4B8BA1B467}</Project>
+      <Name>LionvFactoryDal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvIDal\LionvIDal.csproj">
+      <Project>{22205BC1-A4E5-4E3C-99D3-715C768AA9D7}</Project>
+      <Name>LionvIDal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvMgModel\LionvMgModel.csproj">
+      <Project>{69E3C6CE-6EF9-4FAA-8F99-2020144E0704}</Project>
+      <Name>LionvMgModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LionvModel\LionvModel.csproj">
+      <Project>{D06D6708-531B-46B5-8486-E623FC49B53B}</Project>
+      <Name>LionvModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj">
+      <Project>{63BEE6DC-C77F-424E-B832-A81C814A2827}</Project>
+      <Name>ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

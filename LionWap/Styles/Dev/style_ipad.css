@@ -1,0 +1,39 @@
+﻿@charset "utf-8";
+/* CSS Document */
+@media screen and (min-width:680px) and (max-width:1200px)
+{
+   body{margin:0 0 0 0}
+   .headeripad{width:100%; height:220px; border:1px solid #cccccc}
+   .headeripad #ipadLogo{  margin-top:20px}
+   .headeripad #ipadLogotext{ text-align:center; margin-top:20px; font-size:25px; font-weight:bolder}
+   .headerpc{display:none}
+   .headerwap{display:none}
+   
+   .mainpc{display:none}
+   .mainipad{width:100%;}
+   .mainipad #mainipadImg{ width:100%;}
+   .mainipad #ipadBox{ width:400px; height:250px; border:1px solid #cccccc;  margin-top:5% ;  z-index:99999; background-color:#eeeeee;filter:alpha(opacity=90); -moz-opacity:0.9; opacity:0.9; text-align:center}
+   .mainipad #ipadBox .logobj{ width:100%; border:1px solid #eeeeee}
+   .mainipad #ipadBox .logoimg{  border:none; float:left}
+   .mainipad #ipadtenp{ cursor:pointer}
+   .mainipad .ipadinput{ border:none; background-image:url(/Image/sysimg/input.gif); color:#999999}
+   .mainipad #tip{ border:none;  color:red}
+   .mainipad .padlw{ padding-top:20px}
+   
+   .opc{display:none}
+   .oipad{ height:auto}
+   .oipadbar{ width:100%; height:35px; background-color:#ddf2ca}
+   .oipadbar .oipadtitle{ padding-top:10px; font-size:16px ; font-weight:bolder; color:#13347e;}
+   .oipadprocess{ width:100%; height:auto;  padding-top:20px; }
+   .oipadplistf{ width:300px; height:55px;background-image:url(/Image/unipadprocess.gif);}
+   .oipadplist{ width:300px; height:55px;background-image:url(/Image/unipadprocess.gif);  }
+   .opipadlisttext{ display:block; padding-top:20px; text-align:center; margin-left:-50px ;font-size:14px; color:#555555}
+   .oipadodetail table{border-collapse:collapse ; border:1px solid #cccccc; width:100%}
+   .oipadodetail td{border:1px solid #cccccc; height:30px; font-size:14px}
+   .oipadodetail .ttitle{ width:200px; font-weight:bolder;}
+    #ipadtip{ border:none;  color:red}
+   .mainwap{display:none}
+   .owap {display:none}
+   .footer{  margin-top:50px; text-align:center}
+}
+

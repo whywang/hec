@@ -1,0 +1,568 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品包装设置</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ipackage.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "package")
+                .setZIndex(1)
+                .setCaption("包装管理")
+            );
+
+                     host.package.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tabs")
+                .setItems([{ "id": "a", "caption": "产品设置" }, { "id": "b", "caption": "条件设置"}])
+                .setValue("a")
+                .onItemSelected("_tabs_onitemselected")
+            );
+
+                     host.tabs.append(
+                (new linb.UI.Layout)
+                .setHost(host, "layout")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.layout.append(
+                (new linb.UI.Block)
+                .setHost(host, "b3")
+                .setDock("fill")
+            , "before1");
+
+                     host.b3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_pane9")
+                .setDock("top")
+                .setHeight(30)
+                .setCustomStyle({ "KEY": "border:1px solid #cccccc;font-size:14px" })
+            );
+
+                     host.ctl_pane9.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel2")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("***产品类别***")
+            );
+
+                     host.b3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "itreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_itreebar_onitemselected")
+                .beforeExpend("_itreebar_beforeexpend")
+            );
+
+                     host.layout.append(
+                (new linb.UI.Block)
+                .setHost(host, "b1")
+                .setDock("fill")
+            , "before");
+
+                     host.b1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_pane8")
+                .setDock("top")
+                .setHeight(30)
+                .setCustomStyle({ "KEY": "border:1px solid #cccccc;font-size:14px" })
+            );
+
+                     host.ctl_pane8.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel1")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("***包装条件***")
+            );
+
+                     host.b1.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.layout.append(
+                (new linb.UI.Block)
+                .setHost(host, "b2")
+                .setDock("fill")
+            , "main");
+
+                     host.b2.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 80, "type": "input", "caption": "产品名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "产品编码" }, { "id": "col3", "width": 80, "type": "input", "caption": "产品材质"}])
+                .setValue("")
+            );
+
+                     host.tabs.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "tlbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_tlbar_onclick")
+            , "a");
+
+                     host.tabs.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block6")
+                .setDock("fill")
+            , "b");
+
+                     host.ctl_block6.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 80, "type": "input", "caption": "名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "编码" }, { "id": "col3", "width": 80, "type": "input", "caption": "包件数" }, { "id": "col4", "width": 80, "type": "input", "caption": "套装" }, { "id": "col4", "width": 80, "type": "input", "caption": "套件数" }, { "id": "col4", "width": 80, "type": "input", "caption": "最大件数" }, { "id": "col4", "width": 80, "type": "input", "caption": "包装顺序" }, { "id": "col4", "width": 80, "type": "input", "caption": "高范围" }, { "id": "col4", "width": 80, "type": "input", "caption": "宽范围"}])
+                .setValue("")
+                .onRowSelected("_ctreegrid_onrowselected")
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "tjdlg")
+                .setLeft(150)
+                .setTop(70)
+                .setWidth(630)
+                .setHeight(430)
+                .setDisplay("none")
+                .setCaption("条件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bname")
+                .setDataBinder("binder")
+                .setDataField("bname")
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bcode")
+                .setDataBinder("binder")
+                .setDataField("bcode")
+                .setLeft(290)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bjs")
+                .setDataBinder("binder")
+                .setDataField("bjs")
+                .setLeft(20)
+                .setTop(100)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("包&nbsp;&nbsp;件&nbsp;数")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "sftz")
+                .setDataBinder("binder")
+                .setDataField("sftz")
+                .setLeft(20)
+                .setTop(150)
+                .setWidth(245)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("是否套装")
+                .setType("listbox")
+                .setItems([{ "id": "是", "caption": "是" }, { "id": "否", "caption": "否"}])
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjs")
+                .setDataBinder("binder")
+                .setDataField("tjs")
+                .setLeft(290)
+                .setTop(150)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("套&nbsp;&nbsp;件&nbsp;数")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zdjs")
+                .setDataBinder("binder")
+                .setDataField("zdjs")
+                .setLeft(290)
+                .setTop(200)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("最大件数")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "bzsx")
+                .setDataBinder("binder")
+                .setDataField("bzsx")
+                .setLeft(20)
+                .setTop(200)
+                .setWidth(245)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("包装顺序")
+                .setType("listbox")
+                .setItems([{ "id": "无", "caption": "无" }, { "id": "相邻", "caption": "相邻"}])
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "zjlx")
+                .setDataBinder("binder")
+                .setDataField("zjlx")
+                .setLeft(290)
+                .setTop(100)
+                .setWidth(245)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("组件类型")
+                .setType("listbox")
+                .setItems([{ "id": "套板", "caption": "套板" }, { "id": "L线", "caption": "L线" }, { "id": "挡轨线", "caption": "挡轨线"}])
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gxj")
+                .setDataBinder("binder")
+                .setDataField("gxj")
+                .setLeft(20)
+                .setTop(250)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高&nbsp;&nbsp;下&nbsp;界")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gsj")
+                .setDataBinder("binder")
+                .setDataField("gsj")
+                .setLeft(290)
+                .setTop(250)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("高&nbsp;&nbsp;上&nbsp;界")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ksj")
+                .setDataBinder("binder")
+                .setDataField("ksj")
+                .setLeft(290)
+                .setTop(300)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽&nbsp;&nbsp;上&nbsp;界")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bid")
+                .setDataBinder("binder")
+                .setDataField("bid")
+                .setLeft(290)
+                .setTop(300)
+                .setWidth(260)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "kxj")
+                .setDataBinder("binder")
+                .setDataField("kxj")
+                .setLeft(20)
+                .setTop(300)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("宽&nbsp;&nbsp;下&nbsp;界")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cptype")
+                .setDataBinder("binder")
+                .setDataField("cptype")
+                .setLeft(20)
+                .setTop(350)
+                .setWidth(260)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("产品类型")
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atlbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_atlbar_onclick")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/PackageManage/Packages.aspx";
+                 },
+
+                 _tlbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue()
+                     var iv = ns.itreebar.getUIValue()
+                     var ppv = ns.ptreegrid.getUIValue()
+                     if (pv == "" || pv == null) {
+                         linb.message("选择包装条件");
+                         return
+                     }
+                     if (item.id == "a1") {
+
+                         if (iv == "" || iv == null) {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         if (ppv == "" || ppv == null) {
+                             linb.message("选择产品");
+                             return
+                         }
+                         SetPackProduction(pv, iv, ppv)
+                     }
+                     if (item.id == "a3") {
+                         IDoFun('操作提示', "ReSetPackProduction('" + pv + "')")
+                     }
+                 },
+                 _atlbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ctreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.tjdlg.setDisplay("block")
+                         InitPack("")
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "" || pv == null) {
+                             linb.message("选择包装记录");
+                         }
+                         else {
+                             ns.tjdlg.setDisplay("block");
+                             InitPack(pv)
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (pv == "" || pv == null) {
+                             linb.message("选择包装记录");
+                         }
+                         else {
+                             IDoFun('确定删除？', "DelPack('" + pv + "')")
+                         }
+                     }
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SavePack()
+                     }
+                     ns.tjdlg.setDisplay("none")
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreebar.setValue(item.id)
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _itreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue()
+                     IinvCItems(item, ns.itreebar);
+                     QueryListInv(item.id, ns.ptreegrid)
+                     ns.itreebar.setValue(item.id)
+                     if (pv != "" && pv != null) {
+                         GetPackProduction(pv, item.id, ns.ctreegrid)
+                     }
+                 },
+                 _itreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.itreebar)
+                 },
+                 _ctreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _tabs_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IinvItems("", ns.itreebar)
+                         IPackageItems(ns.ptreebar)
+                     }
+                     if (item.id == "b") {
+                         IPackageTable(ns.ctreegrid)
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitPack(v) {
+             var o = { "pcode": v }
+             var url = preurl + "/InitPackage"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function SavePack() {
+             var url = preurl + "/SavePackage"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function DelPack(v) {
+             var o = { "pcode": v }
+             var url = preurl + "/DelPackage"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function InitKj(r) {
+             ns.bname.setValue(r.pname)
+             ns.bcode.setValue(r.pcode)
+             ns.bjs.setValue(r.basenum)
+             ns.zjlx.setValue(r.zjtype)
+             ns.sftz.setValue(r.istz)
+             ns.tjs.setValue(r.tznum)
+             ns.bzsx.setValue(r.psort)
+             ns.zdjs.setValue(r.maxnum)
+             ns.gxj.setValue(r.hlvalue)
+             ns.gsj.setValue(r.htvalue)
+             ns.kxj.setValue(r.klvalue)
+             ns.ksj.setValue(r.ktvalue)
+             ns.cptype.setValue(r.cptype)
+             ns.bid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.bname.setValue("")
+             ns.bcode.setValue("")
+             ns.bjs.setValue("")
+             ns.zjlx.setValue("")
+             ns.sftz.setValue("")
+             ns.tjs.setValue("")
+             ns.bzsx.setValue("")
+             ns.zdjs.setValue("")
+             ns.gxj.setValue("")
+             ns.gsj.setValue("")
+             ns.kxj.setValue("")
+             ns.ktj.setValue("")
+             ns.cptype.setValue("")
+             ns.bid.setValue(0)
+         }
+        
+     </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿.Sprice{margin-top: 33px }
+.Sprice table{ border-collapse:collapse ; border:1px solid #1b47ab}
+.Sprice td{  border:1px solid #1b47ab; height:25px}
+
+.Sprice .theady{ background-image:url(../../../Image/custome/fkbj.gif); height:70px; background-repeat:no-repeat} 
+.Sprice #code{margin-left:900px; font-size:24px ; font-weight:bolder}
+
+.editprice { border-collapse:collapse ; border:1px solid #1b47ab; width:100%}
+.editprice td{  border:1px solid #1b47ab; height:28px}
+.editprice input{ border:none}

@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>平台管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+ 
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("消息提示")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "暂停"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "mtreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码" }, { "id": "col3", "width": 100, "type": "input", "caption": "处理状态" }, { "id": "col4", "width": 100, "type": "input", "caption": "状态名称" }, { "id": "col2", "width": 200, "type": "input", "caption": "地址" }, { "id": "col3", "width": 80, "type": "input", "caption": "状态"}])
+                .onRowSelected("_mtreegrid_onrowselected")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "mdlg")
+                .setLeft(102)
+                .setTop(73)
+                .setWidth(610)
+                .setHeight(532)
+                .setCaption("消息")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "mstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_mstoolbar_onclick")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "mname")
+                .setDataBinder("binder")
+                .setDataField("mname")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(430)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("消息名称")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "mcode")
+                .setDataBinder("binder")
+                .setDataField("mcode")
+                .setLeft(60)
+                .setTop(100)
+                .setWidth(430)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("消息编码")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ostate")
+                .setDataBinder("binder")
+                .setDataField("ostate")
+                .setLeft(60)
+                .setTop(250)
+                .setWidth(415)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("处理状态")
+                .setType("listbox")
+                .setItems([{ "id": "", "caption": "" }, { "id": "1", "caption": "通过" }, { "id": "0", "caption": "驳回"}])
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dstate")
+                .setDataBinder("binder")
+                .setDataField("dstate")
+                .setLeft(60)
+                .setTop(150)
+                .setWidth(430)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("状态名称")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ename")
+                .setDataBinder("binder")
+                .setDataField("ename")
+                .setLeft(60)
+                .setTop(200)
+                .setWidth(430)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("事件名称")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "murl")
+                .setDataBinder("binder")
+                .setDataField("murl")
+                .setLeft(60)
+                .setTop(300)
+                .setWidth(430)
+                .setHeight(50)
+                .setLabelSize(60)
+                .setLabelCaption("响应地址")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "mstate")
+                .setDataBinder("binder")
+                .setDataField("mstate")
+                .setLeft(60)
+                .setTop(370)
+                .setWidth(415)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "启用" }, { "id": "0", "caption": "停用"}])
+            );
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "rcode")
+                .setDataBinder("binder")
+                .setDataField("rcode")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(420)
+                .setWidth(430)
+                .setHeight(50)
+                .setLabelSize(60)
+                .setLabelCaption("响应角色")
+                .setMultiLines(true)
+                .onFocus("_rcode_onfocus")
+            );
+                     host.mdlg.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "rdlg")
+                .setLeft(240)
+                .setTop(130)
+                .setWidth(280)
+                .setHeight(340)
+                .setCaption("角色")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "rtreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "角色"}])
+            );
+
+                     host.rdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1")
+                .setDock("top")
+                .setHeight(30)
+            );
+
+                     host.p1.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "rtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_rtoolbar_onclick")
+            );
+
+
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: {},
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.mdlg.setDisplay("block");
+                     }
+                     if (item.id == "a3") {
+                         ns.mdlg.setDisplay("block");
+                     }
+                     if (item.id == "a4") {
+                     }
+                 },
+                 _mstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _rcode_onfocus: function (profile) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.rdlg.setDisplay("block");
+                 },
+                 _rtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _mtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+        
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitApi(v) {
+             var o = { "scode": v }
+             var url = preurl + "/InitApi"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.sname.setValue(r.sname);
+                 ns.scode.setValue(r.scode)
+                 ns.surl.setValue(r.surl)
+                 ns.suser.setValue(r.suser)
+                 ns.spwd.setValue(r.spwd)
+                 ns.sfwname.setValue(r.sfwname)
+                 ns.smethod.setValue(r.sfwmethod)
+                 ns.sid.setValue(r.id)
+             }
+             else {
+
+             }
+         }
+         function DelApi(v) {
+             var o = { "scode": v }
+             var url = preturl + "/DelApi"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList()", false)
+         }
+         function SaveApi() {
+             var url = preurl + "/SaveApi"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList()", false)
+         }
+         function QueryList() {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.treegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[1], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6]}] })
+                 }
+                 ns.treegrid.setRows(arr)
+             }
+         }
+         function ReLoad() {
+             QueryList();
+             ns.fdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>

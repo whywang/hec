@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"">
+	<title>联汇软件移动安装服务系统</title>
+    <script src="Scripts/jquery-1.8.2.js" type="text/javascript"></script>
+    <script src="layer/layer.js" type="text/javascript"></script>
+    <link href="MobileCss/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" />
+    <script src="MobileScript/jquery.js" type="text/javascript"></script>
+    <script src="MobileScript/jquery.mobile-1.4.5.js" type="text/javascript"></script>
+    <link href="MobileCss/ninetable.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/json2.js" type="text/javascript"></script>
+    <script src="Scripts/Common.js" type="text/javascript"></script>
+    <script src="Scripts/ValReturn.js" type="text/javascript"></script>
+    <style type="text/css">
+      tr{ height:30px}
+    </style>
+</head>
+<body>
+    <div data-role="page" id="main">
+        <div data-role="header">
+            <a href="main.htm" class="ui-btn ui-icon-arrow-l ui-btn-icon-left" rel="external">
+                &nbsp;
+            </a>
+            <h1>
+                安装信息统计
+            </h1>
+        </div>
+        <input type="button" id="dd" value="查询" />
+        <div data-role="header">
+            <h1>
+                统计信息
+            </h1>
+        </div>
+        <table data-role="table" class="ui-responsive table-stroke" id="cptable">
+            <thead>
+                <tr>
+                    <th data-priority="1">
+                        序号
+                    </th>
+                    <th data-priority="2">
+                        产品
+                    </th>
+                    <th data-priority="3">
+                        数量
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="rtext">
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+ <script type="text/javascript">
+     $(function () {
+         $("#dd").click(function () { test() })
+     })
+     function ddd() {
+         layer.open({
+             type: 1,
+             shade: false,
+             title: false,  
+             content: $('.layer_notice'),  
+             cancel: function () {
+                 layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+             }
+         });
+     }
+     function test() {
+         layer.open({
+             type: 1,
+             title: false,
+             closeBtn: 1,
+             area: '80%',
+             shadeClose: false,
+             skin: 'yourclass',
+             anim: 6,
+             content: '<div style="width:100%;height:35px;background:#eeeeee"> <span style="display:block; padding-top:7px; padding-left:10px;">查询</span>  </div> <center><br><div data-role="fieldcontain" style="height:190px"> <table><tr><td height="40">订&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单</td><td><input type="text" name="scode" id="scode" style=" width:100%;border:1px solid #cccccc;height:30px"> </td></tr><tr><td  height="40">起始日期</td><td><input type="date" name="bday" id="bday" style=" width:100%;border:1px solid #cccccc;height:30px"></td></tr><tr><td  height="40">截止日期</td><td><input type="date" name="eday" id="eday" style=" width:100%;border:1px solid #cccccc;height:30px"></td></tr><tr><td colspan="2" height="40"><img src="Image/sysimg/sure.png" style="cursor:pointer" onclick="SQueryOrder()"/></td></tr></table></div></center>'
+         });
+     }
+     $(document).bind("pageinit",
+        function (event, data) {
+            QueryOrder()
+        });
+        function QueryOrder() {
+         var bdate = "";
+         var edate = "";
+         var code = "";
+         var wheres=""
+         var str = "";
+         var o = { "bdate": bdate, 'edate': edate, 'code': code, 'wheres': wheres }
+         var url = "UIServer/FixOrderLists.aspx/QueryProductionSummary"
+         var b = AjaxExb(url, o);
+         var r = BackVad(b, "", false);
+         if (r) {
+             var arr = new Array();
+             for (i = 1; i < r.length; i++) {
+                 var cel = r[i].toString().split(',');
+                 str = str + "<tr ><td >" + i + "</td><td>" + cel[0] + "</td><td> " + cel[1] + "</td></tr>";
+             }
+         }
+         $("#rtext").append(str);
+         $("#cptable").table("refresh");
+     }
+     function SQueryOrder() {
+         var bdate = $("#bday").val();
+         var edate = $("#eday").val();
+         var code = $("#scode").val();
+         var wheres = ""
+         var str = "";
+         layer.close(1)
+         var o = { "bdate": bdate, 'edate': edate, 'code': code, 'wheres': wheres }
+         var url = "UIServer/FixOrderLists.aspx/QueryProductionSummary"
+         var b = AjaxExb(url, o);
+         var r = BackVad(b, "", false);
+         if (r) {
+             var arr = new Array();
+             for (i = 1; i < r.length; i++) {
+                 var cel = r[i].toString().split(',');
+                 str = str + "<tr ><td >" + i + "</td><td>" + cel[0] + "</td><td> " + cel[1] + "</td></tr>";
+             }
+         }
+         $("#rtext").html("");
+         $("#rtext").append(str);
+         $("#cptable").table("refresh");
+     }
+ </script>

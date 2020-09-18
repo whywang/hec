@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户退款</title>
+</head>
+<body>
+    <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iviewtable.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+   
+        Class('App', 'linb.Com', {
+         
+            Instance: {
+               
+                initialize: function () {
+                 
+                    this.autoDestroy = true;
+                
+                    this.properties = {};
+                },
+             
+                iniComponents: function () {
+           
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "abinder")
+                .setName("abinder")
+            );
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "bbinder")
+                .setName("bbinder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("客户退款")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "未处理" }, { "id": "b", "caption": "已处理"}])
+                .setValue("b")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                    host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "apagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .setDomId("apagebar")
+                .onClick("_apagebar_onclick")
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "atreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 80, "type": "input", "caption": "col1"}])
+            , "a");
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "adlg")
+                .setLeft(130)
+                .setTop(100)
+                .setWidth(550)
+                .setHeight(180)
+                .setCaption("查询")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            , "a");
+
+                    host.adlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_astoolbar_onclick")
+            );
+
+                    host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "acustomer")
+                .setDataBinder("abinder")
+                .setDataField("customer")
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户名称")
+            );
+
+                    host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "atelephone")
+                .setDataBinder("abinder")
+                .setDataField("telephone")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户电话")
+            );
+
+                    host.adlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "abdate")
+                .setDataBinder("abinder")
+                .setDataField("bdate")
+                .setLeft(20)
+                .setTop(100)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("起始日期")
+                .setType("date")
+            );
+
+                    host.adlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "aedate")
+                .setDataBinder("abinder")
+                .setDataField("edate")
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("截止日期")
+                .setType("date")
+            );
+
+                    host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "btoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_btoolbar_onclick")
+            , "b");
+
+                    host.tab.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "bpagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .setDomId("bpagebar")
+                .onClick("_bpagebar_onclick")
+            , "b");
+
+                    host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "btreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 80, "type": "input", "caption": "col1"}])
+            , "b");
+
+                    host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "bdlg")
+                .setLeft(130)
+                .setTop(100)
+                .setWidth(550)
+                .setHeight(180)
+                .setCaption("查询")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            , "b");
+
+                    host.bdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "bstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_bstoolbar_onclick")
+            );
+
+                    host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bcustomer")
+                .setDataBinder("bbinder")
+                .setDataField("customer")
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户名称")
+            );
+
+                    host.bdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "btelephone")
+                .setDataBinder("bbinder")
+                .setDataField("telephone")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("客户电话")
+            );
+
+                    host.bdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "bbdate")
+                .setDataBinder("bbinder")
+                .setDataField("bdate")
+                .setLeft(20)
+                .setTop(100)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("起始日期")
+                .setType("date")
+            );
+
+                    host.bdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "bedate")
+                .setDataBinder("bbinder")
+                .setDataField("edate")
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("截止日期")
+                .setType("date")
+            );
+
+                    return children;
+                
+                },
+                
+                iniExComs: function (com, threadid) {
+                },
+               
+                customAppend: function (parent, subId, left, top) {
+                 
+                    return false;
+                },
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, emcode = "0090";
+                    preurl = "../../../UIServer/AccountBusiness/CustomerAccountList.aspx";
+                    tabv = GetCookie("PayTab")
+                    pnum = GetCookie("PayPageNum")
+                    pnum = pnum == "" ? 1 : pnum
+                    if (tabv == "a") {
+                        ns.tab.setValue(tabv)
+                    }
+                    if (tabv == "b") {
+                        ns.tab.setValue(tabv)
+                    }
+                    IViewTab(emcode, ns.tab)
+                },
+    
+                _tab_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a") {
+                        pnum = tabv == "a" ? pnum : 1;
+                        SetCookie("PayTab", "a")
+                        SetCookie("PayPageNum", "1")
+                        linb.UIProfile.getFromDom("apagebar").boxing().setPage(pnum)
+                        ITableViewByAtrr(emcode, "a", ns.atreegrid)
+                        QueryList(1, 15, emcode, "a", "abinder", ns.atreegrid, ns.apagebar)
+                        ListPageToolBar(emcode, ns.atoolbar);
+                        tabv = "a";
+                    }
+                    if (item.id == "b") {
+                        pnum = tabv == "b" ? pnum : 1;
+                        SetCookie("PayTab", "b")
+                        SetCookie("PayPageNum", "1")
+                        linb.UIProfile.getFromDom("bpagebar").boxing().setPage(pnum)
+                        ITableViewByAtrr(emcode, "b", ns.btreegrid)
+                        QueryList(1, 15, emcode, "b", "bbinder", ns.btreegrid, ns.bpagebar)
+                        ListPageToolBar(emcode, ns.btoolbar);
+                        tabv = "b";
+                    }
+                },
+                _atoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    BtnDo("", "", item)
+                },
+                _btoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    BtnDo("", "", item)
+                },
+                _apagebar_onclick: function (profile, page) {
+                    var ns = this, uictrl = profile.boxing();
+                    QueryList(page, 15, emcode, "a", "abinder", ns.atreegrid, ns.apagebar)
+                    profile.boxing().setPage(page)
+                    SetCookie("PayPageNum", page)
+                },
+                _bpagebar_onclick: function (profile, page) {
+                    var ns = this, uictrl = profile.boxing();
+                    QueryList(page, 15, emcode, "b", "bbinder", ns.btreegrid, ns.bpagebar)
+                    profile.boxing().setPage(page)
+                    SetCookie("PayPageNum", page)
+                },
+                _astoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        ns.adlg.setDisplay("none");
+                        QueryList(1, 15, emcode, "a", "abinder", ns.atreegrid, ns.apagebar)
+                    }
+                    else {
+                        ns.adlg.setDisplay("none");
+                    }
+                },
+                _bstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        ns.bdlg.setDisplay("none");
+                        QueryList(1, 15, emcode, "b", "bbinder", ns.btreegrid, ns.bpagebar)
+                    }
+                    else {
+                        ns.bdlg.setDisplay("none");
+                    }
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function QueryList(cp, ps, emcode, tabcode, bder, kj1, kj2) {
+            var arg1 = { "curpage": cp, "emcode": emcode, "pagesize": ps, "tabcode": tabcode }
+            var db = linb.DataBinder.getFromName(bder);
+            var arg2 = db.updateDataFromUI().getData();
+            var o = $.extend(arg1, arg2);
+            var url = preurl + '/QueryAccountList';
+            var b = AjaxExb(url, o);
+            kj1.removeAllRows();
+            var r = BackVad(b, "", false)
+            if (r) {
+                kj1.removeAllRows();
+                var arr = new Array();
+                for (i = 2; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[1], "cells": [{ "value": cel[0] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }, { "value": cel[7] }, { "value": cel[8] }, { "value": cel[9] }, { "value": cel[10] }, { "value": cel[11] }, { "value": cel[12] }, { "value": cel[13] }, { "value": cel[14] }, { "value": cel[15]}] })
+                }
+                kj2.setValue("1:1:" + r[1] + "")
+                kj1.setRows(arr)
+            }
+        }
+        function Search() {
+            switch (tabv) {
+                case "a":
+                    ns.adlg.setDisplay("block");
+                    break;
+                case "b":
+                    ns.bdlg.setDisplay("block");
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品Bom</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iunit.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("五金部件管理")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "五金设置" }, { "id": "b", "caption": "物件部件"}])
+                .setValue("b")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "treebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_treebar_onitemselected")
+                .beforeExpend("_treebar_beforeexpend")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "产品名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "产品编码"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_ptreegrid_onrowselected")
+            , "before1");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "部件名称" }, { "id": "col2", "width": 120, "type": "input", "caption": "部件编码" }, { "id": "col3", "width": 120, "type": "input", "caption": "扩展编码" }, { "id": "col4", "width": 120, "type": "input", "caption": "数量"}])
+                .setRows({})
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "bjtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_bjtoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "bjtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "部件名称" }, { "id": "col2", "width": 120, "type": "input", "caption": "部件编码" }, { "id": "col3", "width": 120, "type": "input", "caption": "扩展编码" }, { "id": "col4", "width": 120, "type": "input", "caption": "数量" }, { "id": "col4", "width": 120, "type": "input", "caption": "价格" }, { "id": "col4", "width": 120, "type": "input", "caption": "单位"}])
+                .setValue("")
+                .onRowSelected("_bjtreegrid_onrowselected")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "bjdlg")
+                .setLeft(161)
+                .setTop(111)
+                .setWidth(550)
+                .setHeight(389)
+                .setDisplay("none")
+                .setCaption("部件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "b");
+
+                     host.bjdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "bjstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_bjstoolbar_onclick")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bname")
+                .setDataBinder("binder")
+                .setDataField("bname")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(350)
+                .setHeight(28)
+                .setLabelSize(60)
+                .setLabelCaption("名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bcode")
+                .setDataBinder("binder")
+                .setDataField("bcode")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(100)
+                .setWidth(350)
+                .setHeight(28)
+                .setLabelSize(60)
+                .setLabelCaption("编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ebcode")
+                .setDataBinder("binder")
+                .setDataField("ebcode")
+                .setLeft(60)
+                .setTop(150)
+                .setWidth(350)
+                .setHeight(28)
+                .setLabelSize(60)
+                .setLabelCaption("扩展编码")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bnum")
+                .setDataBinder("binder")
+                .setDataField("bnum")
+                .setLeft(60)
+                .setTop(200)
+                .setWidth(350)
+                .setHeight(28)
+                .setLabelSize(60)
+                .setLabelCaption("数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量")
+                .setValue("1")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bid")
+                .setDataBinder("binder")
+                .setDataField("bid")
+                .setLeft(160)
+                .setTop(120)
+                .setWidth(350)
+                .setHeight(28)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setValue("0")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "icode")
+                .setDataBinder("binder")
+                .setDataField("icode")
+                .setLeft(70)
+                .setTop(220)
+                .setWidth(350)
+                .setHeight(28)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("数量")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bprice")
+                .setDataBinder("binder")
+                .setDataField("bprice")
+                .setLeft(60)
+                .setTop(250)
+                .setWidth(350)
+                .setHeight(28)
+                .setLabelSize(60)
+                .setLabelCaption("单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价")
+                .setValue("1")
+            );
+
+                     host.bjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "bunit")
+                .setDataBinder("binder")
+                .setDataField("bunit")
+                .setLeft(60)
+                .setTop(300)
+                .setWidth(335)
+                .setLabelSize(60)
+                .setType("listbox")
+                .setHeight(28)
+                .setLabelCaption("单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位")
+            );
+
+                     return children;
+      
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/WjBom/BomList.aspx";
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var spv = ns.ptreegrid.getUIValue();
+                     var sbv = ns.treegrid.getUIValue();
+                     if (spv == null || spv == "") {
+                         linb.message("请选择五金产品");
+                         return;
+                     }
+                     if (item.id == "a1") {
+                         if (sbv == null || sbv == "") {
+                             linb.message("请选择五金产品");
+                             return;
+                         }
+                         SetWjBom(spv, sbv)
+                     }
+                     if (item.id == "a3") {
+                         IDoFun('确定删除？', "ReSetWjBom('" + spv + "')")
+                     }
+                 },
+                 _treebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.treebar);
+                     QueryListInv(item.id, ns.ptreegrid)
+                 },
+                 _treebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.treebar);
+                     QueryListInv(item.id, ns.ptreegrid)
+                 },
+                 _ptreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreegrid.setValue(row.id)
+                     GetWjBom(row.id)
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IinvItems("04", ns.treebar)
+                         QueryBjList(ns.treegrid);
+                     }
+                     if (item.id == "b") {
+                         QueryBjList(ns.bjtreegrid);
+                     }
+                 },
+                 _bjtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.bjtreegrid.getUIValue()
+                     IunitNItems(ns.bunit) 
+                     if (item.id == "a1") {
+                         ns.bjdlg.setDisplay("block");
+                         InitBom("")
+                     }
+                     if (item.id == "a3") {
+                         if (sv == null || sv == "") {
+                             linb.message("请选择部件");
+                             return;
+                         }
+                         ns.bjdlg.setDisplay("block");
+                         InitBom(sv)
+                     }
+                     if (item.id == "a4") {
+                         if (sv == null || sv == "") {
+                             linb.message("请选择部件");
+                             return;
+                         } else {
+                             IDoFun('确定删除？', "DelBom('" + sv + "')")
+                         }
+                     }
+                 },
+                 _bjstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveBom();
+                     }
+                     ns.bjdlg.setDisplay("none")
+                 },
+                 _bjtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.bjtreegrid.setValue(row.id)
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitBom(pv) {
+             var o = { "bcode": pv }
+             var url = preurl + "/InitWjBom"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", true);
+             if (r) {
+                ns.bname.setValue(r.bname)
+                ns.bcode.setValue(r.bcode)
+                ns.ebcode.setValue(r.becode)
+                ns.bnum.setValue(r.bnum)
+                ns.bprice.setValue(r.bprice)
+                ns.bunit.setValue(r.bunit)
+                ns.bid.setValue(r.id)
+                if (r.icode != "") {
+                    ns.icode.setValue(r.icode)
+                }
+             }
+         }
+         function SaveBom() {
+             var sv = ns.ptreegrid.getUIValue();
+             if (!CheckInput(ns, ns.bname, true, "", "部件名称不能为空！", "", "", "")) {
+                 return
+             }
+             if (!CheckInput(ns, ns.bnum, true, "number", "部件数量不能为空！", "正确输入部件数量！", "1", "")) {
+                 return
+             }
+             var db = linb.DataBinder.getFromName("binder");
+             var url = preurl + "/SaveWjBom"
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryBjList(ns.bjtreegrid)", false)
+         }
+         function QueryBjList(kj) {
+             var url = preurl + '/QueryWjBomLIst';
+             var b = AjaxEb(url);
+             kj.removeAllRows();
+             var r = BackVad(b, "", false)
+             if (r) {
+                 kj.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 kj.setRows(arr)
+             }
+         }
+         function DelBom(v) {
+             var sv = ns.ptreegrid.getUIValue();
+             var o = { "bcode": v }
+             var url = preurl + "/DelWjBom"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryBjList(ns.bjtreegrid)", false)
+         }
+         function SetWjBom(pv, bv) {
+             var o = { "pcode": pv, 'bcode': bv }
+             var url = preurl + "/SetWjBom"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetWjBom(pv) {
+             var o = { "pcode": pv  }
+             var url = preurl + "/ReSetWjBom"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetWjBom(pv) {
+             ns.treegrid.setValue("")
+             var o = { "pcode": pv }
+             var url = preurl + "/GetWjBom"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.treegrid.setValue(b)
+             }
+             else {
+               linb.message("未设置五金部件")
+             }
+         }
+     </script>
+</body>
+</html>

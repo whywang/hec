@@ -1,0 +1,14 @@
+﻿.ils table {
+    border-collapse: collapse;
+    border: 1px solid #cccccc
+}
+.ils td {
+    border: 1px solid #cccccc;
+}
+#ilist {
+    width: 100%;
+    border: 1px solid #cccccc
+}
+#ilist td {
+        border: 1px solid #cccccc
+    }

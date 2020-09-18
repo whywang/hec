@@ -1,0 +1,18 @@
+﻿.customtable{}
+.customtable table{ border-collapse:collapse ; border:1px solid #68957f; border-radius:10px;}
+.customtable td{  border:1px solid #68957f; height:25px; font-size:14px}
+.IncDetail{ width:100%; }
+.IncDetail td{ height:25px; }
+.jcdetail{}
+.jcdetail{ width:99%;border-collapse:collapse ; border:1px solid #1b47ab}
+.jcdetail td{ height:28px; border:1px solid #1b47ab}
+.jcdetail input{ width:98%; height:20px }
+ .inputsearch input{ background:url(../../../Image/opeimage/search.gif); background-repeat:no-repeat; background-position:right}
+ 
+.ctable{}
+.ctable table{ border-collapse:collapse ; border:1px solid #cccccc}
+.ctable td{  border:1px solid #cccccc;  font-size:14px;  text-align:center; height:25px}
+.dbtn{ height:25px; border:#66CC99 1px solid; background-color:#ffffff;border-radius:5px}
+.cntable{}
+.cntable table{ border-collapse:collapse ; border:none; border-radius:10px;}
+.cntable td{  border:1px solid #91d5e6; font-size:14px}

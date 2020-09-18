@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>木门订单详情</title>
+</head>
+<body>
+  <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/SysMenuCode.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ITabs.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+                    this.autoDestroy = true;
+                    this.properties = {};
+                },
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>&nbsp;&nbsp;木门更改详情单</span>")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                    host.panel.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tabs")
+                .setItems([{ "id": "a", "caption": "a" }, { "id": "b", "caption": "b" }, { "id": "c", "caption": "c" }, { "id": "d", "caption": "d" }, { "id": "e", "caption": "e" }, { "id": "f", "caption": "f" }, { "id": "g", "caption": "g" }, { "id": "h", "caption": "h"}])
+                .setValue("a")
+                .onItemSelected("_tabs_onitemselected")
+            );
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ainfo")
+                .setDock("fill")
+            , "a");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "binfo")
+                .setDock("fill")
+            , "b");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "cinfo")
+                .setDock("fill")
+            , "c");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "dinfo")
+                .setDock("fill")
+            , "d");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "einfo")
+                .setDock("fill")
+            , "e");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "finfo")
+                .setDock("fill")
+            , "f");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ginfo")
+                .setDock("fill")
+            , "g");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hinfo")
+                .setDock("fill")
+            , "h");
+            
+
+                    return children;
+                },
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+                    return false;
+                },
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", sebobj = SysEmCode;
+                    emcode = sebobj.IQueryCode("0046");
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"].toString();
+                    }
+                    IPageTabEx(emcode, sid, "", ns.tabs)
+                },
+                _tabs_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a") {
+                        ns.ainfo.setHtml("<iframe src='CDoorPartOrderDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                    if (item.id == "b") {
+                        ns.binfo.setHtml("<iframe src='CDoorPartProduceDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                    if (item.id == "c") {
+                        ns.cinfo.setHtml("<iframe src='CDoorPartXsPriceDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                    if (item.id == "d") {
+                        ns.dinfo.setHtml("<iframe src='CDoorGhPriceDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                    if (item.id == "e") {
+                        ns.einfo.setHtml("<iframe src='CDoorPartCgPriceDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                    if (item.id == "f") {
+                        ns.finfo.setHtml("<iframe src='CDoorPartChangeRecorder.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                    if (item.id == "g") {
+                        ns.ginfo.setHtml("<iframe src='CDoorPartFeeDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+</script>
+</body>
+</html>

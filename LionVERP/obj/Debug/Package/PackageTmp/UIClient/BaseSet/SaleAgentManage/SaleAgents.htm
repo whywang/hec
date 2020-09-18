@@ -1,0 +1,807 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>平台管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ISettlement.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IPricetype.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("渠道价格管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "d", "caption": "销售价格设置" }, { "id": "a", "caption": "供货价格设置" }, { "id": "b", "caption": "结算方式"}])
+                .setValue("d")
+                .onItemSelected("_tabs_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout9")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "c");
+
+                     host.ctl_layout9.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block16")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block16.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pft")
+                .setDock("top")
+                .setHeight(39)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pft.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>城市列表</span>")
+            );
+
+                     host.ctl_block16.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ctl_block16.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_block16.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_layout9.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block17")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block17.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_fltoolbar_onclick")
+            );
+
+                     host.ctl_block17.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "fltreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "费率"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_fltreegrid_onrowselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sfltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_sfltoolbar_onclick")
+            , "c");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fdlg")
+                .setLeft(172)
+                .setTop(124)
+                .setWidth(550)
+                .setHeight(246)
+                .setDisplay("none")
+                .setCaption("税费")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "c");
+
+                     host.fdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "afltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_afltoolbar_onclick")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fname")
+                .setDataBinder("binder")
+                .setDataField("fname")
+                .setLeft(80)
+                .setTop(40)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcode")
+                .setDataBinder("binder")
+                .setDataField("fcode")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(90)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fvalue")
+                .setDataBinder("binder")
+                .setDataField("fvalue")
+                .setLeft(80)
+                .setTop(140)
+                .setWidth(380)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("费率")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fid")
+                .setDataBinder("binder")
+                .setDataField("fid")
+                .setLeft(50)
+                .setTop(170)
+                .setWidth(410)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "setjstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_setjstoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "sly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.sly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block5")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block5.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "jstreebar")
+                .setValue("")
+                .onItemSelected("_jstreebar_onitemselected")
+            );
+
+                     host.ctl_block5.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pst")
+                .setDock("top")
+                .setHeight(39)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pst.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>城市列表</span>")
+            );
+
+                     host.ctl_block5.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_block5.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.sly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block6")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block6.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jstreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "结算方式" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码"}])
+                .setValue("")
+                .onRowSelected("_jstreegrid_onrowselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "setjgtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_setjgtoolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "gly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.gly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptjtreebar")
+                .setValue("")
+                .onItemSelected("_ptjtreebar_onitemselected")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppt")
+                .setDock("top")
+                .setHeight(39)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ppt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>城市列表</span>")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.gly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jgtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "价格体系" }, { "id": "col2", "width": 120, "type": "input", "caption": "价格类型"}])
+                .setValue("")
+                .onRowSelected("_jgtreegrid_onrowselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_dtoolbar_onclick")
+            , "d");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "dly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "d");
+
+                     host.dly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdt")
+                .setDock("top")
+                .setHeight(40)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pdt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>城市列表</span>")
+            );
+
+                     host.dly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.dly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.dly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "sdtreebar")
+                .onItemSelected("_sdtreebar_onitemselected")
+            , "before");
+
+                     host.dly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "xtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "价格体系" }, { "id": "col2", "width": 120, "type": "input", "caption": "价格类型"}])
+                .setValue("")
+                .onRowSelected("_xtreegrid_onrowselected")
+            , "main");
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/SettlementManage/Settlements.aspx";
+                     prepurl = "../../../UIServer/BaseSet/SaleAgentManage/SaleAgents.aspx";
+                     preturl = "../../../UIServer/BaseSet/TaxManage/Taxs.aspx";
+                 },
+
+                 _setjgtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var jgdv = ns.ptjtreebar.getUIValue();
+                     var jgtv = ns.jgtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (jgdv == "") {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         if (jgtv == "" || jgtv == null) {
+                             linb.message("请选择价格类别")
+                             return
+                         }
+                         SetAgentPrice(jgdv, jgtv)
+                     }
+                     if (item.id == "a3") {
+                         if (jgdv == "") {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         IDoFun("平台价格类别重置？", "ReSetAgentPrice('" + jgdv + "')")
+                     }
+                 },
+                 _ptjtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptjtreebar.setValue(item.id)
+                     GetAgentPric(item.id)
+                 },
+                 _jgtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.jgtreegrid.setValue(row.id)
+                 },
+                 _setjstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var jsdv = ns.jstreebar.getUIValue();
+                     var jstv = ns.jstreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (jsdv == "") {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         if (jstv == "" || jstv == null) {
+                             linb.message("请选择结算方式")
+                             return
+                         }
+                         SetJsfs(jsdv, jstv)
+                     }
+                     if (item.id == "a3") {
+                         if (jsdv == "") {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         IDoFun("平台结算方式重置？", "ReSetJsfs('" + jsdv + "')")
+                     }
+                 },
+                 _jstreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.jstreebar.setValue(item.id)
+                     GetJsfs(item.id)
+                 },
+                 _jstreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.jstreegrid.setValue(row.id)
+                 },
+                 _tabs_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IdepItemsByAtrr("cs", ns.ptjtreebar)
+                         IPriceTable('gh', ns.jgtreegrid)
+                     }
+                     if (item.id == "b") {
+                         IdepItemsByAtrr("cs", ns.jstreebar)
+                         ISettlementTable(ns.jstreegrid)
+                     }
+                     if (item.id == "c") {
+                         IdepItemsByAtrr("cs", ns.ptreebar)
+                         QueryList();
+                     }
+                     if (item.id == "d") {
+                         IdepItemsByAtrr("cs", ns.sdtreebar)
+                         IPriceTable('xs', ns.xtreegrid)
+                     }
+                 },
+                 _sfltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fv = ns.fltreegrid.getUIValue();
+                     var pv = ns.ptreebar.getUIValue();
+                     if (item.id == "a1") {
+                         if (fv == "" || fv == null) {
+                             linb.message("选择费率记录");
+                             return
+                         }
+                         if (pv == "" || pv == null) {
+                             linb.message("选择平台");
+                             return
+                         }
+                         SetTax(pv, fv)
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "" || pv == null) {
+                             linb.message("选择平台");
+                             return
+                         }
+                         IDoFun("确定要重置税费？", "ReSetTax('" + pv + "')")
+
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     GetTax(item.id)
+                     ns.ptreebar.setValue(item.id)
+                 },
+                 _fltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fv = ns.fltreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         InitTax("")
+                     }
+                     if (item.id == "a3") {
+                         if (fv == "" || fv == null) {
+                             linb.message("选择费率记录");
+                             return
+                         }
+                         ns.fdlg.setDisplay("block")
+                         InitTax(fv)
+                     }
+                     if (item.id == "a4") {
+                         if (fv == "" || fv == null) {
+                             linb.message("选择费率记录");
+                             return
+                         }
+                         IDoFun("确定要删除税费？", "DelTax('" + fv + "')")
+                     }
+                 },
+                 _afltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         SaveTax()
+                     }
+                     if (item.id == "a3") {
+                         ns.fdlg.setDisplay("none")
+                         InitUnKj();
+                     }
+                 },
+                 _fltreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.fltreegrid.setValue(row.id)
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _dtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var jgdv = ns.sdtreebar.getUIValue();
+                     var jgtv = ns.xtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (jgdv == "") {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         if (jgtv == "" || jgtv == null) {
+                             linb.message("请选择价格类别")
+                             return
+                         }
+                         SetAgentSalePrice(jgdv, jgtv)
+                     }
+                     if (item.id == "a3") {
+                         if (jgdv == "") {
+                             linb.message("请选择平台")
+                             return
+                         }
+                         IDoFun("平台价格类别重置？", "ReSetAgentSalePrice('" + jgdv + "')")
+                     }
+                 },
+                 _sdtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.sdtreebar.setUIValue(item.id);
+                     GetAgentSalePric(item.id)
+                 },
+                 _xtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.xtreegrid.setUIValue(row.id)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetJsfs(dv, jv) {
+             var o = { "dcode": dv ,"scode":jv}
+             var url = preurl + "/SetSettlement"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetJsfs(dv) {
+             var o = { "dcode": dv}
+             var url = preurl + "/ReSetSettlement"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function GetJsfs(dv) {
+             var o = { "dcode": dv }
+             var url = preurl + "/GetSettlement"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                linb.message("未设置结算方式")
+             }
+             else {
+                 ns.jstreegrid.setValue(b)
+             }
+         }
+
+         function SetAgentPrice(dv, jv) {
+             var o = { "dcode": dv, "ptcode": jv }
+             var url = prepurl + "/SetAgentsPrice"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetAgentPrice(dv) {
+             var o = { "dcode": dv }
+             var url = prepurl + "/ReSetAgentsPrice"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function GetAgentPric(dv) {
+             var o = { "dcode": dv }
+             var url = prepurl + "/GetAgentsPrice"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.message("未设置价格类别")
+             }
+             else {
+                 ns.jgtreegrid.setValue(b)
+             }
+         }
+
+         function SetAgentSalePrice(dv, jv) {
+             var o = { "dcode": dv, "ptcode": jv }
+             var url = prepurl + "/SetAgentsSalePrice"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetAgentSalePrice(dv) {
+             var o = { "dcode": dv }
+             var url = prepurl + "/ReSetAgentsSalePrice"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function GetAgentSalePric(dv) {
+             var o = { "dcode": dv }
+             var url = prepurl + "/GetAgentsSalePrice"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.message("未设置价格类别")
+             }
+             else {
+                 ns.xtreegrid.setValue(b)
+             }
+         }
+
+         function InitTax(v) {
+             var o = { "tcode": v }
+             var url = preturl + "/InitTax"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.fname.setValue(r.tname)
+             ns.fcode.setValue(r.tcode)
+             ns.fvalue.setValue(r.tax)
+             ns.fid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.fname.setValue()
+             ns.fcode.setValue()
+             ns.fvalue.setValue()
+             ns.fid.setValue(0)
+         }
+         function SaveTax() {
+             var url = preturl + "/SaveTax"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoad()", false)
+         }
+         function DelTax(v) {
+             var o = { "tcode": v }
+             var url = preturl + "/DelTax"
+             var b = AjaxExb(url, o);
+             BackVad(b, "ReLoad()", false)
+         }
+         function QueryList() {
+             var url = preturl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fltreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }] })
+                 }
+                 ns.fltreegrid.setRows(arr)
+             }
+         }
+         function SetTax(pv, v) {
+             var o = { "dcode": pv, "tcode": v }
+             var url = preturl + "/SetTax"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetTax(pv) {
+             var o = { "dcode": pv }
+             var url = preturl + "/ReSetTax"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function GetTax(pv) {
+             var o = { "dcode": pv }
+             var url = preturl + "/GetTax"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.message("未设置税费")
+                 ns.fltreegrid.setValue("")
+             }
+             else {
+                 ns.fltreegrid.setValue(b)
+             }
+         }
+         function ReLoad() {
+             QueryList();
+             ns.fdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>

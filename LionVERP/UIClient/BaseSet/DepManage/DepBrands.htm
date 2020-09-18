@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>城市管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IBrands.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("产品品类设置")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "店面品类" }, { "id": "b", "caption": "工厂品类"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "lyd")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.lyd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pdt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>店面列表</span>")
+            );
+
+                     host.lyd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ctl_pane9")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lyd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lyd.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+            , "before");
+
+                     host.lyd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdbt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pdbt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>产类列表</span>")
+            );
+
+                     host.lyd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdbl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.lyd.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdbr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.lyd.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "dbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "产品品类"}])
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_dstoolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "lyf")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.lyf.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pft")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pft.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>工厂列表</span>")
+            );
+
+                     host.lyf.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lyf.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lyf.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ftreebar")
+             , "before");
+
+                     host.lyf.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfbt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pfbt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>产类列表</span>")
+            );
+
+                     host.lyf.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfbl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.lyf.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pfbr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.lyf.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "fbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "产品品类"}])
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_fstoolbar_onclick")
+            , "b");
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     svt = "";
+                     preurl = "../../../ProductionBrand";
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     svt = item.id;
+                     if (item.id == "a") {
+                         IdepItemsByAtrr("dm", ns.dtreebar);
+                         QueryList(ns.dbtreegrid)
+                     }
+                     if (item.id == "b") {
+                         IdepItemsByAtrr("gc", ns.ftreebar);
+                         QueryList(ns.fbtreegrid)
+                     }
+                 },
+                 _dstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.dtreebar.getUIValue();
+                     if (sv == null || sv == "") {
+                         linb.warn("请选择店面");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var bv = ns.dbtreegrid.getUIValue();
+                         if (bv == null || bv == "") {
+                             linb.warn("请选择品类");
+                             return
+                         }
+                         SetDepBrand(sv, bv)
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("重置设置？", "ReSetDepBrand('" + sv + "')")
+                     }
+                 },
+                 _fstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.ftreebar.getUIValue();
+                     if (sv == null || sv == "") {
+                         linb.warn("请选择工厂");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var bv = ns.fbtreegrid.getUIValue();
+                         if (bv == null || bv == "") {
+                             linb.warn("请选择品类");
+                             return
+                         }
+                         SetDepBrand(sv, bv)
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("重置设置？", "ReSetDepBrand('" + sv + "')")
+                     }
+                 }
+             }
+         });
+       
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetDepBrand(v, cv) {
+             var o = { "pcode": v, 'pbcode': cv }
+             var url = preurl + "/SetDepBrand"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetDepBrand(v) {
+             var o = { "pcode": v }
+             var url = preurl + "/ReSetDepBrand"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetDepBrand(r) {
+             var o = { "pcode": v }
+             var url = preurl + "/GetDepBrand"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 if (svt == "a") {
+                     ns.dbtreegrid.setUIValue(b)
+                 }
+                 if (svt == "b") {
+                     ns.fbtreegrid.setUIValue(b);
+                 }
+             }
+             else {
+                 linb.warn("未设置品类");
+             }
+         }
+        
+     </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>售后责任管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ireason.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+      
+         Class('App', 'linb.Com', {
+   
+             Instance: {
+               
+                 initialize: function () {
+                    
+                     this.autoDestroy = true;
+                    
+                     this.properties = {};
+                 },
+            
+                 iniComponents: function () {
+                 
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("反馈类别管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "类别名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "类别编码"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+                .onRowSelected("_treegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dlg")
+                .setLeft(150)
+                .setTop(100)
+                .setWidth(510)
+                .setHeight(160)
+                .setCaption("反馈类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "apname")
+                .setDataBinder("binder")
+                .setDataField("apname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(200)
+                .setHeight(44)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "apcode")
+                .setDataBinder("binder")
+                .setDataField("apcode")
+                .setReadonly(true)
+                .setLeft(270)
+                .setTop(50)
+                .setWidth(200)
+                .setHeight(44)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "apid")
+                .setDataBinder("binder")
+                .setDataField("apid")
+                .setLeft(110)
+                .setTop(70)
+                .setWidth(200)
+                .setHeight(44)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("名称")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                   
+                 },
+           
+                 iniExComs: function (com, threadid) {
+                 },
+         
+                 customAppend: function (parent, subId, left, top) {
+           
+                     return false;
+                 },
+       
+                 events: {},
+            
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _treegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             }
+         });
+
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitReasonClass(pv, dv) {
+             var o = { "rrpcode": pv, "rrcode": dv }
+             var url = preurl + "/InitReasonCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitKj(r) {
+             ns.lname.setValue(r.rrname)
+             ns.lcode.setValue(r.rrcode)
+             ns.lpname.setValue(r.rrpname)
+             ns.lpcode.setValue(r.rrpcode)
+             ns.lid.setValue(r.id)
+         }
+         function DelReasonClass(v) {
+             var o = { "rrcode": v }
+             var url = preurl + "/DelReasonCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, " ReLoadTree()", false)
+         }
+         function SaveReasonClass() {
+             var url = preurl + "/SaveReasonCate"
+             var db = linb.DataBinder.getFromName("lbbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoadTree()", false)
+         }
+         function InitReason(pv, dv) {
+             var o = { "rrcode": pv, "rcode": dv }
+             var url = preurl + "/InitReason"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitZKj(r)
+             }
+         }
+         function InitZKj(r) {
+             ns.rname.setValue(r.rdetail)
+             ns.rcode.setValue(r.rcode)
+             ns.rlname.setValue(r.rrname)
+             ns.rlcode.setValue(r.rrcode)
+             ns.rid.setValue(r.id)
+         }
+         function DelReason(v) {
+             var o = { "rcode": v }
+             var url = preurl + "/DelReason"
+             var b = AjaxExb(url, o);
+             BackVad(b, " ReLoadGrid()", false)
+         }
+         function SaveReason() {
+             var url = preurl + "/SaveReason"
+             var db = linb.DataBinder.getFromName("zrbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoadGrid()", false)
+         }
+         function QueryRList(v) {
+             var url = preurl + "/QueryReasonList";
+             var o = { "rrcode": v }
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.xtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2]}] })
+                 }
+                 ns.xtreegrid.setRows(arr)
+             }
+         }
+         function ReLoadTree() {
+             IreasonItems('', ns.ltreebar)
+             ns.lbdlg.setDisplay("none")
+         }
+         function ReLoadGrid() {
+             var rcode = ns.ltreebar.getUIValue();
+             QueryRList(rcode)
+             ns.zrdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>
+

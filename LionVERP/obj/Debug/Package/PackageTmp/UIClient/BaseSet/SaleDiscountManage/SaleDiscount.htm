@@ -1,0 +1,1152 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>区域管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ISaleDiscount.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "tjbinder")
+                .setName("tjbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("促销活动")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "活动管理" }, { "id": "b", "caption": "活动产品设置" }, { "id": "c", "caption": "活动区域设置" }, { "id": "d", "caption": "活动条件设置" }, { "id": "e", "caption": "产品类别"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_lstoolbar_onclick")
+            , "e");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pldlg")
+                .setLeft(130)
+                .setTop(110)
+                .setWidth(510)
+                .setHeight(180)
+                .setDisplay("none")
+                .setCaption("产品类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "e");
+
+                     host.pldlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lbstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_lbstoolbar_onclick")
+            );
+
+                     host.pldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbname")
+                .setDataBinder("lbinder")
+                .setDataField("lbname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(330)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("类别名称")
+            );
+
+                     host.pldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbcode")
+                .setDataBinder("lbinder")
+                .setDataField("lbcode")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(330)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("类别编码")
+            );
+
+                     host.pldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lbid")
+                .setDataBinder("lbinder")
+                .setDataField("lbid")
+                .setLeft(50)
+                .setTop(150)
+                .setWidth(330)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "rly")
+                .setItems([{ "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.rly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "drtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "活动名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "活动编码"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_drtreegrid_onrowselected")
+            , "before1");
+
+                     host.rly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "itreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_itreebar_onitemselected")
+                .beforeExpend("_itreebar_beforeexpend")
+            , "before");
+
+                     host.rly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "产品名称" }, { "id": "col2", "width": 120, "type": "input", "caption": "产品编码" }, { "id": "col3", "width": 130, "type": "input", "caption": "产品材质"}])
+                .setRows({})
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ply")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "c");
+
+                     host.ply.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "dptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "活动名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "活动编码"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_dptreegrid_onrowselected")
+            , "before");
+
+                     host.ply.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_dtreebar_onitemselected")
+                .beforeExpend("_dtreebar_beforeexpend")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "srtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_srtoolbar_onclick")
+            , "c");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "lyp")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "e");
+
+                     host.lyp.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_ltoolbar_onclick")
+            , "before");
+
+                     host.lyp.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "lbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 130, "type": "input", "caption": "类别" }, { "id": "col2", "width": 80, "type": "input", "caption": "编码"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_lbtreegrid_onrowselected")
+            , "before");
+
+                     host.lyp.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ittreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .onItemSelected("_ittreebar_onitemselected")
+                .beforeExpend("_ittreebar_beforeexpend")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sptoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_sptoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "活动" }, { "id": "col2", "width": 120, "type": "input", "caption": "有效期" }, { "id": "col2", "width": 120, "type": "input", "caption": "有效期" }, { "id": "col3", "width": 100, "type": "input", "caption": "折扣方式" }, { "id": "col4", "width": 100, "type": "input", "caption": "活动区域" }, { "id": "col4", "width": 100, "type": "input", "caption": "活动产品"}])
+                .setValue("")
+                .onRowSelected("_treegrid_onrowselected")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dlg")
+                .setLeft(125)
+                .setTop(107)
+                .setWidth(709)
+                .setHeight(253)
+                .setDisplay("none")
+                .setCaption("活动")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                     host.dlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setDataBinder("binder")
+                .setDataField("dname")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(300)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("活动名称")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setReadonly(true)
+                .setLeft(330)
+                .setTop(50)
+                .setWidth(300)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("活动编码")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "bdate")
+                .setDataBinder("binder")
+                .setDataField("bdate")
+                .setLeft(30)
+                .setTop(100)
+                .setWidth(285)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("起始日期")
+                .setType("date")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "edate")
+                .setDataBinder("binder")
+                .setDataField("edate")
+                .setLeft(330)
+                .setTop(100)
+                .setWidth(285)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("截止日期")
+                .setType("date")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(330)
+                .setTop(150)
+                .setWidth(300)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setValue("0")
+            );
+
+                     host.dlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dremark")
+                .setDataBinder("binder")
+                .setDataField("dremark")
+                .setLeft(30)
+                .setTop(150)
+                .setWidth(600)
+                .setHeight(50)
+                .setLabelSize(60)
+                .setLabelCaption("活动备注")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly2")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "d");
+
+                     host.ly2.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "tjtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_tjtoolbar_onclick")
+            , "main");
+
+                     host.ly2.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "hdtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "活动名称"}])
+                .setValue("")
+                .onRowSelected("_hdtreegrid_onrowselected")
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "hdtjtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 80, "type": "input", "caption": "条件" }, { "id": "col2", "width": 80, "type": "input", "caption": "总折扣" }, { "id": "col3", "width": 80, "type": "input", "caption": "方式" }, { "id": "col4", "width": 80, "type": "input", "caption": "折扣/金额" }, { "id": "col4", "width": 80, "type": "input", "caption": "下界" }, { "id": "col4", "width": 80, "type": "input", "caption": "上界" }, { "id": "col4", "width": 80, "type": "input", "caption": "顺序"}])
+                .setValue("")
+                .onRowSelected("_hdtjtreegrid_onrowselected")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "tjdlg")
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(580)
+                .setHeight(380)
+                .setDisplay("none")
+                .setCaption("活动条件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "d");
+
+                     host.tjdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "tjstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_tjstoolbar_onclick")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjname")
+                .setDataBinder("tjbinder")
+                .setDataField("tjname")
+                .setLeft(20)
+                .setTop(100)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("条件名称")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjcode")
+                .setDataBinder("tjbinder")
+                .setDataField("tjcode")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("条件编码")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zzk")
+                .setDataBinder("tjbinder")
+                .setDataField("zzk")
+                .setLeft(20)
+                .setTop(150)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("总折扣")
+                .setValue("1")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "tjmethod")
+                .setDataBinder("tjbinder")
+                .setDataField("tjmethod")
+                .setLeft(260)
+                .setTop(150)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("折扣方式")
+                .setType("listbox")
+                .setItems([{ "id": "zk", "caption": "折扣" }, { "id": "mj", "caption": "满减" }, { "id": "lb", "caption": "类别"}])
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zkje")
+                .setDataBinder("tjbinder")
+                .setDataField("zkje")
+                .setLeft(20)
+                .setTop(200)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("折扣/金额")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjlv")
+                .setDataBinder("tjbinder")
+                .setDataField("tjlv")
+                .setLeft(20)
+                .setTop(250)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("下界")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjtv")
+                .setDataBinder("tjbinder")
+                .setDataField("tjtv")
+                .setLeft(260)
+                .setTop(250)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("上界")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjsort")
+                .setDataBinder("tjbinder")
+                .setDataField("tjsort")
+                .setLeft(260)
+                .setTop(200)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("顺序")
+                .setValue("1")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tjid")
+                .setDataBinder("tjbinder")
+                .setDataField("tjid")
+                .setLeft(200)
+                .setTop(230)
+                .setWidth(240)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("iD")
+                .setValue("0")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hdname")
+                .setDataBinder("tjbinder")
+                .setDataField("hdname")
+                .setReadonly(true)
+                .setLeft(20)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("条件名称")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hdcode")
+                .setDataBinder("tjbinder")
+                .setDataField("hdcode")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(240)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("条件编码")
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "tjfw")
+                .setDataBinder("tjbinder")
+                .setDataField("tjfw")
+                .setLeft(20)
+                .setTop(300)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("条件范围")
+                .setType("listbox")
+                .setItems([{ "id": "zxp", "caption": "正常产品" }, { "id": "qb", "caption": "全部产品"}])
+            );
+
+                     host.tjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "tjlb")
+                .setDataBinder("tjbinder")
+                .setDataField("tjlb")
+                .setLeft(260)
+                .setTop(300)
+                .setWidth(225)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("产品类别")
+                .setType("listbox")
+                .setItems([{ "id": "zk", "caption": "折扣" }, { "id": "mj", "caption": "满减" }, { "id": "lb", "caption": "类别"}])
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                 },
+
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         QueryDiscountList();
+                     }
+                     if (item.id == "b") {
+                         QueryDisList(ns.drtreegrid);
+                         IinvItems("", ns.itreebar);
+                     }
+                     if (item.id == "c") {
+                         QueryDisList(ns.dptreegrid);
+                         IdepItemsByAtrr("s", ns.dtreebar)
+                     }
+                     if (item.id == "d") {
+                         QueryDisList(ns.hdtreegrid);
+                     }
+                     if (item.id == "e") {
+                         QueryTjCateList();
+                         IinvItems("", ns.ittreebar);
+                     }
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.treegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.dlg.setDisplay("block");
+                         InitDiscount("");
+                     }
+                     if (item.id == "a3") {
+                         if (sv != "") {
+                             ns.dlg.setDisplay("block");
+                             InitDiscount(sv);
+                         }
+                         else {
+                             linb.message("请选择活动")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (sv != "") {
+                             IDoFun("确定删除记录？", "DelDiscount('" + sv + "')")
+                         }
+                         else {
+                             linb.message("请选择活动")
+                         }
+                     }
+                 },
+                 _srtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sdv = ns.dptreegrid.getUIValue();
+                     if (sdv.toString() == "") {
+                         linb.message("请选择活动！");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var siv = ns.dtreebar.getUIValue();
+                         if (siv.toString() == "") {
+                             linb.message("请选择活动范围！");
+                             return
+                         }
+                         SetDepDis(sdv, siv);
+                     }
+                     if (item.id == "a3") {
+                         ReSetDepDis(sdv)
+                     }
+                 },
+                 _sptoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sdv = ns.drtreegrid.getUIValue();
+                     if (sdv.toString() == "") {
+                         linb.message("请选择活动！");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var siv = ns.itreebar.getUIValue();
+                         var spv = ns.ptreegrid.getUIValue();
+
+                         if (siv.toString() == "") {
+                             linb.message("请选择产品类别！");
+                             return
+                         }
+                         if (spv.toString() == "") {
+                             linb.message("请选择产品！");
+                             return
+                         }
+                         SetProductionDis(sdv, siv, spv)
+                     }
+                     if (item.id == "a3") {
+                         var siv = ns.itreebar.getUIValue();
+                         if (siv.toString() == "") {
+                             linb.message("请选择产品类别！");
+                             return
+                         }
+                         ReSetProductionDis(sdv, siv);
+                     }
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         if (!CheckInput(ns, ns.dname, true, "", "活动名称不能为空", "", "", "")) {
+                             return
+                         }
+                         if (!CheckInput(ns, ns.bdate, true, "date", "起始日期不能为空！", "", "", "")) {
+                             return
+                         }
+                         if (!CheckInput(ns, ns.edate, true, "date", "截止日期不能为空！", "", "", "")) {
+                             return
+                         }
+                         SaveDiscount();
+                     }
+                     if (item.id == "a3") {
+                     }
+                 },
+                 _treegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.treegrid.setValue(row.id);
+                 },
+                 _drtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.drtreegrid.setValue(row.id)
+                     // GetProductionDis(row.id, ns.itreebar)
+                 },
+                 _itreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var dv = ns.drtreegrid.getUIValue();
+                     IinvCItems(item, ns.itreebar);
+                     QueryListInv(item.id, ns.ptreegrid);
+                     GetProductionDis(dv, item.id, ns.ptreegrid);
+                     ns.itreebar.setValue(item.id);
+                 },
+                 _itreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.itreebar);
+                 },
+                 _dptreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     GetDepDis(row.id, ns.dtreebar)
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _dtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _tjstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveCondition();
+                     }
+                     else {
+                         ns.tjdlg.setDisplay("none");
+                     }
+                 },
+                 _hdtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.hdtreegrid.setValue(row.id)
+                     QueryConditionList(row.id)
+                 },
+                 _hdtjtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _tjtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var hdv = ns.hdtreegrid.getUIValue();
+                     var tjv = ns.hdtjtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (hdv == "" || hdv == null) {
+                             linb.message("请选择活动！");
+                             return
+                         }
+                         ns.tjdlg.setDisplay("block");
+                         InitCondition(hdv, "");
+                         DropQueryTjCate();
+
+                     }
+                     if (item.id == "a3") {
+                         if (tjv == "" || tjv == null) {
+                             linb.message("请选择活动条件！");
+                             return
+                         }
+                         ns.tjdlg.setDisplay("block");
+                         DropQueryTjCate();
+                         InitCondition("", tjv)
+                     }
+                     if (item.id == "a4") {
+                         if (tjv == "" || tjv == null) {
+                             linb.message("请选择活动条件！");
+                             return
+                         }
+                         IDoFun("确定删除记录？", "DelCondition('" + tjv + "')")
+
+                     }
+                 },
+                 _lstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var tv = ns.lbtreegrid.getUIValue();
+                     var iiv = ns.ittreebar.getUIValue();
+                     if (tv == null || tv == "") {
+                         linb.message("请选择特价类别");
+                         return;
+                     }
+                     if (item.id == "a1") {
+                         if (iiv == null || iiv == "") {
+                             linb.message("请择选产品类别");
+                             return;
+                         }
+                         SetCatePCate(tv, iiv)
+                     }
+                     if (item.id == "a3") {
+                         IDoFun("确定重置？", "ReSetCatePCate('" + tv + "')")
+                     }
+                 },
+                 _ltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var stv = ns.lbtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.pldlg.setDisplay("block")
+                         InitTjCate("")
+                     }
+                     if (item.id == "a3") {
+                         if (stv == null || stv == "") {
+                             linb.message("选择产品类别");
+                             return;
+                         }
+                         ns.pldlg.setDisplay("block");
+                         InitTjCate(stv);
+                     }
+                     if (item.id == "a4") {
+                         if (stv == null || stv == "") {
+                             linb.message("选择产品类别");
+                             return;
+                         }
+                         IDoFun("确定删除记录？", "DelTjCate('" + stv + "')")
+                     }
+                 },
+                 _lbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.lbtreegrid.setValue(row.id);
+                     GetCatePCate(row.id);
+                 },
+                 _lbstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         if (!CheckInput(ns, ns.lbname, true, "", "名称类别不能为空！", "", "", "")) {
+                             return
+                         }
+                         SaveTjCate();
+                     }
+                     else {
+                         ns.tdlg.setDisplay("none");
+                     }
+                 },
+                 _ittreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _ittreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitDiscount(v) {
+             var o = { "dcode": v }
+             var url = "../../../SaleDiscount/InitDiscount"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.dname.setValue(r.dname)
+                 ns.dcode.setValue(r.dcode)
+                 ns.edate.setValue(r.dedate)
+                 ns.bdate.setValue(r.dbdate)
+                 ns.dremark.setValue(r.dremark)
+                 ns.id.setValue(r.id)
+             }
+         }
+         function DelDiscount(v) {
+             var o = { "dcode": v }
+             var url = "../../../SaleDiscount/DelDiscount"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryDiscountList()", false)
+         }
+         function SaveDiscount() {
+             var url = "../../../SaleDiscount/SaveDiscount"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryDiscountList()", false);
+             ns.dlg.setDisplay("none");
+         }
+         function QueryDiscountList() {
+             var url = "../../../SaleDiscount/QueryDiscountListAll"
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.treegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6]}] })
+                 }
+                 ns.treegrid.setRows(arr)
+             }
+         }
+         function QueryCondition(v) {
+             var o = { "dcode": v }
+             var url = "../../../SaleDiscount/QueryConditionList"
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.treegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[0] }, { "value": cel[1] }, { "value": cel[2] }, { "value": cel[3]}] })
+                 }
+                 for( i=0;i<5-r.length;i++)
+                 {
+                     arr.push({ "id": i, "cells": [{ "value": 1 }, { "value": 0 }, { "value": 0 }, { "value": 0}] });
+                 }
+                 ns.tjtreegrid.setRows(arr)
+             }
+         }
+         function SetProductionDis(dv, sv,pv) {
+             var o = { 'dcode': dv, "icode": sv ,"pcode":pv}
+             var url = "../../../SaleDiscount/SetProductionDiscount"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetProductionDis(dv,iv) {
+             var o = { 'dcode': dv ,"icode":iv }
+             var url = "../../../SaleDiscount/ReSetProductionDiscount"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetProductionDis(dv,iv,kj) {
+             var o = { 'dcode': dv,'icode':iv }
+             var url = "../../../SaleDiscount/GetProductionDiscount"
+             var b = AjaxExb(url, o);
+             kj.setValue(b);
+         }
+         function SetDepDis(dv,sv) {
+             var o = { 'dcode': dv, "dpcode": sv }
+             var url = "../../../SaleDiscount/SetDepDiscount"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function GetDepDis(dv, kj) {
+             var o = { 'dcode': dv }
+             var url = "../../../SaleDiscount/GetDepDiscount"
+             var b = AjaxExb(url, o);
+             kj.setValue(b);
+         }
+         function ReSetDepDis(dv) {
+             var url = "../../../SaleDiscount/ReSetDepDiscount"
+             var o = { 'dcode': dv }
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+
+         function InitCondition(hdv, tjv) {
+             var o = { "dcode": hdv, "tjcode": tjv }
+             var url = "../../../SaleDiscount/InitCondition"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.hdname.setValue(r.dname)
+                 ns.hdcode.setValue(r.dcode)
+                 ns.tjname.setValue(r.tjname)
+                 ns.tjcode.setValue(r.tjcode)
+                 ns.zzk.setValue(r.dzk)
+                 ns.tjmethod.setValue(r.tjmethod)
+                 ns.zkje.setValue(r.dvalue)
+                 ns.tjsort.setValue(r.dsort)
+                 ns.tjlv.setValue(r.dlv)
+                 ns.tjtv.setValue(r.dtv)
+                 ns.tjlb.setValue(r.tjlb)
+                 ns.tjfw.setValue(r.tjfw)
+                 ns.tjid.setValue(r.id)
+             }
+         }
+         function SaveCondition() {
+             var hdv = ns.hdtreegrid.getUIValue();
+             var url = "../../../SaleDiscount/SaveCondition"
+             var db = linb.DataBinder.getFromName("tjbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryConditionList('"+hdv+"')", false);
+             ns.tjdlg.setDisplay("none");
+         }
+         function QueryConditionList(dv) {
+             var url = "../../../SaleDiscount/QueryConditionList"
+             var o = {"dcode":dv}
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.hdtjtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }, { "value": cel[7]}] })
+                 }
+                 ns.hdtjtreegrid.setRows(arr)
+             }
+         }
+         function DelCondition(tv) {
+             var hdv = ns.hdtreegrid.getUIValue();
+             var url = "../../../SaleDiscount/DelCondition"
+             var o = { 'tjcode': tv }
+             var b = AjaxExb(url, o);
+             BackVad(b, " QueryConditionList('"+hdv+"')", false)
+         }
+
+         function InitTjCate(v) {
+             var o = { "tlcode": v }
+             var url = "../../../SpecialOffer/InitTjCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lbname.setValue(r.tjlbname)
+                 ns.lbcode.setValue(r.tjlbcode)
+                 ns.lbid.setValue(r.id)
+             }
+         }
+         function SaveTjCate() {
+             var url = "../../../SpecialOffer/SaveTjCate"
+             var db = linb.DataBinder.getFromName("lbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryTjCateList()", false);
+             ns.pldlg.setDisplay("none");
+         }
+         function QueryTjCateList() {
+             var url = "../../../SpecialOffer/QueryTjCateList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lbtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0]}] })
+                 }
+                 ns.lbtreegrid.setRows(arr)
+             }
+         }
+         function RefQueryTjCate() {
+             var url = "../../../SpecialOffer/QueryTjCateList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.zxttreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0]}] })
+                 }
+                 ns.zxttreegrid.setRows(arr)
+             }
+         }
+         function DropQueryTjCate() {
+             var url = "../../../SpecialOffer/QueryTjCateList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             ns.tjlb.setItems();
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 arr.push({ "id": "0001;0002", "caption": "A&B" })
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.tjlb.setItems(arr)
+             }
+         }
+         function DelTjCate(v) {
+             var o = { "tlcode": v }
+             var url = "../../../SpecialOffer/DelTjCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, " QueryTjCateList()", false)
+         }
+
+         function SetCatePCate(lv, icv) {
+             var o = { "ccode": lv, "icode": icv }
+             var url = "../../../SpecialOffer/SetCatePCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetCatePCate(lv) {
+             var o = { "ccode": lv }
+             var url = "../../../SpecialOffer/ReSetCatePCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetCatePCate(lv) {
+             var o = { "ccode": lv }
+             var url = "../../../SpecialOffer/GetCatePCate"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.ittreebar.setValue(b);
+             }
+             else {
+                 linb.message("未设置条件类别");
+                 ns.ittreebar.setValue()
+             }
+         }
+     </script>
+</body>
+</html>

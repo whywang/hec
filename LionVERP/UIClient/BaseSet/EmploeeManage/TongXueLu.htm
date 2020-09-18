@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>部门管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("同讯录管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Layout)
+                .setHost(host, "layout")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.layout.append(
+                (new linb.UI.Pane)
+                .setHost(host, "b1")
+                .setDock("top")
+                .setHeight(40)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.b1.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s1")
+                .setLeft(30)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>部门</span>")
+            );
+
+                     host.layout.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .onItemSelected("_dtreebar_onitemselected")
+                .beforeExpend("_dtreebar_beforeexpend")
+            , "before");
+
+                     host.layout.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ttreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "部门" }, { "id": "col2", "width": 120, "type": "input", "caption": "姓名" }, { "id": "col3", "width": 120, "type": "input", "caption": "手机" }, { "id": "col4", "width": 120, "type": "input", "caption": "座机" }, { "id": "col4", "width": 120, "type": "input", "caption": "手机2"}])
+                .setValue("")
+                .onRowSelected("_ttreegrid_onrowselected")
+            , "main");
+
+                     host.layout.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.layout.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "tdlg")
+                .setLeft(161)
+                .setTop(121)
+                .setWidth(550)
+                .setHeight(380)
+                .setDisplay("none")
+                .setCaption("通讯录")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "tstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_tstoolbar_onclick")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tname")
+                .setDataBinder("binder")
+                .setDataField("tname")
+                .setLeft(80)
+                .setTop(40)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("姓名")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setDataBinder("binder")
+                .setDataField("dname")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(90)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(140)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tele1")
+                .setDataBinder("binder")
+                .setDataField("tele1")
+                .setLeft(80)
+                .setTop(190)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("手机号1")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "zjtele")
+                .setDataBinder("binder")
+                .setDataField("zjtele")
+                .setLeft(80)
+                .setTop(240)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("座&nbsp;机&nbsp;号")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bytele")
+                .setDataBinder("binder")
+                .setDataField("bytele")
+                .setLeft(80)
+                .setTop(290)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("手机号2")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tid")
+                .setDataBinder("binder")
+                .setDataField("tid")
+                .setLeft(60)
+                .setTop(130)
+                .setWidth(380)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     IdepItems("", ns.dtreebar);
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sd = ns.dtreebar.getUIValue();
+                     if (item.id == "a1") {
+                         if (sd == null || sd == "") {
+                             linb.message("选择部门");
+                             return;
+                         }
+                         ns.tdlg.setDisplay("block");
+                         InitAddr("", sd)
+                     }
+                     if (item.id == "a3") {
+                         var sv = ns.ttreegrid.getUIValue();
+                         if (sv == null || sv == "") {
+                             linb.message("选择记录");
+                             return;
+                         }
+                         ns.tdlg.setDisplay("block");
+                         InitAddr(sv, "")
+                     }
+                     if (item.id == "a4") {
+                         var sv = ns.ttreegrid.getUIValue();
+                         if (sv == null || sv == "") {
+                             linb.message("选择记录");
+                             return;
+                         }
+                         IDelFun("DelAddr('" + sv + "')")
+                     }
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdepCItems(item, ns.dtreebar);
+                     ns.dtreebar.setValue(item.id);
+                     QueryList(item.id)
+                 },
+                 _tstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveAddrList();
+                     }
+                     ns.tdlg.setDisplay("none")
+                 },
+                 _ttreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ttreegrid.setValue(row.id)
+                 },
+                 _dtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdepCItems(item, ns.dtreebar)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitAddr(id,v) {
+             var o = {'id':id, "dcode": v }
+             var url = "../../../AddressList/InitAddr"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         } 
+         function InitKj(r) {
+             if (r != "") {
+                 ns.tname.setValue(r.aname);
+                 ns.dname.setValue(r.adname);
+                 ns.dcode.setValue(r.adcode);
+                 ns.tele1.setValue(r.tel1);
+                 ns.zjtele.setValue(r.ftel);
+                 ns.tid.setValue(r.id);
+                 ns.bytele.setValue(r.tel2);
+             }
+             else {
+                 ns.tname.setValue();
+                 ns.dname.setValue();
+                 ns.dcode.setValue();
+                 ns.tele1.setValue();
+                 ns.zjtele.setValue();
+                 ns.tid.setValue(0);
+                 ns.bytele.setValue();
+             }
+         }
+         function SaveAddrList() {
+             if (!CheckInput(ns, ns.tname, true, "", "请输入人员名称！", "", "", "", "")) {
+                 return
+             }
+             var url = "../../../AddressList/SaveAddr"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function QueryList(v) {
+             var o = { "dcode": v }
+             var url ="../../../AddressList/QueryList"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.ttreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[2] }, { "value": cel[1] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.ttreegrid.setRows(arr)
+             }
+         }
+         function DelAddr(v) {
+             var o = { "id": v }
+             var url ="../../../AddressList/DelAddr"
+             var b = AjaxExb(url, o);
+             BackVad(b, " ", true)
+         }
+     </script>
+</body>
+</html>

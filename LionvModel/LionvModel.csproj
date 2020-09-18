@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D06D6708-531B-46B5-8486-E623FC49B53B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LionvModel</RootNamespace>
+    <AssemblyName>LionvModel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\A_CustomeAccount.cs" />
+    <Compile Include="Account\B_ExchangeRecord.cs" />
+    <Compile Include="Account\Bk_PaymentOrder.cs" />
+    <Compile Include="Account\B_CityPayOrder.cs" />
+    <Compile Include="Account\Sbk_Account.cs" />
+    <Compile Include="Account\Sbk_CollectionAccount.cs" />
+    <Compile Include="Account\Sbk_PaymentAccount.cs" />
+    <Compile Include="Account\Sys_Bank.cs" />
+    <Compile Include="Api\ApiParam.cs" />
+    <Compile Include="Api\API_yy.cs" />
+    <Compile Include="BusiCommon\All_SearchOrder.cs" />
+    <Compile Include="BusiCommon\CB_CodeRecorder.cs" />
+    <Compile Include="BusiCommon\CB_InSapRecord.cs" />
+    <Compile Include="BusiCommon\CB_Message.cs" />
+    <Compile Include="BusiCommon\CB_OperationRecod.cs" />
+    <Compile Include="BusiCommon\CB_OrderEventBtn.cs" />
+    <Compile Include="BusiCommon\CB_OrderFlow.cs" />
+    <Compile Include="BusiCommon\CB_OrderProduceProcess.cs" />
+    <Compile Include="BusiCommon\CB_OrderProduceType.cs" />
+    <Compile Include="BusiCommon\CB_OrderState.cs" />
+    <Compile Include="BusiCommon\CB_OrderTraceRecord.cs" />
+    <Compile Include="BusiCommon\CB_ProcessRecord.cs" />
+    <Compile Include="BusiCommon\CB_ProduceStartDate.cs" />
+    <Compile Include="BusiCommon\CB_ProductionProcess.cs" />
+    <Compile Include="BusiCommon\CB_SaleDiscount.cs" />
+    <Compile Include="BusiCommon\CB_SapRecord.cs" />
+    <Compile Include="BusiCommon\CB_SendAddress.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterApplyOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterCompensate.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterCupBoardSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterEBusiSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterFreeBackOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterGroupProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterMetalDoorWinOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterOrderDuty.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterPartInHouseOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterPriceFile.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterProductionImg.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterQbqqSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterReModifyOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterSearchOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_AfterSearch_Production.cs" />
+    <Compile Include="BusiOrderInfo\B_ApartSendOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_Attachment.cs" />
+    <Compile Include="BusiOrderInfo\B_BatchProduceOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_CityInHouseRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_CustomeGroupProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_CustomeMoneyOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_Customer.cs" />
+    <Compile Include="BusiOrderInfo\B_CustomerGather.cs" />
+    <Compile Include="BusiOrderInfo\B_CustomerOrderTask.cs" />
+    <Compile Include="BusiOrderInfo\B_CustormOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_DesignPlan.cs" />
+    <Compile Include="BusiOrderInfo\B_DismantleOrderTask.cs" />
+    <Compile Include="BusiOrderInfo\B_DrawProductionOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_FeedBackImg.cs" />
+    <Compile Include="BusiOrderInfo\B_FixecImg.cs" />
+    <Compile Include="BusiOrderInfo\B_FixGetGoodsImg.cs" />
+    <Compile Include="BusiOrderInfo\B_FixMoney.cs" />
+    <Compile Include="BusiOrderInfo\B_FixOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_FixOrderTask.cs" />
+    <Compile Include="BusiOrderInfo\B_FixProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_FixVisitInfo.cs" />
+    <Compile Include="BusiOrderInfo\B_GlassOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProductionAttr.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProductionChange.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProductionChangeRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProductionChangeRequst.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProductionCompnent.cs" />
+    <Compile Include="BusiOrderInfo\B_GroupProductionMoney.cs" />
+    <Compile Include="BusiOrderInfo\B_HouseProdcution.cs" />
+    <Compile Include="BusiOrderInfo\B_InHouseOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_InhousePackage.cs" />
+    <Compile Include="BusiOrderInfo\B_InHouseRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_MeasureImg.cs" />
+    <Compile Include="BusiOrderInfo\B_MeasureOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_MeasureProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_MzDesignPlan.cs" />
+    <Compile Include="BusiOrderInfo\B_MzDesignTask.cs" />
+    <Compile Include="BusiOrderInfo\B_MzMeasureFile.cs" />
+    <Compile Include="BusiOrderInfo\B_MzPriceFile.cs" />
+    <Compile Include="BusiOrderInfo\B_MzSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_OrderFavorable.cs" />
+    <Compile Include="BusiOrderInfo\B_Orders.cs" />
+    <Compile Include="BusiOrderInfo\B_ProductionProcess.cs" />
+    <Compile Include="BusiOrderInfo\B_QbqqSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_NewProductionPriceOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_OrderFacotory.cs" />
+    <Compile Include="BusiOrderInfo\B_OutHouseOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_OutHousePackage.cs" />
+    <Compile Include="BusiOrderInfo\B_OutHouseRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_Package.cs" />
+    <Compile Include="BusiOrderInfo\B_PackageCode.cs" />
+    <Compile Include="BusiOrderInfo\B_PackageDate.cs" />
+    <Compile Include="BusiOrderInfo\B_PackageInSap.cs" />
+    <Compile Include="BusiOrderInfo\B_PartQualityItems.cs" />
+    <Compile Include="BusiOrderInfo\B_PartQualityOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_PayImg.cs" />
+    <Compile Include="BusiOrderInfo\B_PayRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_PreWjOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_ProcessRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_ProduceGyImg.cs" />
+    <Compile Include="BusiOrderInfo\B_ProductionCost.cs" />
+    <Compile Include="BusiOrderInfo\B_ProductionItem.cs" />
+    <Compile Include="BusiOrderInfo\B_MzRequstDesign.cs" />
+    <Compile Include="BusiOrderInfo\B_ProductionItemChangeRecorder.cs" />
+    <Compile Include="BusiOrderInfo\B_SaleChangeOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_SaleMaterielOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_SaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_SearchSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_Search_Production.cs" />
+    <Compile Include="BusiOrderInfo\B_SelectProduceImg.cs" />
+    <Compile Include="BusiOrderInfo\B_ServiceImg.cs" />
+    <Compile Include="BusiOrderInfo\B_SetMeal.cs" />
+    <Compile Include="BusiOrderInfo\B_SpecialProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_TempUpFile.cs" />
+    <Compile Include="BusiOrderInfo\B_WjOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_WjPartGroupProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_WjPartOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_WjPreParePartGroupProduction.cs" />
+    <Compile Include="BusiOrderInfo\B_WjPreparePartOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_WorkSchedule.cs" />
+    <Compile Include="BusiOrderInfo\B_YqAfterSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_YqSaleOrder.cs" />
+    <Compile Include="BusiOrderInfo\B_yyFixOrderRecord.cs" />
+    <Compile Include="BusiOrderInfo\B_YySend.cs" />
+    <Compile Include="BusiOrderInfo\IB_CpbdGroupProductionDal.cs" />
+    <Compile Include="BusiOrderInfo\Sys_ProductionProcessCostPart.cs" />
+    <Compile Include="NewsInfo\NB_DepNews.cs" />
+    <Compile Include="NewsInfo\NB_News.cs" />
+    <Compile Include="NewsInfo\NB_NewsReader.cs" />
+    <Compile Include="ProductionInfo\Sys_Brands.cs" />
+    <Compile Include="ProductionInfo\Sys_Cave.cs" />
+    <Compile Include="ProductionInfo\Sys_CgNomalSize.cs" />
+    <Compile Include="ProductionInfo\Sys_CgOverCondtion.cs" />
+    <Compile Include="ProductionInfo\Sys_CgOverCondtionCategory.cs" />
+    <Compile Include="ProductionInfo\Sys_ColorPane.cs" />
+    <Compile Include="ProductionInfo\Sys_Component.cs" />
+    <Compile Include="ProductionInfo\Sys_ComponentCate.cs" />
+    <Compile Include="ProductionInfo\Sys_ComputeFunction.cs" />
+    <Compile Include="ProductionInfo\Sys_ComputeUnit.cs" />
+    <Compile Include="ProductionInfo\Sys_ConsumeMaterial.cs" />
+    <Compile Include="ProductionInfo\Sys_ConsumeMaterialCate.cs" />
+    <Compile Include="ProductionInfo\Sys_DkSizeTransform.cs" />
+    <Compile Include="ProductionInfo\Sys_FixProduction.cs" />
+    <Compile Include="ProductionInfo\Sys_GlassCraft.cs" />
+    <Compile Include="ProductionInfo\Sys_GlassDirection.cs" />
+    <Compile Include="ProductionInfo\Sys_GlassProductionPeriod.cs" />
+    <Compile Include="ProductionInfo\Sys_HingeInterval.cs" />
+    <Compile Include="ProductionInfo\Sys_HyType.cs" />
+    <Compile Include="ProductionInfo\Sys_InventoryCategory.cs" />
+    <Compile Include="ProductionInfo\Sys_InventoryDetail.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmElm.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmFbt.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmHy.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmHz.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmKx.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmMsyl.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmSj.cs" />
+    <Compile Include="ProductionInfo\Sys_JqmSlm.cs" />
+    <Compile Include="ProductionInfo\Sys_Jqmxx.cs" />
+    <Compile Include="ProductionInfo\Sys_LimitSize.cs" />
+    <Compile Include="ProductionInfo\Sys_LocksType.cs" />
+    <Compile Include="ProductionInfo\Sys_Lx.cs" />
+    <Compile Include="ProductionInfo\Sys_Material.cs" />
+    <Compile Include="ProductionInfo\Sys_MaterialCategory.cs" />
+    <Compile Include="ProductionInfo\Sys_MeasureProduction.cs" />
+    <Compile Include="ProductionInfo\Sys_MsCz.cs" />
+    <Compile Include="ProductionInfo\Sys_MtZsbEdit.cs" />
+    <Compile Include="ProductionInfo\Sys_NomalSize.cs" />
+    <Compile Include="ProductionInfo\Sys_Optimize.cs" />
+    <Compile Include="ProductionInfo\Sys_OverComputeCategory.cs" />
+    <Compile Include="ProductionInfo\Sys_OverComputeFunction.cs" />
+    <Compile Include="ProductionInfo\Sys_OverCondition.cs" />
+    <Compile Include="ProductionInfo\Sys_PriceProportion.cs" />
+    <Compile Include="ProductionInfo\Sys_PriceType.cs" />
+    <Compile Include="ProductionInfo\Sys_ProcessFlow.cs" />
+    <Compile Include="ProductionInfo\Sys_ProcessPoint.cs" />
+    <Compile Include="ProductionInfo\Sys_ProduceAllCapacity.cs" />
+    <Compile Include="ProductionInfo\Sys_ProduceCate.cs" />
+    <Compile Include="ProductionInfo\Sys_ProduceImg.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionAttrEx.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionAttrExCate.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionCapacity.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionOrderLogo.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionPeriod.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionPriceTemp.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionPriceTempCate.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionProcess.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionProcessCate.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionProcessCost.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionProcessLine.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionProcessLinePoint.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionProcessPrice.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionTemp.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionTempCate.cs" />
+    <Compile Include="ProductionInfo\Sys_ProductionXqTemp.cs" />
+    <Compile Include="ProductionInfo\Sys_RefSizeTransform.cs" />
+    <Compile Include="ProductionInfo\Sys_Remark.cs" />
+    <Compile Include="ProductionInfo\Sys_RemarkCondition.cs" />
+    <Compile Include="ProductionInfo\Sys_SectionPrice.cs" />
+    <Compile Include="ProductionInfo\Sys_SectionPriceCate.cs" />
+    <Compile Include="ProductionInfo\Sys_SendType.cs" />
+    <Compile Include="ProductionInfo\Sys_SetMeal.cs" />
+    <Compile Include="ProductionInfo\Sys_SetMealProduction.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeAttr.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeFomatCondition.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeFormatCate.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeFormatCollection.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeFormatPart.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeFormatPartAttr.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeLimited.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeLimitedCategory.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeTransform.cs" />
+    <Compile Include="ProductionInfo\Sys_SizeTransformR.cs" />
+    <Compile Include="ProductionInfo\Sys_SpecialProduction.cs" />
+    <Compile Include="ProductionInfo\Sys_SpecialProductionCate.cs" />
+    <Compile Include="ProductionInfo\Sys_StatistcPartType.cs" />
+    <Compile Include="ProductionInfo\Sys_TPrice.cs" />
+    <Compile Include="ProductionInfo\Sys_TPriceCate.cs" />
+    <Compile Include="ProductionInfo\Sys_WjBom.cs" />
+    <Compile Include="ProductionInfo\Sys_WorkLine.cs" />
+    <Compile Include="ProductionInfo\Sys_WorkLineCate.cs" />
+    <Compile Include="ProductionInfo\Sys_XsOverCondition.cs" />
+    <Compile Include="ProductionInfo\Sys_XsOverCondtionCategory.cs" />
+    <Compile Include="ProductionInfo\Sys_XxType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysInfo\Sys_AddressList.cs" />
+    <Compile Include="SysInfo\Sys_AgentFee.cs" />
+    <Compile Include="SysInfo\Sys_Area.cs" />
+    <Compile Include="SysInfo\Sys_BackEvent.cs" />
+    <Compile Include="SysInfo\Sys_BtnImg.cs" />
+    <Compile Include="SysInfo\Sys_CityGetAddress.cs" />
+    <Compile Include="SysInfo\Sys_ContractRowTemp.cs" />
+    <Compile Include="SysInfo\Sys_ContractTemp.cs" />
+    <Compile Include="SysInfo\Sys_DataTable.cs" />
+    <Compile Include="SysInfo\Sys_Depment.cs" />
+    <Compile Include="SysInfo\Sys_DepmentDpt.cs" />
+    <Compile Include="SysInfo\Sys_Designer.cs" />
+    <Compile Include="SysInfo\Sys_DesignerProduction.cs" />
+    <Compile Include="SysInfo\Sys_Domain.cs" />
+    <Compile Include="SysInfo\Sys_Duty.cs" />
+    <Compile Include="SysInfo\Sys_Employee.cs" />
+    <Compile Include="SysInfo\Sys_EmployeeDpt.cs" />
+    <Compile Include="SysInfo\Sys_EventMenu.cs" />
+    <Compile Include="SysInfo\Sys_EventMenuAttr.cs" />
+    <Compile Include="SysInfo\Sys_Expire.cs" />
+    <Compile Include="SysInfo\Sys_Functions.cs" />
+    <Compile Include="SysInfo\Sys_Group.cs" />
+    <Compile Include="SysInfo\Sys_HelpContext.cs" />
+    <Compile Include="SysInfo\Sys_HelpMenu.cs" />
+    <Compile Include="SysInfo\Sys_jlProvince.cs" />
+    <Compile Include="SysInfo\Sys_MeasureLimited.cs" />
+    <Compile Include="SysInfo\Sys_Menu.cs" />
+    <Compile Include="SysInfo\Sys_Message.cs" />
+    <Compile Include="SysInfo\Sys_MessageAttr.cs" />
+    <Compile Include="SysInfo\Sys_MzOrderType.cs" />
+    <Compile Include="SysInfo\Sys_OrderCode.cs" />
+    <Compile Include="SysInfo\Sys_OrderSource.cs" />
+    <Compile Include="SysInfo\Sys_OrderType.cs" />
+    <Compile Include="ProductionInfo\Sys_PartType.cs" />
+    <Compile Include="ProductionInfo\Sys_Package.cs" />
+    <Compile Include="SysInfo\Sys_ProduceCyc.cs" />
+    <Compile Include="SysInfo\Sys_ProductionOrderTemp.cs" />
+    <Compile Include="SysInfo\Sys_RepairDuty.cs" />
+    <Compile Include="SysInfo\Sys_RepairDutyCategory.cs" />
+    <Compile Include="SysInfo\Sys_RepairProductionType.cs" />
+    <Compile Include="SysInfo\Sys_RepairReason.cs" />
+    <Compile Include="SysInfo\Sys_RepairReasonCategory.cs" />
+    <Compile Include="SysInfo\Sys_RGroupButton.cs" />
+    <Compile Include="SysInfo\Sys_RGroupMenu.cs" />
+    <Compile Include="SysInfo\Sys_RGroupUser.cs" />
+    <Compile Include="SysInfo\Sys_RMenuRole.cs" />
+    <Compile Include="SysInfo\Sys_Role.cs" />
+    <Compile Include="SysInfo\Sys_RptTemp.cs" />
+    <Compile Include="SysInfo\Sys_SaleDiscount.cs" />
+    <Compile Include="SysInfo\Sys_SaleDiscountCondition.cs" />
+    <Compile Include="SysInfo\Sys_SapApi.cs" />
+    <Compile Include="SysInfo\Sys_SearchCondtion.cs" />
+    <Compile Include="SysInfo\Sys_Settlement.cs" />
+    <Compile Include="SysInfo\Sys_SubWorkFlow.cs" />
+    <Compile Include="SysInfo\Sys_SysMenuCode.cs" />
+    <Compile Include="SysInfo\Sys_SystemImg.cs" />
+    <Compile Include="SysInfo\Sys_TabMenu.cs" />
+    <Compile Include="SysInfo\Sys_TabMenuAbc.cs" />
+    <Compile Include="SysInfo\Sys_Tax.cs" />
+    <Compile Include="SysInfo\Sys_Templet.cs" />
+    <Compile Include="SysInfo\Sys_Unit.cs" />
+    <Compile Include="SysInfo\Sys_User.cs" />
+    <Compile Include="SysInfo\Sys_Button.cs" />
+    <Compile Include="SysInfo\Sys_ViewTable.cs" />
+    <Compile Include="SysInfo\Sys_WorkEvent.cs" />
+    <Compile Include="WxChat\Sys_EmplyeeFouseWx.cs" />
+    <Compile Include="WxChat\Sys_WxChatConfig.cs" />
+    <Compile Include="WxChat\Sys_WxChatTemp.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

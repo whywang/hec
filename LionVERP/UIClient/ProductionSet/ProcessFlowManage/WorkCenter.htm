@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>加工中心</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iprocessflow.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         
+         Class('App', 'linb.Com', {
+         
+             Instance: {
+                 
+                 initialize: function () {
+                     
+                     this.autoDestroy = true;
+                      
+                     this.properties = {};
+                 },
+              
+                 iniComponents: function () {
+                     
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("加工中心管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(40)
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>加工中心</span>")
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码" }, { "id": "col3", "width": 160, "type": "input", "caption": "工厂"}])
+                .setValue("")
+                .onRowSelected("_treegrid_onrowselected")
+            );
+
+                     append(
+                (new linb.UI.Dialog)
+                .setHost(host, "wdlg")
+                .setLeft(160)
+                .setTop(140)
+                .setWidth(470)
+                .setHeight(250)
+                .setCaption("加工中心")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_cstoolbar_onclick")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "wname")
+                .setDataBinder("binder")
+                .setDataField("wname")
+                .setLeft(70)
+                .setTop(50)
+                .setWidth(310)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "wcode")
+                .setDataBinder("binder")
+                .setDataField("wcode")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(100)
+                .setWidth(310)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "fcode")
+                .setDataBinder("binder")
+                .setDataField("fcode")
+                .setLeft(70)
+                .setTop(150)
+                .setWidth(295)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px ;color:#666666'>所属工厂</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "item a", "image": "img/demo.gif" }, { "id": "b", "caption": "item b", "image": "img/demo.gif" }, { "id": "c", "caption": "item c", "image": "img/demo.gif" }, { "id": "d", "caption": "item d", "image": "img/demo.gif", "disabled": true}])
+            );
+
+                     host.wdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "wid")
+                .setDataBinder("binder")
+                .setDataField("wid")
+                .setLeft(100)
+                .setTop(30)
+                .setWidth(310)
+                .setHeight(44)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("名称")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                   
+                 },
+              
+                 iniExComs: function (com, threadid) {
+                 },
+                 
+                 customAppend: function (parent, subId, left, top) {
+                    
+                     return false;
+                 },
+                 
+                 events: {},
+             
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _treegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _cstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitProcessFlow(v) {
+             var o = { "pcode": v }
+             var url = preurl + "/InitProcessFlow"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.lxname.setValue(r.pname)
+             ns.lxcode.setValue(r.pcode)
+             ns.lxstate.setValue(r.pstate == true ? "1" : "0")
+             ns.lxid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.lxname.setValue()
+             ns.lxcode.setValue()
+             ns.lxstate.setValue()
+             ns.lxid.setValue(0)
+         }
+         function SaveProcessFlow() {
+             var url = preurl + "/SaveProcessFlow"
+             var db = linb.DataBinder.getFromName("lxbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "IProcessItems( ns.lxtreebar)", false)
+         }
+         function DelProcessFlow(v) {
+             var o = { "pcode": v }
+             var url = preurl + "/DelProcessFlow"
+             var b = AjaxExb(url, o);
+             BackVad(b, "IProcessItems( ns.lxtreebar)", false)
+         }
+
+         function InitProcessJd(pv, jv) {
+             var o = { "pcode": pv, "jcode": jv }
+             var url = preurl + "/InitProcessJd"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitJKj(r)
+             }
+             else {
+                 InitUnJKj()
+             }
+         }
+         function InitJKj(r) {
+             ns.jdname.setValue(r.jname)
+             ns.jdcode.setValue(r.jcode)
+             ns.jdlxname.setValue(r.pname)
+             ns.jdlxcode.setValue(r.pcode)
+             ns.jdtype.setValue(r.jtype)
+             ns.qjdname.setValue(r.precode)
+             ns.jdzq.setValue(r.usetime)
+             ns.jdid.setValue(r.id)
+         }
+         function InitUnJKj() {
+             ns.jdname.setValue()
+             ns.jdcode.setValue()
+             ns.jdlxname.setValue()
+             ns.jdlxcode.setValue()
+             ns.jdtype.setValue()
+             ns.qjdname.setValue()
+             ns.jdzq.setValue()
+             ns.jdid.setValue(0)
+         }
+         function SaveProcessJd() {
+             var sv = ns.lxtreebar.getUIValue();
+             var url = preurl + "/SaveProcessJd"
+             var db = linb.DataBinder.getFromName("jdbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList('" + sv + "')", false)
+             ns.jddlg.setDisplay("none")
+         }
+         function DelProcessJd(v) {
+             var sv = ns.lxtreebar.getUIValue();
+             var o = { "jcode": v }
+             var url = preurl + "/DelProcessJd"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList('" + sv + "')", false)
+         }
+         function QueryList(v) {
+             var url = preurl + "/QueryList";
+             var o = { "pcode": v };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.jdtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2] }, { "value": cel[3]}] })
+                 }
+                 ns.jdtreegrid.setRows(arr)
+             }
+         }
+         function DropJdList(v) {
+             var url = preurl + "/QueryList";
+             var o = { "pcode": v };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.qjdname.setItems(arr)
+             }
+         }
+     </script>
+</body>
+</html>

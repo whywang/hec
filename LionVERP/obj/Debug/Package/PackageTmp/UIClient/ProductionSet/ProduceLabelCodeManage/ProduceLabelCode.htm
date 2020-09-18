@@ -1,0 +1,1879 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品服务费</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Imaterial.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+   
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "mbinder")
+                .setName("mbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "elmbinder")
+                .setName("elmbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "fbbinder")
+                .setName("fbbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "hzbinder")
+                .setName("hzbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "kxbinder")
+                .setName("kxbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "hybinder")
+                .setName("hybinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "sjbinder")
+                .setName("sjbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "xxbinder")
+                .setName("xxbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "slbinder")
+                .setName("slbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("生产标签机器码")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "门型对应码" }, { "id": "b", "caption": "第二龙门对应码" }, { "id": "c", "caption": "封边花色对应码" }, { "id": "d", "caption": "封边回转对应码" }, { "id": "e", "caption": "开向对应码" }, { "id": "f", "caption": "合页对应码" }, { "id": "g", "caption": "把手对应码" }, { "id": "h", "caption": "铣型对应码" }, { "id": "j", "caption": "第三龙门对应码"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "jtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_jtoolbar_onclick")
+            , "j");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly9")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "j");
+
+                     host.ly9.append(
+                (new linb.UI.Pane)
+                .setHost(host, "slmit")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.slmit.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls13")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类别</span>")
+            );
+
+                     host.ly9.append(
+                (new linb.UI.Pane)
+                .setHost(host, "slmil")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly9.append(
+                (new linb.UI.Pane)
+                .setHost(host, "slmir")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly9.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "slmitreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_slmitreebar_onitemselected")
+                .beforeExpend("_slmitreebar_beforeexpend")
+            , "before");
+
+                     host.ly9.append(
+                (new linb.UI.Pane)
+                .setHost(host, "slmt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.slmt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "slmtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_slmtoolbar_onclick")
+            );
+
+                     host.slmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls14")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>三龙门机器码</span>")
+            );
+
+                     host.ly9.append(
+                (new linb.UI.Pane)
+                .setHost(host, "slml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly9.append(
+                (new linb.UI.Pane)
+                .setHost(host, "slmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly9.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "slmtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 200, "type": "input", "caption": "机器码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "slmdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(200)
+                .setDisplay("none")
+                .setCaption("第三龙门对应码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "j");
+
+                     host.slmdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "slmstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_slmstoolbar_onclick")
+            );
+
+                     host.slmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lslmname")
+                .setDataBinder("slbinder")
+                .setDataField("lslmname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.slmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lslmcode")
+                .setDataBinder("slbinder")
+                .setDataField("lslmcode")
+                .setReadonly(true)
+                .setLeft(270)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.slmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lsmmmcode")
+                .setDataBinder("slbinder")
+                .setDataField("lsmmmcode")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.slmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "slid")
+                .setDataBinder("slbinder")
+                .setDataField("slid")
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "btoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_btoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly2")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.ly2.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "elmtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_elmtoolbar_onclick")
+            , "main");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lmit")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lmit.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类别</span>")
+            );
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lmil")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lmir")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "lmitreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_lmitreebar_onitemselected")
+                .beforeExpend("_lmitreebar_beforeexpend")
+            , "before");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lmt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.lmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>第二龙门机器码</span>")
+            );
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly2.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly2.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "elmtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "机器码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "elmdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(200)
+                .setDisplay("none")
+                .setCaption("第二龙门代码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "b");
+
+                     host.elmdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "elmstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_elmstoolbar_onclick")
+            );
+
+                     host.elmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "llmname")
+                .setDataBinder("elmbinder")
+                .setDataField("llmname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.elmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "llmcode")
+                .setDataBinder("elmbinder")
+                .setDataField("llmcode")
+                .setReadonly(true)
+                .setLeft(270)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.elmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "llmmcode")
+                .setDataBinder("elmbinder")
+                .setDataField("llmmcode")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.elmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "elmid")
+                .setDataBinder("elmbinder")
+                .setDataField("elmid")
+                .setLeft(210)
+                .setTop(150)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ctoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_ctoolbar_onclick")
+            , "c");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "c");
+
+                     host.ly3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "fbit")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.fbit.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl5")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>颜色类别</span>")
+            );
+
+                     host.ly3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "fbil")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "fbir")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "fmtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_fmtreebar_onitemselected")
+                .beforeExpend("_fmtreebar_beforeexpend")
+            , "before");
+
+                     host.ly3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fbtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_fbtoolbar_onclick")
+            , "main");
+
+                     host.ly3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "fbmt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.fbmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl6")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>颜色机器码</span>")
+            );
+
+                     host.ly3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "fbml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly3.append(
+                (new linb.UI.Pane)
+                .setHost(host, "fbmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "fbmtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "机器码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fbmdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(200)
+                .setDisplay("none")
+                .setCaption("封边花色机器码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "c");
+
+                     host.fbmdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fbstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_fbstoolbar_onclick")
+            );
+
+                     host.fbmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lfbname")
+                .setDataBinder("fbbinder")
+                .setDataField("lfbname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fbmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lfbcode")
+                .setDataBinder("fbbinder")
+                .setDataField("lfbcode")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fbmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lfbmcode")
+                .setDataBinder("fbbinder")
+                .setDataField("lfbmcode")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fbmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fbid")
+                .setDataBinder("fbbinder")
+                .setDataField("fbid")
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(200)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_dtoolbar_onclick")
+            , "d");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly4")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "d");
+
+                     host.ly4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hzit")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.hzit.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl7")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类别</span>")
+            );
+
+                     host.ly4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hzil")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hzir")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly4.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "hzitreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_hzitreebar_onitemselected")
+                .beforeExpend("_hzitreebar_beforeexpend")
+            , "before");
+
+                     host.ly4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "hztoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_hztoolbar_onclick")
+            , "main");
+
+                     host.ly4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hzt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.hzt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl8")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>封边回转机器码</span>")
+            );
+
+                     host.ly4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hzl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly4.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hzr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "hztreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "机器码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "hzdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(200)
+                .setDisplay("none")
+                .setCaption("封边回转对应码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "d");
+
+                     host.hzdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "hzstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_hzstoolbar_onclick")
+            );
+
+                     host.hzdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lhzname")
+                .setDataBinder("hzbinder")
+                .setDataField("lhzname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.hzdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lhzcode")
+                .setDataBinder("hzbinder")
+                .setDataField("lhzcode")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.hzdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lhzmcode")
+                .setDataBinder("hzbinder")
+                .setDataField("lhzmcode")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.hzdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hzid")
+                .setDataBinder("hzbinder")
+                .setDataField("hzid")
+                .setLeft(250)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "etoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_etoolbar_onclick")
+            , "e");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pkxt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "e");
+
+                     host.pkxt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl9")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>开向机器码</span>")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pkxl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "e");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pkxr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "e");
+
+                     host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "kxtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "编码" }, { "id": "col3", "width": 140, "type": "input", "caption": "开向" }, { "id": "col4", "width": 120, "type": "input", "caption": "机器码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "e");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "kxdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(160)
+                .setDisplay("none")
+                .setCaption("开向对应码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "e");
+
+                     host.kxdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "kxstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_kxstoolbar_onclick")
+            );
+
+                     host.kxdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lkxmcode")
+                .setDataBinder("kxbinder")
+                .setDataField("lkxmcode")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.kxdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "kxname")
+                .setDataBinder("kxbinder")
+                .setDataField("kxname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(175)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>开向</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "item a", "image": "img/demo.gif" }, { "id": "b", "caption": "item b", "image": "img/demo.gif" }, { "id": "c", "caption": "item c", "image": "img/demo.gif" }, { "id": "d", "caption": "item d", "image": "img/demo.gif", "disabled": true}])
+            );
+
+                     host.kxdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "kxid")
+                .setDataBinder("kxbinder")
+                .setDataField("kxid")
+                .setLeft(170)
+                .setTop(130)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ftoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_ftoolbar_onclick")
+            , "f");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hyt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "f");
+
+                     host.hyt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl10")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>合页机器码</span>")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hyl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "f");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "hyr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "f");
+
+                     host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "hytreegrid")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "合页类型" }, { "id": "col2", "width": 120, "type": "input", "caption": "机器码"}])
+                .setRows({})
+            , "f");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "hydlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(160)
+                .setDisplay("none")
+                .setCaption("合页对应码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "f");
+
+                     host.hydlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "hystoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_hystoolbar_onclick")
+            );
+
+                     host.hydlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lhyname")
+                .setDataBinder("hybinder")
+                .setDataField("lhyname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(175)
+                .setHeight(44)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>合页</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "item a", "image": "img/demo.gif" }, { "id": "b", "caption": "item b", "image": "img/demo.gif" }, { "id": "c", "caption": "item c", "image": "img/demo.gif" }, { "id": "d", "caption": "item d", "image": "img/demo.gif", "disabled": true}])
+            );
+
+                     host.hydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lhymcode")
+                .setDataBinder("hybinder")
+                .setDataField("lhymcode")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.hydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hyid")
+                .setDataBinder("hybinder")
+                .setDataField("hyid")
+                .setLeft(40)
+                .setTop(110)
+                .setWidth(170)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "gtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+            , "g");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "sjt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "g");
+
+                     host.sjt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls11")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'> 把手机器码</span>")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "sjl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "g");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "sjr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "g");
+
+                     host.tab.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "sjtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "机器码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "g");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "sjdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(160)
+                .setDisplay("none")
+                .setCaption("把手对应码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "g");
+
+                     host.sjdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sjtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+            );
+
+                     host.sjdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lsjname")
+                .setDataBinder("sjbinder")
+                .setDataField("lsjname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(175)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>把手</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "item a", "image": "img/demo.gif" }, { "id": "b", "caption": "item b", "image": "img/demo.gif" }, { "id": "c", "caption": "item c", "image": "img/demo.gif" }, { "id": "d", "caption": "item d", "image": "img/demo.gif", "disabled": true}])
+            );
+
+                     host.sjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lsjmcode")
+                .setDataBinder("sjbinder")
+                .setDataField("lsjmcode")
+                .setLeft(260)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.sjdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "sjid")
+                .setDataBinder("sjbinder")
+                .setDataField("sjid")
+                .setLeft(120)
+                .setTop(110)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "htoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_htoolbar_onclick")
+            , "h");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly8")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "h");
+
+                     host.ly8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "xxit")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.xxit.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl12")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类别</span>")
+            );
+
+                     host.ly8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "xxil")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "xxir")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly8.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "xxitreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_xxitreebar_onitemselected")
+                .beforeExpend("_xxitreebar_beforeexpend")
+            , "before");
+
+                     host.ly8.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "xxtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_xxtoolbar_onclick")
+            , "main");
+
+                     host.ly8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "xxt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.xxt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls12")
+                .setLeft(20)
+                .setTop(20)
+                .setTabindex(null)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>铣型机器码</span>")
+            );
+
+                     host.ly8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "xxl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly8.append(
+                (new linb.UI.Pane)
+                .setHost(host, "xxr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly8.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "xxtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 200, "type": "input", "caption": "对应码"}])
+                .setRows({})
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "xxdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(200)
+                .setDisplay("none")
+                .setCaption("铣型对应码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "h");
+
+                     host.xxdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "xxstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_xxstoolbar_onclick")
+            );
+
+                     host.xxdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lxxname")
+                .setDataBinder("xxbinder")
+                .setDataField("lxxname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.xxdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lxxcode")
+                .setDataBinder("xxbinder")
+                .setDataField("lxxcode")
+                .setReadonly(true)
+                .setLeft(270)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.xxdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lxxmcode")
+                .setDataBinder("xxbinder")
+                .setDataField("lxxmcode")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>机器码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.xxdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "xxid")
+                .setDataBinder("xxbinder")
+                .setDataField("xxid")
+                .setLeft(280)
+                .setTop(100)
+                .setWidth(180)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly1")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.ly1.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "mstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_mstoolbar_onclick")
+            , "main");
+
+                     host.ly1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>门扇尺寸机器码</span>")
+            );
+
+                     host.ly1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly1.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "mstreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "门高余量" }, { "id": "col3", "width": 140, "type": "input", "caption": "门宽余量"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.ly1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pimt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pimt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类别</span>")
+            );
+
+                     host.ly1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "piml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly1.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pimr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly1.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "imtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_imtreebar_onitemselected")
+                .beforeExpend("_imtreebar_beforeexpend")
+            , "before");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "mdlg")
+                .setLeft(300)
+                .setTop(150)
+                .setWidth(500)
+                .setHeight(202)
+                .setDisplay("none")
+                .setCaption("门扇机器码")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "a");
+
+                     host.mdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "msstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_msstoolbar_onclick")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmcode")
+                .setDataBinder("mbinder")
+                .setDataField("lmcode")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lcode")
+                .setDataBinder("mbinder")
+                .setDataField("lcode")
+                .setReadonly(true)
+                .setLeft(270)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "mshyl")
+                .setDataBinder("mbinder")
+                .setDataField("mshyl")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>门高余量</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "mswyl")
+                .setDataBinder("mbinder")
+                .setDataField("mswyl")
+                .setLeft(270)
+                .setTop(100)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>门宽余量</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.mdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "msid")
+                .setDataBinder("mbinder")
+                .setDataField("msid")
+                .setLeft(40)
+                .setTop(150)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("门高余量")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../LocksType";
+                     // QuerySjTable(ns.treegrid);
+                 },
+                 _atoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _mstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var msyl = ns.mstreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.mdlg.setDisplay("block");
+                         InitMsYl("")
+                     }
+                     if (item.id == "a3") {
+                         if (msyl == "" || msyl == null) {
+                             linb.warn("请选择门扇余量");
+                             return
+                         }
+                         ns.mdlg.setDisplay("block");
+                         InitMsYl(msyl)
+                     }
+                     if (item.id == "a4") {
+                         if (msyl == "" || msyl == null) {
+                             linb.warn("请选择门扇余量");
+                             return
+                         }
+                         linb.confirms("确定删除门扇余量?","DelMsYl('"+msyl+"')")
+                     }
+                 },
+                 _msstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _imtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.imtreebar)
+                 },
+                 _imtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.imtreebar)
+                 },
+                 _btoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _elmtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _elmstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _lmitreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.lmitreebar)
+                 },
+                 _lmitreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.lmitreebar)
+                 },
+                 _ctoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _fbtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _fbstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _fmtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     MQueryListChild(item, ns.fmtreebar);
+                 },
+                 _fmtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     MQueryListChild(item, ns.fmtreebar);
+                 },
+                 _dtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _hztoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _hzstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _hzitreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.hzitreebar)
+                 },
+                 _hzitreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.hzitreebar)
+                 },
+                 _etoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _kxstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _ftoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _hystoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _htoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _xxtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _xxstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _xxitreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.xxitreebar)
+                 },
+                 _xxitreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.xxitreebar)
+                 },
+                 _jtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _slmtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _slmstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _slmitreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.slmitreebar)
+                 },
+                 _slmitreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.slmitreebar)
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IinvItems("", ns.imtreebar)
+                     }
+                     if (item.id == "b") {
+                         IinvItems("", ns.lmitreebar)
+                     }
+                     if (item.id == "c") {
+                         IMaterialNItems(ns.fmtreebar)
+                     }
+                     if (item.id == "d") {
+                         IinvItems("", ns.hzitreebar)
+                     }
+                     if (item.id == "e") {
+                     }
+                     if (item.id == "f") {
+                     }
+                     if (item.id == "g") {
+                     }
+                     if (item.id == "h") {
+                         IinvItems("", ns.xxitreebar)
+                     }
+                     if (item.id == "j") {
+                         IinvItems("", ns.slmitreebar)
+                     }
+                 }
+
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitMsYl(pv) {
+             var o = { "ylcode": pv}
+             var url = preurl + "/InitFee"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lmcode.setValue(r.aname)
+                 ns.lcode.setValue(r.acode)
+                 ns.mshyl.setValue(r.iname)
+                 ns.mswyl.setValue(r.icode)
+                 ns.fid.setValue(r.id)
+             }
+         }
+         function SaveMsYl() {
+             var url = preurl + "/SaveFee"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoad()", false)
+         }
+         function DelMsYl(v) {
+             var o = { "fid": v }
+             var url = preurl + "/DelFee"
+             var b = AjaxExb(url, o);
+             BackVad(b, "ReLoad()", false)
+         }
+         function QueryMsYlList() {
+             var url = preurl + "/QueryList";
+             var o = { "ptcode": ptv }
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fwtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4]}] })
+                 }
+                 ns.fwtreegrid.setRows(arr)
+             }
+         }
+         function GetMsYl(ptv, pv) {
+             var o = { "ptcode": ptv, "pcode": pv }
+             var url = preurl + "/GetProduceFee"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fwtreegrid.setValue(r)
+             }
+             else {
+                 ns.fwtreegrid.setValue("")
+                 linb.message("产品未设置服务费")
+             }
+         }
+         function SetMsYl(pv,mv) {
+         }
+         function ReSetMsYl(pv) {
+         }
+     </script>
+</body>
+</html>
+

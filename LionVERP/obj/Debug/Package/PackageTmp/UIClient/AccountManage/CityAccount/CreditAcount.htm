@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>账户明细</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IAccountType.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("城市账户信用度")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                    host.pdt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>城市信息</span>")
+            );
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                    host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_dtreebar_onitemselected")
+            , "before");
+
+                    host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pat")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                    host.pat.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>账户信用</span>")
+            );
+
+                    host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "账户" }, { "id": "col2", "width": 140, "type": "input", "caption": "信用额" }, { "id": "col2", "width": 140, "type": "input", "caption": "可用信用额"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                    host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "sdlg")
+                .setLeft(137)
+                .setTop(135)
+                .setWidth(560)
+                .setHeight(155)
+                .setCaption("城市信用度")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                    host.sdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_dstoolbar_onclick")
+            );
+
+                    host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aname")
+                .setDataBinder("binder")
+                .setDataField("aname")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                  .setReadonly(true)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>账户</span>")
+                .setLabelHAlign("left")
+            );
+                    host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "acode")
+                .setDataBinder("binder")
+                .setDataField("acode")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setDisplay("none")
+                .setReadonly(true)
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>账户</span>")
+                .setLabelHAlign("left")
+            );
+                    host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cnum")
+                .setDataBinder("binder")
+                .setDataField("cnum")
+                .setLeft(290)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>信用额</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                    return children;
+                    // ]]code created by jsLinb UI Builder
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this;
+                    preurl = "../../../CityAccount";
+                    IdepItemsByAtrr("cs", ns.dtreebar)
+                },
+
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        var sv = ns.ctreegrid.getUIValue()
+                        if (sv == "" || sv == null) {
+                            linb.warn("请选择账户");
+                            return
+                        }
+                        ns.sdlg.setDisplay("block");
+                        InitCredit(sv)
+                    }
+                },
+                _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    QueryAccount(item.id)
+                },
+                _dstoolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a1") {
+                        if (!CheckInput(ns, ns.cnum, true, "number", "信用额度不能为空！", "正确输入信用额", "0", "10000000")) {
+                            return
+                        }
+                        SaveCredit()
+                    }
+                    ns.sdlg.setDisplay("none");
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        function QueryAccount(v) {
+            var url = "../../../CityAccount/QueryList";
+            var o = {"dcode":v}
+            var b = AjaxExb(url,o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.ctreegrid.removeAllRows();
+                var arr = new Array();
+                for (i = 1; i < r.length; i++) {
+                    var cel = r[i].toString().split(',')
+                    arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[4] }, { "value": cel[5]}] })
+                }
+                ns.ctreegrid.setRows(arr)
+            }
+        }
+        function InitCredit(v) {
+            var url = "../../../CityAccount/InitAccount";
+            var o = { "dcode": "","acode":v };
+            var b = AjaxExb(url, o);
+            var r = BackVad(b, "", false)
+            if (r) {
+                ns.acode.setUIValue(r.acode)
+                ns.aname.setUIValue(r.aname)
+                ns.cnum.setUIValue(r.credit)
+            }
+        }
+        function SaveCredit() {
+            var sv=ns.dtreebar.getUIValue();
+            var url = "../../../CityAccount/SetCredit";
+            var db = linb.DataBinder.getFromName("binder");
+            var o = db.updateDataFromUI().getData();
+            var b = AjaxExb(url, o);
+            BackVad(b, "QueryAccount('"+sv+"')", false)
+        }
+    </script>
+</body>
+</html>

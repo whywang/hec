@@ -1,0 +1,2047 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>供货价格管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IPricetype.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "qlbinder")
+                .setName("qlbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "qbinder")
+                .setName("qbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "tbinder")
+                .setName("tbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "jbinder")
+                .setName("jbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setCaption("供货价格设置")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "c", "caption": "供货价格类别" }, { "id": "d", "caption": "单品供货价格设置" }, { "id": "e", "caption": "单品供货价格区间管理" }, { "id": "f", "caption": "套品供货价格设置" }, { "id": "g", "caption": "套品供货价格区间管理"}])
+                .setValue("f")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "d");
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pspl")
+                .setDock("top")
+                .setHeight(79)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #f2f2f2" })
+            );
+
+                     host.pspl.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ptype")
+                .setLeft(140)
+                .setTop(10)
+                .setWidth(270)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>当前供货类别</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_ptype_onchange")
+            );
+
+                     host.pspl.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(30)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>选择价格类别</span>")
+            );
+
+                     host.pa.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10 }, { "id": "after", "pos": "after", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            , "before");
+
+                     host.ppa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "spt")
+                .setDock("top")
+                .setHeight(39)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            );
+
+                     host.spt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>产品类别</span>")
+            );
+
+                     host.ppa.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ppa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ppa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pppa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            , "main");
+
+                     host.pppa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ppt")
+                .setDock("top")
+                .setHeight(39)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            );
+
+                     host.ppt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>产品价格</span>")
+            );
+
+                     host.pppa.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sptoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "价格设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a3", "caption": "区间价格设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a4", "caption": "区间价格重置", "image": "../../../Image/opeimage/set.gif"}], "caption": "grp1"}])
+                .onClick("_sptoolbar_onclick")
+            );
+
+                     host.pppa.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "产品" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码" }, { "id": "col3", "width": 140, "type": "input", "caption": "材质" }, { "id": "col2", "width": 140, "type": "input", "caption": "单位" }, { "id": "col4", "width": 100, "type": "input", "caption": "价格" }, { "id": "col4", "width": 100, "type": "input", "caption": "套价格" }, { "id": "col4", "width": 100, "type": "input", "caption": "部件价格"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_ptreegrid_onrowselected")
+            );
+
+                     host.pppa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pppl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pppa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pppr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pst")
+                .setDock("top")
+                .setHeight(40)
+                .setDisplay("block")
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            , "after");
+
+                     host.pst.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl8")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>区间价格类</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "after");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "after");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "qltreebar")
+            , "after");
+
+                     host.pa.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pdlg")
+                .setLeft(260)
+                .setTop(160)
+                .setWidth(550)
+                .setHeight(360)
+                .setDisplay("none")
+                .setCaption("供货价格")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pstoolbar_onclick")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bprice")
+                .setLeft(60)
+                .setTop(40)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>供货价格</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcode")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(190)
+                .setWidth(420)
+                .setHeight(110)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>产品编码</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tprice")
+                .setLeft(60)
+                .setTop(90)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>套餐价格</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pprice")
+                .setLeft(60)
+                .setTop(140)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>部件价格</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "qjly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "e");
+
+                     host.qjly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pjlt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pjlt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl6")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>价格区间类别</span>")
+            );
+
+                     host.pjlt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "qltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_qltoolbar_onclick")
+            );
+
+                     host.qjly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pjll")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.qjly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pjlr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.qjly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "qltreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "价格体系"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_qltreegrid_onrowselected")
+            , "before");
+
+                     host.qjly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pjt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pjt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl7")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>区间价格</span>")
+            );
+
+                     host.pjt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "qtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_qtoolbar_onclick")
+            );
+
+                     host.qjly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pjl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.qjly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pjr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.qjly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "名称" }, { "id": "col2", "width": 120, "type": "input", "caption": "属性" }, { "id": "col3", "width": 120, "type": "input", "caption": "最小值" }, { "id": "col2", "width": 120, "type": "input", "caption": "最大值" }, { "id": "col4", "width": 140, "type": "input", "caption": "金额"}])
+                .setRows({})
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "qjldlg")
+                .setLeft(40)
+                .setTop(130)
+                .setWidth(540)
+                .setHeight(220)
+                .setDisplay("none")
+                .setCaption("价格区间类")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "e");
+
+                     host.qjldlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "qlstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_qlstoolbar_onclick")
+            );
+
+                     host.qjldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qcname")
+                .setDataBinder("qlbinder")
+                .setDataField("qcname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qjldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qccode")
+                .setDataBinder("qlbinder")
+                .setDataField("qccode")
+                .setReadonly(true)
+                .setLeft(290)
+                .setTop(50)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qjldlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "qtx")
+                .setDataBinder("qlbinder")
+                .setDataField("qtx")
+                .setLeft(40)
+                .setTop(110)
+                .setWidth(195)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>价格体系</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.qjldlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qlid")
+                .setDataBinder("qlbinder")
+                .setDataField("qlid")
+                .setReadonly(true)
+                .setLeft(290)
+                .setTop(110)
+                .setWidth(210)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("id")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "qdlg")
+                .setLeft(370)
+                .setTop(120)
+                .setWidth(580)
+                .setHeight(370)
+                .setDisplay("none")
+                .setCaption("区间价格")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "e");
+
+                     host.qdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "qstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_qstoolbar_onclick")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qjname")
+                .setDataBinder("qbinder")
+                .setDataField("qjname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qjcode")
+                .setDataBinder("qbinder")
+                .setDataField("qjcode")
+                .setLeft(290)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qlname")
+                .setDataBinder("qbinder")
+                .setDataField("qlname")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qlcode")
+                .setDataBinder("qbinder")
+                .setDataField("qlcode")
+                .setLeft(290)
+                .setTop(100)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pattr")
+                .setDataBinder("qbinder")
+                .setDataField("pattr")
+                .setLeft(40)
+                .setTop(150)
+                .setWidth(215)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>产品属性</span> ")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "H", "caption": "高" }, { "id": "W", "caption": "宽" }, { "id": "D", "caption": "厚" }, { "id": "N", "caption": "数量"}])
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "isfri")
+                .setDataBinder("qbinder")
+                .setDataField("isfri")
+                .setLeft(290)
+                .setTop(150)
+                .setWidth(215)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>默认优选</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qminv")
+                .setDataBinder("qbinder")
+                .setDataField("qminv")
+                .setLeft(40)
+                .setTop(200)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>最小值</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qmaxv")
+                .setDataBinder("qbinder")
+                .setDataField("qmaxv")
+                .setLeft(290)
+                .setTop(200)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>最大值</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qmoney")
+                .setDataBinder("qbinder")
+                .setDataField("qmoney")
+                .setLeft(40)
+                .setTop(250)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>金额</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.qdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "qid")
+                .setDataBinder("qbinder")
+                .setDataField("qid")
+                .setLeft(290)
+                .setTop(250)
+                .setWidth(230)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("id")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pla")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "c");
+
+                     host.pla.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_ltoolbar_onclick")
+            );
+
+                     host.pla.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plt")
+                .setDock("top")
+                .setHeight(51)
+            );
+
+                     host.plt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>产品价格类型</span>")
+            );
+
+                     host.pla.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pll")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                     host.pla.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                     host.pla.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.plm.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ltreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "供货价格类别" }, { "id": "col1", "width": 100, "type": "input", "caption": "类型" }, { "id": "col1", "width": 300, "type": "input", "caption": "描述"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_ltreegrid_onrowselected")
+            );
+
+                     host.pla.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pcdlg")
+                .setLeft(293)
+                .setTop(130)
+                .setWidth(550)
+                .setHeight(320)
+                .setDisplay("none")
+                .setCaption("供货价格类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.pcdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_lstoolbar_onclick")
+            );
+
+                     host.pcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lname")
+                .setDataBinder("binder")
+                .setDataField("lname")
+                .setLeft(70)
+                .setTop(40)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lcode")
+                .setDataBinder("binder")
+                .setDataField("lcode")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(90)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lms")
+                .setDataBinder("binder")
+                .setDataField("lms")
+                .setLeft(70)
+                .setTop(190)
+                .setWidth(400)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>描述</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.pcdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lid")
+                .setDataBinder("binder")
+                .setDataField("lid")
+                .setLeft(50)
+                .setTop(130)
+                .setWidth(420)
+                .setHeight(50)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("描述")
+                .setMultiLines(true)
+                .setValue("0")
+            );
+
+                     host.pcdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ltype")
+                .setDataBinder("binder")
+                .setDataField("ltype")
+                .setLeft(70)
+                .setTop(140)
+                .setWidth(385)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "gh", "caption": "供货"}])
+                .setValue("gh")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "tsly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "g");
+
+                     host.tsly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pltt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            , "before");
+
+                     host.pltt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl15")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>套价额类别</span>")
+            );
+
+                     host.tsly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "tltreebar")
+                .onItemSelected("_tltreebar_onitemselected")
+            , "before");
+
+                     host.tsly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jltreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 120, "type": "input", "caption": "是否范围" }, { "id": "col3", "width": 140, "type": "input", "caption": "属性" }, { "id": "col4", "width": 120, "type": "input", "caption": "金额"}])
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptlp")
+                .setDock("top")
+                .setHeight(100)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "g");
+
+                     host.ptlp.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl14")
+                .setLeft(30)
+                .setTop(60)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>选择价格类别</span>")
+            );
+
+                     host.ptlp.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "sptype")
+                .setDataBinder("tbinder")
+                .setDataField("sptype")
+                .setLeft(140)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>当前供货类别</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_sptype_onchange")
+            );
+
+                     host.ptlp.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sltoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增类别", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑类别", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除类别", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1" }, { "id": "grp2", "sub": [{ "id": "b1", "caption": "新增价格", "image": "../../../Image/opeimage/add.gif" }, { "id": "b2", "type": "split", "split": true }, { "id": "b3", "caption": "编辑价格", "image": "../../../Image/opeimage/edit.gif" }, { "id": "b2", "type": "split", "split": true }, { "id": "b4", "caption": "删除价格", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp2"}])
+                .onClick("_sltoolbar_onclick")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "tpdlg")
+                .setLeft(130)
+                .setTop(100)
+                .setWidth(500)
+                .setHeight(160)
+                .setDisplay("none")
+                .setCaption("价格类别")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "g");
+
+                     host.tpdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "tlstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_tlstoolbar_onclick")
+            );
+
+                     host.tpdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tname")
+                .setDataBinder("tbinder")
+                .setDataField("tname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>套价格类</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.tpdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tcode")
+                .setDataBinder("tbinder")
+                .setDataField("tcode")
+                .setReadonly(true)
+                .setLeft(250)
+                .setTop(50)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>套价编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.tpdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tid")
+                .setDataBinder("tbinder")
+                .setDataField("tid")
+                .setLeft(60)
+                .setTop(120)
+                .setWidth(190)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>套价编码</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "jdlg")
+                .setLeft(220)
+                .setTop(80)
+                .setWidth(560)
+                .setHeight(340)
+                .setDisplay("none")
+                .setCaption("价格")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "g");
+
+                     host.jdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "jstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_jstoolbar_onclick")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jname")
+                .setDataBinder("jbinder")
+                .setDataField("jname")
+                .setLeft(50)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>价格名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jcode")
+                .setDataBinder("jbinder")
+                .setDataField("jcode")
+                .setLeft(300)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>价格编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jid")
+                .setDataBinder("jbinder")
+                .setDataField("jid")
+                .setLeft(300)
+                .setTop(40)
+                .setWidth(200)
+                .setHeight(45)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>价格编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jlname")
+                .setDataBinder("jbinder")
+                .setDataField("jlname")
+                .setLeft(50)
+                .setTop(90)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jlcode")
+                .setDataBinder("jbinder")
+                .setDataField("jlcode")
+                .setLeft(300)
+                .setTop(90)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>类别编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "jfw")
+                .setDataBinder("jbinder")
+                .setDataField("jfw")
+                .setLeft(50)
+                .setTop(140)
+                .setWidth(185)
+                .setHeight(44)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>范围价格</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jlv")
+                .setDataBinder("jbinder")
+                .setDataField("jlv")
+                .setLeft(50)
+                .setTop(190)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>下界</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jtv")
+                .setDataBinder("jbinder")
+                .setDataField("jtv")
+                .setLeft(300)
+                .setTop(190)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>上界</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jprice")
+                .setDataBinder("jbinder")
+                .setDataField("jprice")
+                .setLeft(50)
+                .setTop(240)
+                .setWidth(200)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>价格</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "jattr")
+                .setDataBinder("jbinder")
+                .setDataField("jattr")
+                .setLeft(300)
+                .setTop(140)
+                .setWidth(185)
+                .setHeight(44)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>范围属性</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "H", "caption": "高" }, { "id": "W", "caption": "宽" }, { "id": "D", "caption": "厚" }, { "id": "N", "caption": "数量"}])
+            );
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "tly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #f2f2f2" })
+            , "f");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptmt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            , "before");
+
+                     host.ptmt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl11")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>门扇</span>")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmtp")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            , "before1");
+
+                     host.pmtp.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl12")
+                .setLeft(30)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>门套</span>")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plpt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "border-bottom:solid 1px #ccc" })
+            , "main");
+
+                     host.plpt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl13")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>套价额类别</span>")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptml")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ptmr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mstreebar")
+                .onItemSelected("_mstreebar_onitemselected")
+                .beforeExpend("_mstreebar_beforeexpend")
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmpl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pmpr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before1");
+
+                     host.tly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mttreebar")
+                .onItemSelected("_mttreebar_onitemselected")
+                .beforeExpend("_mttreebar_beforeexpend")
+            , "before1");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plbl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plbr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "tptreebar")
+                .setSelMode("multibycheckbox")
+                .setNoCtrlKey(false)
+                .setValue("")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ttoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_ttoolbar_onclick")
+            , "f");
+
+                     host.tab.append(
+                (new linb.UI.Pane)
+                .setHost(host, "tpt")
+                .setDock("top")
+                .setHeight(81)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "f");
+
+                     host.tpt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl10")
+                .setLeft(20)
+                .setTop(30)
+                .setCaption("<span style='font-weight:bolder;font-size:16px;color:#666666'>选择价格类别</span>")
+            );
+
+                     host.tpt.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "tptype")
+                .setLeft(160)
+                .setTop(10)
+                .setWidth(220)
+                .setHeight(44)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>当前供货类别</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_tptype_onchange")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/PriceManage/Prices.aspx";
+                     tabv = GetCookie("PriceTabV")
+                     if (tabv) {
+                         ns.tab.setValue(tabv)
+                     }
+                 },
+                 _ltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.ltreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.pcdlg.setDisplay("block");
+                         InitPriceType("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.pcdlg.setDisplay("block")
+                             InitPriceType(v)
+                         }
+                         else {
+                             linb.warn("请选择产品价格类别")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("删除价格类别", "DelPriceType('" + v + "')")
+                         }
+                         else {
+                             linb.warn("请选择产品价格类别")
+                         }
+                     }
+                 },
+                 _ltreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ltreegrid.setValue(row.id)
+                 },
+                 _lstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SavePriceType()
+                     }
+                     ns.pcdlg.setDisplay("none");
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var lv = ns.ptype.getUIValue()
+                     if (lv == "") {
+                         linb.warn("选择供货价格类别")
+                         ns.ptype.setCustomStyle({ "KEY": "border:1px solid #fa0611" })
+                         return
+                     }
+                     IinvCItems(item, ns.ptreebar)
+                     QueryListInvPrice(item.id, lv, 'gh', ns.ptreegrid)
+                     ns.ptreebar.setValue(item.id)
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _sptoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.ptreegrid.getUIValue();
+                     var qv = ns.qltreebar.getUIValue();
+                     if (sv == "" || sv == null) {
+                         linb.warn("请选择产品");
+                         return;
+                     }
+                     if (item.id == "a1") {
+                         ns.pdlg.setDisplay("block")
+                         ns.pcode.setValue(sv)
+                     }
+                     if (item.id == "a3") {
+                         if (qv == "" || qv == null) {
+                             linb.warn("请选择区间价格类别");
+                             return;
+                         }
+                         SetSectionPrice(sv, qv)
+                     }
+                     if (item.id == "a4") {
+                         if (qv == "" || qv == null) {
+                             linb.warn("请选择区间价格类别");
+                             return;
+                         }
+                         ReSetSectionPrice(sv)
+                     }
+                 },
+                 _pstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SetPrice()
+                     }
+                     ns.pdlg.setDisplay("none");
+                 },
+                 _ptype_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptype.setCustomStyle({ "KEY": "border:none" })
+                     ns.ptreebar.setValue()
+                     ns.ptreegrid.removeAllRows();
+                     QuerySectionCateItem(newValue)
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "c") {
+                         IPriceTable("gh", ns.ltreegrid)
+                     }
+                     if (item.id == "d") {
+                         IinvItems("", ns.ptreebar)
+                         IPriceItemsByAtrr("gh", ns.ptype)
+                     }
+                     if (item.id == "e") {
+                         QuerySectionCateList();
+                     }
+                     if (item.id == "f") {
+                         IPriceItemsByAtrr("gh", ns.tptype)
+                         IinvItems("00010001001", ns.mstreebar);
+                         IinvItems("00010001002", ns.mttreebar)
+                     }
+                     if (item.id == "g") {
+                         IPriceItemsByAtrr("gh", ns.sptype)
+                         QuerySectionCateList();
+                     }
+                     SetCookie("PriceTabV", item.id)
+                 },
+                 _qlstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveSectionCate()
+                     }
+                     ns.qjldlg.setDisplay("none");
+                 },
+                 _qstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveSection()
+                     }
+                     ns.qdlg.setDisplay("none");
+                 },
+                 _qltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.qltreegrid.getUIValue();
+                     IPriceItemsByAtrr("gh", ns.qtx)
+                     if (item.id == "a1") {
+                         ns.qjldlg.setDisplay("block");
+                         InitSectionCate('')
+                     }
+                     if (item.id == "a3") {
+                         ns.qjldlg.setDisplay("block");
+                         InitSectionCate(sv)
+                     }
+                     if (item.id == "a4") {
+                         if (sv != null && sv != "") {
+                             linb.confirms("删除价格区间类别", "DelSectionCate('" + sv + "')")
+                         }
+                         else {
+                             linb.warn("请选择区间价格类别")
+                         }
+                     }
+                 },
+                 _qtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.jtreegrid.getUIValue();
+                     var cv = ns.qltreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (cv == "" || cv == null) {
+                             linb.warn("请选择价格类别");
+                             return;
+                         }
+                         ns.qdlg.setDisplay("block");
+                         InitSection(cv, "")
+                     }
+                     if (item.id == "a3") {
+                         if (sv == "" || sv == null) {
+                             linb.warn("请选择价格");
+                             return;
+                         }
+                         ns.qdlg.setDisplay("block");
+                         InitSection("", sv)
+                     }
+                     if (item.id == "a4") {
+                         if (sv != null && sv != "") {
+                             linb.confirms("删除价格区间", "DelSection('" + sv + "')")
+                         }
+                         else {
+                             linb.warn("请选择区间价格")
+                         }
+                     }
+                 },
+                 _qltreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     QuerySectionList(row.id)
+                 },
+                 _ptreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     //GetSectionPrice(row.id)
+                 },
+                 _tptype_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     SetCateList();
+                 },
+                 _mstreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.mstreebar);
+                     GetSelectTprice()
+                 },
+                 _mstreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.mstreebar)
+
+                 },
+                 _mttreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.mttreebar)
+                     GetSelectTprice();
+                 },
+                 _mttreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.mttreebar)
+                 },
+                 _tlstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveTPriceCate()
+                     }
+                     ns.tpdlg.setDisplay("none");
+                 },
+                 _jstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveTPrice();
+                     }
+                     ns.jdlg.setDisplay("none");
+                 },
+                 _sptype_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     QueryCateList();
+                 },
+                 _sltoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var stv = ns.sptype.getUIValue();
+                     var ltv = ns.tltreebar.getUIValue();
+                     var ptv = ns.jltreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (stv == null || stv == "") {
+                             linb.warn("请选择价格体系");
+                             return
+                         }
+                         ns.tpdlg.setDisplay("block");
+                         InitTPriceCate("")
+                     }
+                     if (item.id == "a3") {
+                         if (ltv == null || ltv == "") {
+                             linb.warn("请选择价格类别");
+                             return
+                         }
+                         ns.tpdlg.setDisplay("block");
+                         InitTPriceCate(ltv)
+                     }
+                     if (item.id == "a4") {
+                         if (ltv == null || ltv == "") {
+                             linb.warn("请选择价格类别");
+                             return
+                         }
+                         linb.confirms("确定删除?", "DelTPriceCate('" + ltv + "')")
+                     }
+                     if (item.id == "b1") {
+                         if (ltv == null || ltv == "") {
+                             linb.warn("请选择价格类别");
+                             return
+                         }
+                         ns.jdlg.setDisplay("block");
+                         InitTPrice(ltv, "")
+                     }
+                     if (item.id == "b3") {
+                         if (ptv == null || ptv == "") {
+                             linb.warn("请选择价格");
+                             return
+                         }
+                         ns.jdlg.setDisplay("block");
+                         InitTPrice("", ptv)
+                     }
+                     if (item.id == "b4") {
+                         if (ptv == null || ptv == "") {
+                             linb.warn("请选择价格");
+                             return
+                         }
+                         linb.confirms("确定删除?", "DelTPrice('" + ltv + "')")
+                     }
+                 },
+                 _tltreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     QueryPtList()
+                 },
+                 _ttoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var mv = ns.mstreebar.getUIValue();
+                     var tv = ns.mttreebar.getUIValue();
+                     var pv = ns.tptreebar.getUIValue();
+                     var tpv = ns.tptype.getUIValue();
+                     if (mv == null || mv == "") {
+                         linb.warn("请选择门扇");
+                         return
+                     }
+                     if (tpv == null || tpv == "") {
+                         linb.warn("请选择价格体系");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         if (tv == null || tv == "") {
+                             linb.warn("请选择门套");
+                             return
+                         }
+                         if (pv == null || pv == "") {
+                             linb.warn("请选择价格");
+                             return
+                         }
+                         var mvi = ns.mstreebar.getItemByItemId(mv)
+                         if (mvi.sub) {
+                             linb.warn("请选择门扇最末级");
+                             return
+                         }
+                         var tvi = ns.mttreebar.getItemByItemId(tv)
+                         if (tvi.sub) {
+                             linb.warn("请选择门套最末级");
+                             return
+                         }
+                         SetMsMtPrice(tpv, mv, tv, pv)
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("确定重置？", "ReSetMsMtPrice('" + tpv + "', '" + mv + "')");
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitPriceType(v) {
+             var o = { "ptcode": v }
+             var url = preurl + "/InitPriceType"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lname.setValue(r.ptname)
+                 ns.lcode.setValue(r.ptcode)
+                 ns.lms.setValue(r.pms)
+                 ns.lid.setValue(r.id)
+             }
+         }
+         function SavePriceType() {
+             var url = preurl + "/SavePriceType"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "IPriceTable('gh', ns.ltreegrid)", false)
+         }
+         function DelPriceType(v) {
+             var o = { "ptcode": v }
+             var url = preurl + "/DelPriceType"
+             var b = AjaxExb(url, o);
+             BackVad(b, "IPriceTable('gh', ns.ltreegrid)", false)
+         }
+         function SetPrice() {
+             var pt = ns.ptype.getUIValue();
+             var pl = ns.ptreegrid.getUIValue()
+             var plb = ns.ptreebar.getUIValue()
+             var pe = ns.bprice.getUIValue()
+             var tpe = ns.tprice.getUIValue()
+             var ppe = ns.pprice.getUIValue()
+             var o = { "plb": pt, "plist": pl, "plx": "gh", "price": pe, "tcprice": tpe, "pprice": ppe }
+             var url = preurl + "/SetPrice"
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryListInvPrice('" + plb + "','" + pt + "','gh',ns.ptreegrid)", false)
+         }
+
+         function InitSectionCate(sv) {
+             var o = { "scode": sv }
+             var url = "../../../SectionPrice/InitSectionCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.qcname.setValue(r.sname)
+                 ns.qccode.setValue(r.scode)
+                 ns.qtx.setValue(r.pcode)
+                 ns.qlid.setValue(r.id)
+             }
+         }
+         function SaveSectionCate() {
+             var url = "../../../SectionPrice/SaveSectionCate"
+             var db = linb.DataBinder.getFromName("qlbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QuerySectionCateList()", false)
+         }
+         function QuerySectionCateList() {
+             var url = "../../../SectionPrice/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.qltreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2]}] })
+                 }
+                 ns.qltreegrid.setRows(arr)
+             }
+         }
+         function QuerySectionCateItem(v) {
+             var url = "../../../SectionPrice/QueryListItem";
+             var o = {"pcode":v}
+             var b = AjaxExb(url,o); 
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.qltreebar.setItems(arr)
+             }
+         }
+         function DelSectionCate(v) {
+             var o = { "scode": v }
+             var url = "../../../SectionPrice/DelSectionCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QuerySectionCateList()", false)
+         }
+
+         function InitSection(cv,sv) {
+             var o = { "scode": cv,"jcode":sv }
+             var url = "../../../SectionPrice/InitSectionPrice"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.qjname.setValue(r.jname)
+                 ns.qjcode.setValue(r.jcode)
+                 ns.qlname.setValue(r.sname)
+                 ns.qlcode.setValue(r.scode)
+                 ns.pattr.setValue(r.jattr)
+                 ns.isfri.setValue(r.isfrist)
+                 ns.qminv.setValue(r.minv)
+                 ns.qmaxv.setValue(r.maxv)
+                 ns.qmoney.setValue(r.price)
+                 ns.qid.setValue(r.id)
+             }
+         }
+         function SaveSection() {
+             var sv = ns.qlcode.getUIValue()
+             var url = "../../../SectionPrice/SaveSectionPrice"
+             var db = linb.DataBinder.getFromName("qbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QuerySectionList('"+sv+"')", false)
+         }
+         function QuerySectionList(sv) {
+             var o = {"scode":sv}
+             var url = "../../../SectionPrice/QueryPriceList";
+             var b = AjaxExb(url,o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.jtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.jtreegrid.setRows(arr)
+             }
+         }
+         function DelSection(v) {
+             var sv = ns.qltreegrid.getUIValue();
+             var o = { "jcode": v }
+             var url = "../../../SectionPrice/DelSectionPrice"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QuerySectionList('" + sv + "')", false)
+         }
+
+         function SetSectionPrice(pv, sv) {
+             var o = { "pcode": pv, "scode": sv }
+             var url = "../../../SectionPrice/SetSectionPrice"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetSectionPrice(pv) {
+             var o = { "pcode": pv }
+             var url = "../../../SectionPrice/ReSetSectionPrice"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetSectionPrice(pv) {
+             var o = { "pcode": pv }
+             var url = "../../../SectionPrice/GetSectionPrice"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.qltreebar.setUIValue(b);
+             }
+             else {
+                 linb.warn("未设置区间价格")
+                 ns.qltreebar.setUIValue("");
+             }
+         }
+
+         function InitTPriceCate(v) {
+             var o = { "lpcode": v }
+             var url = "../../../MsMtPrice/InitTPriceCate"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.tname.setValue(r.lpname)
+                 ns.tcode.setValue(r.lpcode)
+                 ns.tid.setValue(r.id)
+             }
+         }
+         function SaveTPriceCate() {
+             var url = "../../../MsMtPrice/SaveTPriceCate"
+             var db = linb.DataBinder.getFromName("tbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryCateList() ", false)
+         }
+         function QueryCateList() {
+             var sv = ns.sptype.getUIValue();
+             var o = { "ptype": sv }
+             var url = "../../../MsMtPrice/QueryCateList";
+             var b = AjaxExb(url, o);
+             ns.tltreebar.setItems();
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.tltreebar.setItems(arr)
+             }
+         }
+         function SetCateList() {
+             var sv = ns.tptype.getUIValue();
+             var o = { "ptype": sv }
+             var url = "../../../MsMtPrice/QueryCateList";
+             var b = AjaxExb(url, o);
+             ns.tptreebar.setItems();
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.tptreebar.setItems(arr)
+             }
+         }
+         function DelTPriceCate(v) {
+             var sv = ns.qltreegrid.getUIValue();
+             var o = { "lpcode": v }
+             var url = "../../../MsMtPrice/DelTPriceCate"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryCateList()", false)
+         }
+         function InitTPrice(lv, cv) {
+             var o = { "lpcode": lv, "ptcode": cv }
+             var url = "../../../MsMtPrice/InitTPrice"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.jlcode.setValue(r.lpcode)
+                 ns.jlname.setValue(r.lpname)
+                 ns.jcode.setValue(r.ptcode)
+                 ns.jname.setValue(r.ptname)
+                 ns.jid.setValue(r.id)
+                 ns.jattr.setValue(r.fattr)
+                 ns.jfw.setValue(r.isfw == true ? 1 : 0)
+                 ns.jlv.setValue(r.lv)
+                 ns.jtv.setValue(r.tv)
+                 ns.jprice.setValue(r.price)
+             }
+         }
+         function SaveTPrice() {
+             var url = "../../../MsMtPrice/SaveTPrice"
+             var db = linb.DataBinder.getFromName("jbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryPtList() ", false)
+
+         }
+         function DelTPrice(v) {
+             var sv = ns.jltreegrid.getUIValue();
+             var o = { "ptcode": v }
+             var url = "../../../MsMtPrice/DelTPrice"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryPtList()", false)
+         }
+         function QueryPtList() {
+             var sv = ns.tltreebar.getUIValue();
+             var o = { "plcode": sv }
+             var url = "../../../MsMtPrice/QueryList";
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.jltreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.jltreegrid.setRows(arr)
+             }
+         }
+
+         function SetMsMtPrice(tpv, mv, tv, pv) {
+             var o = {"ptype":tpv, "mscode": mv, "mtcode": tv,"lpcode":pv }
+             var url = "../../../MsMtPrice/SetMsMtPrice"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetMsMtPrice(tpv, mv) {
+             var o = { "ptype": tpv, "mscode": mv }
+             var url = "../../../MsMtPrice/ReSetMsMtPrice"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetMsMtPrice(tpv, mv, tv) {
+             var o = { "ptype": tpv, "mscode": mv, "mtcode": tv }
+             var url = "../../../MsMtPrice/GetMsMtPrice"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.tptreebar.setUIValue(b);
+             }
+             else {
+                 linb.warn("未设置价格类别")
+                 ns.tptreebar.setUIValue("");
+             }
+         }
+         function GetSelectTprice() {
+             var mv = ns.mstreebar.getUIValue();
+             var tv = ns.mttreebar.getUIValue();
+             var pv = ns.tptype.getUIValue();
+             if (mv != null && mv != "" && tv != null && tv != "" && pv != "" && pv != null) {
+                 var mvi = ns.mstreebar.getItemByItemId(mv)
+                 var tvi = ns.mttreebar.getItemByItemId(tv)
+                 if (mvi.sub) {
+                     return
+                 }
+                 if (tvi.sub) {
+                     return
+                 }
+                 GetMsMtPrice(pv, mv, tv)
+             }
+         }
+     </script>
+</body>
+</html>

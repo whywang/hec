@@ -1,0 +1,423 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>产品优化设置</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IOptimize.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("产品优化设置")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "停用", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ytreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ytreebar_onitemselected")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block5")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block5.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码" }, { "id": "col2", "width": 200, "type": "input", "caption": "材质"}])
+                .setValue("")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a1", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "ydlg")
+                .setLeft(160)
+                .setTop(80)
+                .setWidth(880)
+                .setHeight(410)
+                .setDisplay("none")
+                .setCaption("优化设置")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "yname")
+                .setDataBinder("binder")
+                .setDataField("yname")
+                .setLeft(80)
+                .setTop(40)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>优化名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ycol")
+                .setDataBinder("binder")
+                .setDataField("ycol")
+                .setLeft(80)
+                .setTop(140)
+                .setWidth(680)
+                .setHeight(100)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>展示列名</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "mtype")
+                .setDataBinder("binder")
+                .setDataField("mtype")
+                .setLeft(560)
+                .setTop(40)
+                .setWidth(190)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>材质类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "全材质" }, { "id": "b", "caption": "分类"}])
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "stype")
+                .setDataBinder("binder")
+                .setDataField("stype")
+                .setLeft(80)
+                .setTop(90)
+                .setWidth(200)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>查询类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "ms", "caption": "门" }, { "id": "mt", "caption": "门套" }, { "id": "tb", "caption": "套板" }, { "id": "tlx", "caption": "L线" }, { "id": "qt", "caption": "其他" }, { "id": "dlx", "caption": "单L线"}])
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "yid")
+                .setDataBinder("binder")
+                .setDataField("yid")
+                .setLeft(350)
+                .setTop(110)
+                .setWidth(310)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ycode")
+                .setDataBinder("binder")
+                .setDataField("ycode")
+                .setReadonly(true)
+                .setLeft(320)
+                .setTop(40)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>优化编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.ydlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "scol")
+                .setDataBinder("binder")
+                .setDataField("scol")
+                .setLeft(80)
+                .setTop(250)
+                .setWidth(680)
+                .setHeight(100)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>查询字段</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/OptimizeManage/Optimizes.aspx";
+                     IinvItems("", ns.ptreebar)
+                     IOptItems(ns.ytreebar)
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var ov = ns.ytreebar.getUIValue();
+                     var pv = ns.ptreebar.getUIValue();
+                     var nv = ns.ptreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         if (ov == "") {
+                             linb.message("选择优化条件");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.message("选择产品");
+                             return
+                         }
+                         SetOptProduction(ov, pv, nv)
+                     }
+                     if (item.id == "a3") {
+                         if (ov == "") {
+                             linb.message("选择优化条件");
+                             return
+                         }
+                         IDoFun("重置产品标准尺寸？", "ReSetOptProduction('" + ov + "')")
+                     }
+                 },
+                 _atoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.ytreebar.getUIValue()
+                     if (item.id == "a1") {
+                         ns.ydlg.setDisplay("block")
+                         InitOpt("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != "" && v != null) {
+                             ns.ydlg.setDisplay("block")
+                             InitOpt(v)
+                         }
+                         else {
+                             linb.message("选择优化条件")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != "" && v != null) {
+                             IDelFun("DelOpt('" + v + "')")
+                         }
+                         else {
+                             linb.message("选择优化条件")
+                         }
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var yv = ns.ytreebar.getUIValue()
+                     IinvCItems(item, ns.ptreebar)
+                     ns.ptreebar.setValue(item.id)
+                     QueryListInv(item.id, ns.ptreegrid)
+                     if (yv != "" && yv != null) {
+                         GetOptProduction(yv, item.id)
+                     }
+                 },
+                 _ytreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ytreebar.setValue(item.id)
+                     var pv = ns.ptreebar.getUIValue()
+                     if (pv != "" && pv != null) {
+                         GetOptProduction(item.id, pv)
+                     }
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.ydlg.setDisplay("block")
+                         SaveOpt()
+                     }
+                     if (item.id == "a3") {
+                         ns.ydlg.setDisplay("none")
+                         InitUnKj();
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitOpt(v) {
+             var o = { "ocode": v }
+             var url = preurl + "/InitOpt"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function SaveOpt() {
+             var url = preurl + "/SaveOpt"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function DelOpt(v) {
+             var o = { "ocode": v }
+             var url = preurl + "/DelOpt"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function InitKj(r) {
+             ns.yname.setValue(r.oname)
+             ns.ycode.setValue(r.ocode)
+             ns.mtype.setValue(r.mtype)
+             ns.stype.setValue(r.stype)
+             ns.ycol.setValue(r.ocols)
+             ns.yid.setValue(r.id)
+             ns.scol.setValue(r.pcols)
+         }
+         function InitUnKj() {
+             ns.yname.setValue()
+             ns.ycode.setValue()
+             ns.mtype.setValue()
+             ns.stype.setValue()
+             ns.ycol.setValue()
+             ns.yid.setValue(0)
+         }
+         function SetOptProduction(ov, pv, nv) {
+             var o = { "ocode": ov, "pcode": pv, "ncode": nv }
+             var url = preurl + "/SetOptProduction"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function ReSetOptProduction() {
+         }
+         function GetOptProduction(ov, pv) {
+             var o = { "ocode": ov, "pcode": pv}
+             var url = preurl + "/GetOptProduction"
+             var b = AjaxExb(url, o);
+             if (b) {
+               ns.ptreegrid.setValue(b)
+             }
+             else {
+                 ns.ptreegrid.setValue(b)
+             }
+         }
+     </script>
+</body>
+</html>

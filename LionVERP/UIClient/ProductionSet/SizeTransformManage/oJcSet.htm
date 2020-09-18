@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>门扇玻璃设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/INomalSize.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         
+         Class('App', 'linb.Com', {
+           
+             Instance: {
+              
+                 initialize: function () {
+                    
+                     this.autoDestroy = true;
+                    
+                     this.properties = {};
+                 },
+                 
+                 iniComponents: function () {
+                     
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("尺寸转换管理")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "tly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1t")
+                .setDock("top")
+                .setHeight(60)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.p1t.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ls1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666'>产品分类</span>")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2t")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.p2t.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='font-size:16px;color:#666666'>转化公式</span>")
+            );
+
+                     host.p2t.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ftoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_ftoolbar_onclick")
+            );
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1l")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1r")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2l")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p2r")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "itreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_itreebar_onitemselected")
+                .beforeExpend("_itreebar_beforeexpend")
+            , "before");
+
+                     host.tly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "编码" }, { "id": "col3", "width": 140, "type": "input", "caption": "外径->洞口" }, { "id": "col3", "width": 140, "type": "input", "caption": "内径->洞口"}])
+                .setValue("")
+            , "main");
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fdlg")
+                .setLeft(220)
+                .setTop(130)
+                .setWidth(590)
+                .setHeight(280)
+                .setDisplay("none")
+                .setCaption("公式")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_fstoolbar_onclick")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fsname")
+                .setDataBinder("binder")
+                .setDataField("fsname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fscode")
+                .setDataBinder("binder")
+                .setDataField("fscode")
+                .setReadonly(true)
+                .setLeft(310)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fswtd")
+                .setDataBinder("binder")
+                .setDataField("fswtd")
+                .setLeft(50)
+                .setTop(110)
+                .setWidth(490)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>外径->洞口</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fsntd")
+                .setDataBinder("binder")
+                .setDataField("fsntd")
+                .setLeft(50)
+                .setTop(170)
+                .setWidth(490)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>内径->洞口</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fsid")
+                .setDataBinder("binder")
+                .setDataField("fsid")
+                .setLeft(170)
+                .setTop(40)
+                .setWidth(230)
+                .setHeight(48)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>名称</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     return children;
+                 
+                 }
+,
+              
+                 iniExComs: function (com, threadid) {
+                 },
+                 
+                 customAppend: function (parent, subId, left, top) {
+               
+                     return false;
+                 },
+               
+                 events: {},
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _itreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _itreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _ftoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _fstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetMsBl(mv, blv, bv) {
+             var o = { "mcode": mv, "blcode": blv, "bcode": bv }
+             var url = preurl + "/SetMsBl"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetMsBl(mv) {
+             var o = { "mcode": mv }
+             var url = preurl + "/ReSetMsBl"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetMsBl(mv, blv) {
+             var o = { "mcode": mv, "blcode": blv }
+             var url = preurl + "/GetMsBl"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.btreegrid.setValue(b);
+             }
+             else {
+                 linb.warn("未设置玻璃");
+                 ns.btreegrid.setValue("")
+             }
+         }
+         
+     </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+﻿@media screen and (min-width: 900px) 
+{
+   .pp{}
+   .pp .oinfo ul{ list-style:none}
+   .oinfo .li{float:left;width:200px; font-size:14px; height:20px; padding-top:10px; color:#333333}
+   .oinfo .lizt{float:left;width:50px; font-size:14px; height:20px; padding-top:10px}
+   .oinfo tlabel{ font-weight:bolder}
+   .pp .jd { width:100%}
+   .jd ul{list-style:none;height:30px}
+   .jd .li{float:left; margin-left:20px;  width:140px; font-size:12px; height:20px; padding-top:10px}
+   .jd .sm{float:left; margin-left:20px;  width:200px; font-size:12px; height:20px; padding-top:10px}
+   .jd .jdtxt{ font-size:16ps; font-weight:bolder; color:#666666}
+}

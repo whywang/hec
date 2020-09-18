@@ -1,0 +1,402 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>菜单管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IOrderType.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ProductionBrand.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("生产周期管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "编码" }, { "id": "col3", "width": 140, "type": "input", "caption": "表单" }, { "id": "col4", "width": 120, "type": "input", "caption": "工厂" }, { "id": "col4", "width": 120, "type": "input", "caption": "品牌" }, { "id": "col4", "width": 120, "type": "input", "caption": "天数" }, { "id": "col4", "width": 120, "type": "input", "caption": "类型"}])
+                .setValue("")
+                .onRowSelected("_ctreegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "cdlg")
+                .setLeft(70)
+                .setTop(100)
+                .setWidth(639)
+                .setHeight(370)
+                .setDisplay("none")
+                .setCaption("生产周期")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cname")
+                .setDataBinder("binder")
+                .setDataField("cname")
+                .setLeft(40)
+                .setTop(40)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ccode")
+                .setDataBinder("binder")
+                .setDataField("ccode")
+                .setReadonly(true)
+                .setLeft(340)
+                .setTop(40)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "emcode")
+                .setDataBinder("binder")
+                .setDataField("emcode")
+                .setLeft(40)
+                .setTop(90)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>表单</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_emcode_onchange")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dcode")
+                .setDataBinder("binder")
+                .setDataField("dcode")
+                .setLeft(340)
+                .setTop(90)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>工厂</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cnum")
+                .setDataBinder("binder")
+                .setDataField("cnum")
+                .setLeft(40)
+                .setTop(190)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>周期</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "cid")
+                .setDataBinder("binder")
+                .setDataField("cid")
+                .setLeft(270)
+                .setTop(150)
+                .setWidth(250)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setValue("0")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "otype")
+                .setDataBinder("binder")
+                .setDataField("otype")
+                .setLeft(340)
+                .setTop(140)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>订单状态</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "n", "caption": "正常" }, { "id": "f", "caption": "加急"}])
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "csql")
+                .setDataBinder("binder")
+                .setDataField("csql")
+                .setLeft(40)
+                .setTop(240)
+                .setWidth(550)
+                .setHeight(60)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>条件</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "bdcode")
+                .setDataBinder("binder")
+                .setDataField("bdcode")
+                .setLeft(40)
+                .setTop(140)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#999999'>品牌</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#999999'>品类工期</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     objpb = ProductionBrand;
+                     preurl = "../../../UIServer/BaseSet/ProductCycManage/ProduceCyc.aspx";
+                     QueryList();
+                     IeventmenuItems("1", "", "", "", ns.emcode);
+                     IdepItemsByAtrr("gc", ns.dcode)
+                     objpb.IPBrandTreeItem(ns.bdcode)
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var ov = ns.ctreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.cdlg.setDisplay("block")
+                         InitProduceCyc("")
+                     }
+                     if (item.id == "a3") {
+                         if (ov != "" && ov != null) {
+                             ns.cdlg.setDisplay("block")
+                             InitProduceCyc(ov)
+                         }
+                         else {
+                             linb.warn("请选择生产周期")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (ov != "" && ov != null) {
+                             linb.confirms("确定删除？", "DelProduceCyc('" + ov + "')")
+                         }
+                         else {
+                             linb.warn("请选择生产周期")
+                         }
+                     }
+                 },
+                 _ctreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ctreegrid.setValue(row.id)
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveProduceCyc()
+                     }
+                     if (item.id == "a3") {
+                         ns.cdlg.setDisplay("none")
+                     }
+                 },
+                 _emcode_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     IOrderItems(newValue, ns.otype)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitProduceCyc(tv) {
+             var o = { "ccode": tv }
+             var url = preurl + "/InitProduceCyc"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.emcode.setValue(r.emcode)
+             ns.dcode.setValue(r.fcode)
+             ns.bdcode.setValue(r.bdcode)
+             ns.cname.setValue(r.cname)
+             ns.ccode.setValue(r.ccode)
+             ns.cid.setValue(r.id)
+             ns.csql.setValue(r.csql)
+             ns.cnum.setValue(r.cnum)
+             ns.otype.setValue(r.otype)
+         }
+         function InitUnKj() {
+             ns.emcode.setValue( )
+             ns.dcode.setValue( )
+             ns.cname.setValue( )
+             ns.ccode.setValue( )
+             ns.cid.setValue(0)
+             ns.csql.setValue( )
+             ns.cnum.setValue(0)
+             ns.otype.setValue()
+         }
+         function SaveProduceCyc() {
+             var url = preurl + "/SaveProduceCyc"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "reload()", false)
+         }
+         function DelProduceCyc(tv) {
+             var o = { "ccode": tv }
+             var url = preurl + "/DelProduceCyc"
+             var b = AjaxExb(url, o);
+             BackVad(b, "reload()", false)
+         }
+         function QueryList() {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.ctreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }] })
+                 }
+                 ns.ctreegrid.setRows(arr)
+             }
+         }
+         function reload() {
+             QueryList()
+             ns.cdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>
+

@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>角色管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ISettlement.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("结算方式")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "结算方式"}])
+                .setValue("a")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "b");
+
+                     host.ctl_block3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "settoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/set.gif"}], "caption": "grp1"}])
+                .onClick("_settoolbar_onclick")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block5")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block5.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "pttreebar")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "sjstreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_sjstreegrid_onrowselected")
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block2")
+                .setDock("fill")
+            , "a");
+
+                     host.ctl_block2.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.ctl_block2.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "jstreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码"}])
+                .setValue("")
+                .onRowSelected("_jstreegrid_onrowselected")
+            );
+
+                     host.ctl_block2.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "jdlg")
+                .setLeft(89)
+                .setTop(89)
+                .setWidth(600)
+                .setHeight(221)
+                .setDisplay("none")
+                .setCaption("结算方式")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jsname")
+                .setDataBinder("binder")
+                .setDataField("jsname")
+                .setLeft(80)
+                .setTop(50)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("结算名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jscode")
+                .setDataBinder("binder")
+                .setDataField("jscode")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(100)
+                .setWidth(420)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("结算编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.jdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "jsid")
+                .setDataBinder("binder")
+                .setDataField("jsid")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(460)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/SettlementManage/Settlements.aspx";
+
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var jv = ns.jstreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.jdlg.setDisplay("block")
+                         InitJsfs("");
+                     }
+                     if (item.id == "a3") {
+                         if (jv != "" && jv != null) {
+                             InitJsfs(jv);
+                             ns.jdlg.setDisplay("block")
+                         }
+                         else {
+                             linb.message("选择结算方式")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (jv != "" && jv != null) {
+                             IDelFun("DelSettlement('" + jv + "')")
+                         }
+                         else {
+                             linb.message("请选择角色")
+                         }
+                     }
+                 },
+                 _jstreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.jstreegrid.setValue(row.id)
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveJsfs();
+                     }
+                     else {
+                         ns.jdlg.setDisplay("none");
+                         InitUnKj()
+                     }
+                 },
+                 _settoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _sjstreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         ISettlementTable(ns.jstreegrid)
+                     }
+                     if (item.id == "b") {
+                         //QueryList()
+                     }
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+          
+         function InitJsfs(v) {
+             var o = { "scode": v }
+             var url = preurl + "/InitSettlement"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.jsname.setValue(r.sname)
+             ns.jscode.setValue(r.scode)
+             ns.jsid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.jsname.setValue()
+             ns.jscode.setValue()
+             ns.jsid.setValue("0")
+         }
+         function SaveJsfs() {
+             var url = preurl + "/SaveSettlement"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function DelSettlement(v) {
+             var o = { "scode": v }
+             var url = preurl + "/DelSettlement"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+    </script>
+</body>
+</html>

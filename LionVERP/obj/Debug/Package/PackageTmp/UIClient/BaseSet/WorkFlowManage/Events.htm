@@ -1,0 +1,3027 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>流程管理</title>
+       <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iworkflow.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/AppInit.js" type="text/javascript"></script>
+    <script src="../../../Scripts/CommonCompent/InitDlg.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/BtnIcon.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "lmbbinder")
+                .setName("lmbbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "lpbinder")
+                .setName("lpbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "ibbinder")
+                .setName("ibbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "pbinder")
+                .setName("pbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "pbbinder")
+                .setName("pbbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "pdbinder")
+                .setName("pdbinder")
+            );
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "dbbinder")
+                .setName("dbbinder")
+            );
+
+                     append(
+                (new linb.UI.Tabs)
+                .setHost(host, "ctl_tabs2")
+                .setItems([{ "id": "a", "caption": "角色列表页" }, { "id": "b", "caption": "角色列表项" }, { "id": "c", "caption": "单据页" }, { "id": "d", "caption": "详情项"}])
+                .setValue("a")
+                .onItemSelected("_ctl_tabs2_onitemselected")
+            );
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout8")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "f");
+
+                     host.ctl_layout8.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block7")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block7.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "gltreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_gltreebar_onitemselected")
+            );
+
+                     host.ctl_layout8.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block8")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_block8.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "glmtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_glmtreebar_onitemselected")
+            );
+
+                     host.ctl_layout8.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block9")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block9.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "gltreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "事件" }, { "id": "col3", "width": 80, "type": "input", "caption": "编码" }, { "id": "col4", "width": 80, "type": "input", "caption": "属性" }, { "id": "col2", "width": 80, "type": "input", "caption": "风格"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_gltreegrid_onrowselected")
+            );
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "glset")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_glset_onclick")
+            , "f");
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout7")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "e");
+
+                     host.ctl_layout7.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block10")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block10.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "gtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_gtreebar_onitemselected")
+            );
+
+                     host.ctl_layout7.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block11")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_block11.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "gmtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_gmtreebar_onitemselected")
+            );
+
+                     host.ctl_layout7.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block12")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block12.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "gbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "事件" }, { "id": "col3", "width": 80, "type": "input", "caption": "编码" }, { "id": "col4", "width": 80, "type": "input", "caption": "属性" }, { "id": "col2", "width": 80, "type": "input", "caption": "风格"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_gbtreegrid_onrowselected")
+            );
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "gmset")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_gmset_onclick")
+            , "e");
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block6")
+                .setDock("fill")
+            , "d");
+
+                     host.ctl_block6.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout6")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout6.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block13")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block13.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dmtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_dmtoolbar_onclick")
+            );
+
+                     host.ctl_block13.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dmtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_dmtreebar_onitemselected")
+            );
+
+                     host.ctl_layout6.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block14")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block14.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dmbtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_dmbtoolbar_onclick")
+            );
+
+                     host.ctl_block14.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "dmbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "事件" }, { "id": "col3", "width": 80, "type": "input", "caption": "编码" }, { "id": "col4", "width": 80, "type": "input", "caption": "属性" }, { "id": "col2", "width": 80, "type": "input", "caption": "风格"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_dmbtreegrid_onrowselected")
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dmdlg")
+                .setLeft(160)
+                .setTop(130)
+                .setWidth(600)
+                .setHeight(200)
+                .setDisplay("none")
+                .setCaption("详情单")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.dmdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dmstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_dmstoolbar_onclick")
+            );
+
+                     host.dmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdmname")
+                .setDataBinder("pdbinder")
+                .setDataField("pdmname")
+                .setLeft(80)
+                .setTop(40)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>详情单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdmcode")
+                .setDataBinder("pdbinder")
+                .setDataField("pdmcode")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(90)
+                .setWidth(400)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>详情单编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dmdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdmid")
+                .setDataBinder("pdbinder")
+                .setDataField("pdmid")
+                .setLeft(220)
+                .setTop(70)
+                .setWidth(260)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.dmdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pdmattr")
+                .setDataBinder("pdbinder")
+                .setDataField("pdmattr")
+                .setLeft(10)
+                .setTop(100)
+                .setWidth(245)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("详情属性")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "通用" }, { "id": "p", "caption": "专属"}])
+                .onChange("_pdmattr_onchange")
+            );
+
+                     host.dmdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pdmdcode")
+                .setDataBinder("pdbinder")
+                .setDataField("pdmdcode")
+                .setLeft(270)
+                .setTop(100)
+                .setWidth(245)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("使用部门")
+                .setType("listbox")
+            );
+
+                     host.ctl_block6.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "dmbglg")
+                .setLeft(180)
+                .setTop(80)
+                .setWidth(690)
+                .setHeight(590)
+                .setDisplay("none")
+                .setCaption("事件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.dmbglg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "dmbstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_dmbstoolbar_onclick")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmname")
+                .setDataBinder("dbbinder")
+                .setDataField("dmname")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>详情单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dmcode")
+                .setDataBinder("dbbinder")
+                .setDataField("dmcode")
+                .setLeft(350)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>详情单编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbname")
+                .setDataBinder("dbbinder")
+                .setDataField("dbname")
+                .setLeft(60)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbcode")
+                .setDataBinder("dbbinder")
+                .setDataField("dbcode")
+                .setLeft(350)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbabc")
+                .setDataBinder("dbbinder")
+                .setDataField("dbabc")
+                .setLeft(60)
+                .setTop(150)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件简码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dbstyle")
+                .setDataBinder("dbbinder")
+                .setDataField("dbstyle")
+                .setLeft(350)
+                .setTop(150)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件风格</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": " ", "caption": "无" }, { "id": "pop", "caption": "弹出框" }, { "id": "url", "caption": "Url"}])
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dbrcode")
+                .setDataBinder("dbbinder")
+                .setDataField("dbrcode")
+                .setLeft(60)
+                .setTop(300)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>角色</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dbform")
+                .setDataBinder("dbbinder")
+                .setDataField("dbform")
+                .setLeft(60)
+                .setTop(200)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>表单</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_dbform_onchange")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dbjdcode")
+                .setDataBinder("dbbinder")
+                .setDataField("dbjdcode")
+                .setLeft(350)
+                .setTop(200)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>节点</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dbstate")
+                .setDataBinder("dbbinder")
+                .setDataField("dbstate")
+                .setLeft(60)
+                .setTop(250)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>业务状态</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "0", "caption": "未处理" }, { "id": "1", "caption": "已处理"}])
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dburl")
+                .setDataBinder("dbbinder")
+                .setDataField("dburl")
+                .setLeft(60)
+                .setTop(350)
+                .setWidth(540)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>Url</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbfunction")
+                .setDataBinder("dbbinder")
+                .setDataField("dbfunction")
+                .setLeft(60)
+                .setTop(400)
+                .setWidth(540)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>方法JS</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbsql")
+                .setDataBinder("dbbinder")
+                .setDataField("dbsql")
+                .setLeft(60)
+                .setTop(450)
+                .setWidth(540)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>执行条件</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.pm.append(
+                (new linb.UI.Input)
+                .setHost(host, "dbid")
+                .setDataBinder("dbbinder")
+                .setDataField("dbid")
+                .setLeft(300)
+                .setTop(60)
+                .setWidth(280)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dshow")
+                .setDataBinder("dbbinder")
+                .setDataField("dshow")
+                .setLeft(350)
+                .setTop(250)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>是否显示</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+                .setValue("1")
+            );
+
+                     host.pm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "dico")
+                .setDataBinder("dbbinder")
+                .setDataField("dico")
+                .setLeft(350)
+                .setTop(300)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>图标</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Image)
+                .setHost(host, "dimg")
+                .setLeft(610)
+                .setTop(325)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_dimg_onclick")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Image)
+                .setHost(host, "dfaimg")
+                .setLeft(610)
+                .setTop(425)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_dfaimg_onclick")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Image)
+                .setHost(host, "dfsimg")
+                .setLeft(635)
+                .setTop(425)
+                .setWidth(20)
+                .setHeight(20)
+                .setSrc("../../../Image/opeimage/search.gif")
+                .setCursor("pointer")
+                .onClick("_dfsimg_onclick")
+            );
+
+                     host.dmbglg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.dmbglg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.Block)
+                .setHost(host, "pb")
+                .setDock("fill")
+            , "c");
+
+                     host.pb.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout5")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout5.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block15")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block15.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+            );
+
+                     host.ctl_block15.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ptoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_ptoolbar_onclick")
+            );
+
+                     host.ctl_layout5.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block16")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block16.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pbtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_pbtoolbar_onclick")
+            );
+
+                     host.ctl_block16.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "pbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "事件" }, { "id": "col3", "width": 80, "type": "input", "caption": "编码" }, { "id": "col4", "width": 80, "type": "input", "caption": "属性" }, { "id": "col2", "width": 80, "type": "input", "caption": "风格" }, { "id": "col2", "width": 80, "type": "input", "caption": "状态" }, { "id": "col2", "width": 140, "type": "input", "caption": "备注"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_pbtreegrid_onrowselected")
+            );
+
+                     host.pb.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pbdlg")
+                .setLeft(150)
+                .setTop(38)
+                .setWidth(690)
+                .setHeight(690)
+                .setDisplay("none")
+                .setCaption("事件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.pbdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "dbm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pbstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pbstoolbar_onclick")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pmname")
+                .setDataBinder("pbbinder")
+                .setDataField("pmname")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>订单页名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbcode")
+                .setDataBinder("pbbinder")
+                .setDataField("pbcode")
+                .setReadonly(true)
+                .setLeft(330)
+                .setTop(100)
+                .setWidth(260)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pmcode")
+                .setDataBinder("pbbinder")
+                .setDataField("pmcode")
+                .setReadonly(true)
+                .setLeft(330)
+                .setTop(50)
+                .setWidth(260)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>订单页编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbname")
+                .setDataBinder("pbbinder")
+                .setDataField("pbname")
+                .setLeft(40)
+                .setTop(100)
+                .setWidth(260)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbabc")
+                .setDataBinder("pbbinder")
+                .setDataField("pbabc")
+                .setLeft(40)
+                .setTop(150)
+                .setWidth(260)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件简码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbstyle")
+                .setDataBinder("pbbinder")
+                .setDataField("pbstyle")
+                .setLeft(330)
+                .setTop(150)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件风格</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": " ", "caption": "无" }, { "id": "pop", "caption": "弹出框" }, { "id": "url", "caption": "Url"}])
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbrcode")
+                .setDataBinder("pbbinder")
+                .setDataField("pbrcode")
+                .setLeft(40)
+                .setTop(200)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>角色</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbform")
+                .setDataBinder("pbbinder")
+                .setDataField("pbform")
+                .setLeft(330)
+                .setTop(200)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>表单</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_pbform_onchange")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbjdcode")
+                .setDataBinder("pbbinder")
+                .setDataField("pbjdcode")
+                .setLeft(40)
+                .setTop(250)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>节点</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pburl")
+                .setDataBinder("pbbinder")
+                .setDataField("pburl")
+                .setLeft(40)
+                .setTop(400)
+                .setWidth(550)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>Url</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbfunction")
+                .setDataBinder("pbbinder")
+                .setDataField("pbfunction")
+                .setLeft(40)
+                .setTop(450)
+                .setWidth(550)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>方法JS</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbid")
+                .setDataBinder("pbbinder")
+                .setDataField("pbid")
+                .setLeft(290)
+                .setTop(240)
+                .setWidth(280)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbstate")
+                .setDataBinder("pbbinder")
+                .setDataField("pbstate")
+                .setLeft(330)
+                .setTop(250)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>业务状态</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "0", "caption": "未处理" }, { "id": "1", "caption": "已处理"}])
+                .setValue("0")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbproname")
+                .setDataBinder("pbbinder")
+                .setDataField("pbproname")
+                .setLeft(40)
+                .setTop(350)
+                .setWidth(550)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>存储事件</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbsql")
+                .setDataBinder("pbbinder")
+                .setDataField("pbsql")
+                .setLeft(40)
+                .setTop(500)
+                .setWidth(550)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>执行条件</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbshow")
+                .setDataBinder("pbbinder")
+                .setDataField("pbshow")
+                .setLeft(40)
+                .setTop(300)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>是否显示</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+                .setValue("1")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Input)
+                .setHost(host, "pbremark")
+                .setDataBinder("pbbinder")
+                .setDataField("pbremark")
+                .setLeft(40)
+                .setTop(580)
+                .setWidth(550)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>备注</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pbico")
+                .setDataBinder("pbbinder")
+                .setDataField("pbico")
+                .setLeft(330)
+                .setTop(300)
+                .setWidth(245)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>图标</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Image)
+                .setHost(host, "pbimg")
+                .setLeft(600)
+                .setTop(325)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_pbimg_onclick")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Image)
+                .setHost(host, "pbfaimg")
+                .setLeft(600)
+                .setTop(475)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_pbfaimg_onclick")
+            );
+
+                     host.dbm.append(
+                (new linb.UI.Image)
+                .setHost(host, "pbsimg")
+                .setLeft(625)
+                .setTop(475)
+                .setWidth(20)
+                .setHeight(20)
+                .setSrc("../../../Image/opeimage/search.gif")
+                .setCursor("pointer")
+                .onClick("_pbsimg_onclick")
+            );
+
+                     host.pbdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "dbl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pbdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "dbr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pb.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "pdlg")
+                .setLeft(170)
+                .setTop(170)
+                .setWidth(570)
+                .setHeight(190)
+                .setDisplay("none")
+                .setCaption("单据")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "pstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_pstoolbar_onclick")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pname")
+                .setDataBinder("pbinder")
+                .setDataField("pname")
+                .setLeft(90)
+                .setTop(40)
+                .setWidth(370)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>单据页名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pcode")
+                .setDataBinder("pbinder")
+                .setDataField("pcode")
+                .setReadonly(true)
+                .setLeft(90)
+                .setTop(90)
+                .setWidth(370)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>单据页编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pid")
+                .setDataBinder("pbinder")
+                .setDataField("pid")
+                .setLeft(220)
+                .setTop(70)
+                .setWidth(240)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pattr")
+                .setDataBinder("pbinder")
+                .setDataField("pattr")
+                .setLeft(20)
+                .setTop(100)
+                .setWidth(225)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("单据属性")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "通用" }, { "id": "p", "caption": "专属"}])
+                .onChange("_pattr_onchange")
+            );
+
+                     host.pdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "pdcode")
+                .setDataBinder("pbinder")
+                .setDataField("pdcode")
+                .setLeft(260)
+                .setTop(100)
+                .setWidth(225)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("使用部门")
+                .setType("listbox")
+            );
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "b");
+
+                     host.ctl_block4.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block17")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block17.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "lirtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_lirtreebar_onitemselected")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block18")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_block18.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "limtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_limtreebar_onitemselected")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block19")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block19.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "libtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_libtoolbar_onclick")
+            );
+
+                     host.ctl_block19.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "libtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "事件" }, { "id": "col3", "width": 80, "type": "input", "caption": "编码" }, { "id": "col4", "width": 80, "type": "input", "caption": "属性" }, { "id": "col2", "width": 80, "type": "input", "caption": "风格"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_libtreegrid_onrowselected")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "rliset")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_rliset_onclick")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "libdlg")
+                .setLeft(130)
+                .setTop(110)
+                .setWidth(750)
+                .setHeight(536)
+                .setDisplay("none")
+                .setCaption("列表详情事件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.libdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pldl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.libdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pldr")
+                .setDock("right")
+                .setWidth(14)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.libdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pldm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.pldm.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "libstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_libstoolbar_onclick")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "imname")
+                .setDataBinder("ibbinder")
+                .setDataField("imname")
+                .setLeft(40)
+                .setTop(40)
+                .setWidth(280)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>列表单</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "imcode")
+                .setDataBinder("ibbinder")
+                .setDataField("imcode")
+                .setReadonly(true)
+                .setLeft(370)
+                .setTop(40)
+                .setWidth(280)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ibname")
+                .setDataBinder("ibbinder")
+                .setDataField("ibname")
+                .setLeft(40)
+                .setTop(90)
+                .setWidth(280)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ibabc")
+                .setDataBinder("ibbinder")
+                .setDataField("ibabc")
+                .setLeft(40)
+                .setTop(140)
+                .setWidth(280)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件简码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ibstyle")
+                .setDataBinder("ibbinder")
+                .setDataField("ibstyle")
+                .setLeft(370)
+                .setTop(140)
+                .setWidth(265)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>风格</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": " ", "caption": "无" }, { "id": "pop", "caption": "弹出框" }, { "id": "url", "caption": "Url"}])
+            );
+
+                     host.pldm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ibform")
+                .setDataBinder("ibbinder")
+                .setDataField("ibform")
+                .setLeft(40)
+                .setTop(190)
+                .setWidth(265)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>表单</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .onChange("_ibform_onchange")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ibjdcode")
+                .setDataBinder("ibbinder")
+                .setDataField("ibjdcode")
+                .setLeft(370)
+                .setTop(190)
+                .setWidth(265)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>节点</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ibstate")
+                .setDataBinder("ibbinder")
+                .setDataField("ibstate")
+                .setLeft(40)
+                .setTop(240)
+                .setWidth(265)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>状态</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "0", "caption": "未处理" }, { "id": "1", "caption": "已处理"}])
+                .setValue("0")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "iburl")
+                .setDataBinder("ibbinder")
+                .setDataField("iburl")
+                .setLeft(40)
+                .setTop(290)
+                .setWidth(610)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>Url</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ibfunction")
+                .setDataBinder("ibbinder")
+                .setDataField("ibfunction")
+                .setLeft(40)
+                .setTop(340)
+                .setWidth(610)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>方法JS</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ibsql")
+                .setDataBinder("ibbinder")
+                .setDataField("ibsql")
+                .setLeft(40)
+                .setTop(400)
+                .setWidth(610)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>执行条件</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ibid")
+                .setDataBinder("ibbinder")
+                .setDataField("ibid")
+                .setLeft(10)
+                .setTop(330)
+                .setWidth(560)
+                .setHeight(80)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setMultiLines(true)
+                .setValue("0")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Input)
+                .setHost(host, "ibcode")
+                .setDataBinder("ibbinder")
+                .setDataField("ibcode")
+                .setReadonly(true)
+                .setLeft(370)
+                .setTop(90)
+                .setWidth(280)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ibico")
+                .setDataBinder("ibbinder")
+                .setDataField("ibico")
+                .setLeft(370)
+                .setTop(240)
+                .setWidth(265)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>图标</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Image)
+                .setHost(host, "ldimg")
+                .setLeft(660)
+                .setTop(270)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_ldimg_onclick")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Image)
+                .setHost(host, "ldfaimg")
+                .setLeft(660)
+                .setTop(370)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_ldfaimg_onclick")
+            );
+
+                     host.pldm.append(
+                (new linb.UI.Image)
+                .setHost(host, "pldsimg")
+                .setLeft(685)
+                .setTop(370)
+                .setWidth(20)
+                .setHeight(20)
+                .setSrc("../../../Image/opeimage/search.gif")
+                .setCursor("pointer")
+                .onClick("_pldsimg_onclick")
+            );
+
+                     host.ctl_tabs2.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "a");
+
+                     host.ctl_block3.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout4")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout4.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block20")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block20.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "rtreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_rtreebar_onitemselected")
+            );
+
+                     host.ctl_layout4.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block21")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_block21.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lmtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_lmtoolbar_onclick")
+            );
+
+                     host.ctl_block21.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "lptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_lptreebar_onitemselected")
+            );
+
+                     host.ctl_layout4.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block22")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block22.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lmbtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_lmbtoolbar_onclick")
+            );
+
+                     host.ctl_block22.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "lpbtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "表单" }, { "id": "col2", "width": 100, "type": "input", "caption": "事件" }, { "id": "col3", "width": 80, "type": "input", "caption": "编码" }, { "id": "col4", "width": 80, "type": "input", "caption": "属性" }, { "id": "col2", "width": 80, "type": "input", "caption": "风格"}])
+                .setValue("")
+                .onRowSelected("_lpbtreegrid_onrowselected")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "rlpset")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_rlptoolbar_onclick")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "lpdlg")
+                .setLeft(143)
+                .setTop(134)
+                .setWidth(600)
+                .setHeight(206)
+                .setDisplay("none")
+                .setCaption("列表单")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lmstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_lmstoolbar_onclick")
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmname")
+                .setDataBinder("lpbinder")
+                .setDataField("lmname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>列表单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmcode")
+                .setDataBinder("lpbinder")
+                .setDataField("lmcode")
+                .setReadonly(true)
+                .setLeft(310)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>列表单编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmid")
+                .setDataBinder("lpbinder")
+                .setDataField("lmid")
+                .setLeft(210)
+                .setTop(30)
+                .setWidth(270)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lmattr")
+                .setDataBinder("lpbinder")
+                .setDataField("lmattr")
+                .setLeft(10)
+                .setTop(100)
+                .setWidth(255)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("表单属性")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "通用" }, { "id": "p", "caption": "专属"}])
+                .onChange("_lmattr_onchange")
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lmattrex")
+                .setDataBinder("lpbinder")
+                .setDataField("lmattrex")
+                .setLeft(50)
+                .setTop(110)
+                .setWidth(215)
+                .setHeight(47)
+                .setDisplay("block")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>列表单类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "", "caption": "无" }, { "id": "rp", "caption": "报表"}])
+                .onChange("_lmattr_onchange")
+            );
+
+                     host.lpdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lmdcode")
+                .setDataBinder("lpbinder")
+                .setDataField("lmdcode")
+                .setLeft(280)
+                .setTop(100)
+                .setWidth(255)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("使用部门")
+                .setType("listbox")
+            );
+
+                     host.ctl_block3.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "lpbdlg")
+                .setLeft(160)
+                .setTop(100)
+                .setWidth(690)
+                .setHeight(540)
+                .setDisplay("none")
+                .setCaption("列表单事件")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.lpbdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lpm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                     host.lpm.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "lmbstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_lmbstoolbar_onclick")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmename")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmename")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(270)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>列表单名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmecode")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmecode")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(50)
+                .setWidth(270)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>列表单编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmbname")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbname")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(270)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmbcode")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbcode")
+                .setReadonly(true)
+                .setLeft(350)
+                .setTop(100)
+                .setWidth(270)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmbabc")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbabc")
+                .setLeft(50)
+                .setTop(150)
+                .setWidth(270)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件简码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmburl")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmburl")
+                .setLeft(50)
+                .setTop(300)
+                .setWidth(570)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>Url</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmbfunction")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbfunction")
+                .setLeft(50)
+                .setTop(350)
+                .setWidth(540)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>方法JS</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lmbstyle")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbstyle")
+                .setLeft(350)
+                .setTop(150)
+                .setWidth(255)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>事件风格</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": " ", "caption": "无" }, { "id": "pop", "caption": "弹出框" }, { "id": "url", "caption": "Url"}])
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmbid")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbid")
+                .setLeft(290)
+                .setTop(70)
+                .setWidth(270)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("编码")
+                .setValue("0")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Input)
+                .setHost(host, "lmbsql")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbsql")
+                .setLeft(50)
+                .setTop(400)
+                .setWidth(570)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>执行条件</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.lpm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lmbtab")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbtab")
+                .setLeft(50)
+                .setTop(200)
+                .setWidth(255)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>所属页签</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "A" }, { "id": "b", "caption": "B" }, { "id": "c", "caption": "C" }, { "id": "d", "caption": "D" }, { "id": "e", "caption": "E" }, { "id": "f", "caption": "F" }, { "id": "g", "caption": "G"}])
+            );
+
+                     host.lpm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lmbshow")
+                .setDataBinder("lmbbinder")
+                .setDataField("lmbshow")
+                .setLeft(50)
+                .setTop(250)
+                .setWidth(255)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>是否显示</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "0", "caption": "否" }, { "id": "1", "caption": "是"}])
+                .setValue("1")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "lbico")
+                .setDataBinder("lmbbinder")
+                .setDataField("lbico")
+                .setLeft(350)
+                .setTop(200)
+                .setWidth(255)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>图标</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "0", "caption": "否" }, { "id": "1", "caption": "是"}])
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Image)
+                .setHost(host, "lbaimg")
+                .setLeft(600)
+                .setTop(375)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_lbaimg_onclick")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Image)
+                .setHost(host, "lbsimg")
+                .setLeft(625)
+                .setTop(375)
+                .setWidth(20)
+                .setHeight(20)
+                .setSrc("../../../Image/opeimage/search.gif")
+                .setCursor("pointer")
+                .onClick("_lbsimg_onclick")
+            );
+
+                     host.lpm.append(
+                (new linb.UI.Image)
+                .setHost(host, "lbimg")
+                .setLeft(625)
+                .setTop(225)
+                .setWidth(16)
+                .setHeight(16)
+                .setSrc("../../../Image/opeimage/add.gif")
+                .setCursor("pointer")
+                .onClick("_lbimg_onclick")
+            );
+
+                     host.lpbdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lbl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.lpbdlg.append(
+                (new linb.UI.Pane)
+                .setHost(host, "lbr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this, kj = "";
+                     preurl = "../../../UIServer/BaseSet/WorkFlowManage/EventMenu.aspx";
+                     preburl = "../../../UIServer/BaseSet/WorkFlowManage/Buttons.aspx";
+                     //emobj = EventMenu;
+                     dlg = Dlg;
+                     binobj = BtnIcon;
+                 },
+
+                 _rlptoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var rv = ns.rtreebar.getUIValue();
+                     var ev = ns.lptreebar.getUIValue();
+                     var bv = ns.lpbtreegrid.getUIValue();
+                     if (rv == "" && rv == null) {
+                         linb.warn("选择角色")
+                         return;
+                     }
+                     if (ev == "" && ev == null) {
+                         linb.warn("选择列表单")
+                         return;
+                     }
+                     if (item.id == "a1") {
+                         if (bv == "" && bv == null) {
+                             linb.warn("选择事件")
+                             return;
+                         }
+                         SetRolePageListBtn(rv, ev, bv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("角色菜单事件重置？", "SetRolePageListBtn('" + rv + "','" + ev + "','')")
+                     }
+                 },
+                 _rtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.rtreebar.setValue(item.id)
+                 },
+                 _lmtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var lmv = ns.lptreebar.getUIValue()
+                     if (item.id == "a1") {
+                         ns.lpdlg.setDisplay("block");
+                         InitLMenu("")
+                     }
+                     if (item.id == "a3") {
+                         if (lmv != "") {
+                             ns.lpdlg.setDisplay("block")
+                             InitLMenu(lmv)
+                         }
+                         else {
+                             linb.warn("选择列表单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (lmv != "") {
+                             IDelFun("DelLMenu('" + lmv + "')")
+                         }
+                         else {
+                             linb.warn("选择列表单")
+                         }
+                     }
+                 },
+                 _lptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var rv = ns.rtreebar.getUIValue()
+                     QueryListLMenuBtn(item.id)
+                     GetRolePageBtn(rv, item.id)
+                     ns.lptreebar.setValue(item.id)
+                 },
+                 _lmstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveLMenu()
+                     }
+                     ns.lpdlg.setDisplay("none");
+                 },
+                 _lmbtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var lmv = ns.lptreebar.getUIValue();
+                     var lbv = ns.lpbtreegrid.getUIValue();
+                     binobj.IBtnIconItem(ns.lbico);
+                     if (item.id == "a1") {
+                         if (lmv != "" && lmv != null) {
+                             InitLMenuBtn(lmv, "");
+                             ns.lpbdlg.setDisplay("block");
+                         }
+                         else {
+                             linb.warn("请选择列表单")
+                         }
+                     }
+                     if (item.id == "a3") {
+                         if (lbv != "") {
+                             InitLMenuBtn("", lbv);
+                             ns.lpbdlg.setDisplay("block");
+                         }
+                         else {
+                             linb.warn("请选择列表单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (lbv != "") {
+                             IDelFun("DelLMenuBtn('" + lbv + "')")
+                         }
+                         else {
+                             linb.warn("请选择列表事件")
+                         }
+                     }
+                 },
+                 _lpbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _lmbstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveLMenuBtn();
+                     }
+                     ns.lpbdlg.setDisplay("none");
+                 },
+                 _rliset_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var rv = ns.lirtreebar.getUIValue();
+                     var ev = ns.limtreebar.getUIValue();
+                     var bv = ns.libtreegrid.getUIValue();
+                     if (rv == "" && rv == null) {
+                         linb.warn("选择角色")
+                         return;
+                     }
+                     if (ev == "" && ev == null) {
+                         linb.warn("选择列表单")
+                         return;
+                     }
+                     if (item.id == "a1") {
+                         if (bv == "" && bv == null) {
+                             linb.warn("选择事件")
+                             return;
+                         }
+                         SetRolePageListItemBtn(rv, ev, bv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("角色菜单事件重置？", "SetRolePageListItemBtn('" + rv + "','" + ev + "','')")
+                     }
+                 },
+                 _lirtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _limtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var rv = ns.lirtreebar.getUIValue();
+                     QueryListLXMenuBtn(item.id)
+                     GetRolePageItemBtn(rv, item.id)
+                     ns.limtreebar.setValue(item.id)
+                 },
+                 _libtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var imv = ns.limtreebar.getUIValue();
+                     var ibv = ns.libtreegrid.getUIValue();
+                     binobj.IBtnIconItem(ns.ibico);
+                     if (item.id == "a1") {
+                         if (imv != "" && imv != null) {
+                             InitLXMenuBtn(imv, ibv);
+                             IeventmenuItems("1", "", "", "", ns.ibform)
+                             ns.libdlg.setDisplay("block");
+                         }
+                         else {
+                             linb.warn("请选择列表单")
+                         }
+                     }
+                     if (item.id == "a3") {
+                         if (ibv != "" && ibv != null) {
+                             InitLXMenuBtn("", ibv);
+                             IeventmenuItems("1", "", "", "", ns.ibform)
+                             ns.libdlg.setDisplay("block");
+                         }
+                         else {
+                             linb.warn("请选择列表单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (ibv != "" && ibv != null) {
+                             linb.confirms("确定删除?", "DelLMenuBtn('" + ibv + "')")
+                         }
+                         else {
+                             linb.warn("请选择列表事件")
+                         }
+                     }
+                 },
+                 _libtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+
+                 },
+                 _libstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveLXMenuBtn()
+                     }
+                     ns.libdlg.setDisplay("none");
+                 },
+                 _ibform_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     IwfItems(newValue, ns.ibjdcode);
+                 },
+                 _ptoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     if (item.id == "a1") {
+                         ns.pdlg.setDisplay("block")
+                         InitPMenu("")
+                     }
+                     if (item.id == "a3") {
+                         if (pv != "") {
+                             ns.pdlg.setDisplay("block")
+                             InitPMenu(pv)
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (pv != "") {
+                             linb.confirms("确定删除?", "DelPMenu('" + pv + "')")
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreebar.setValue(item.id)
+                     QueryListPMenuBtn(item.id)
+                 },
+                 _pstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SavePMenu()
+                     }
+                     ns.pdlg.setDisplay("none");
+                 },
+                 _pbtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var mv = ns.ptreebar.getUIValue();
+                     var bv = ns.pbtreegrid.getUIValue();
+                     binobj.IBtnIconItem(ns.pbico);
+                     if (item.id == "a1") {
+                         ns.pbdlg.setDisplay("block")
+                         IroleItems(ns.pbrcode)
+                         IeventmenuItems("1", "", "", "", ns.pbform)
+                         InitPMenuBtn(mv, bv)
+                     }
+                     if (item.id == "a3") {
+                         if (bv != "" && bv != null) {
+                             IroleItems(ns.pbrcode)
+                             IeventmenuItems("1", "", "", "", ns.pbform)
+                             ns.pbdlg.setDisplay("block")
+                             InitPMenuBtn(mv, bv)
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (bv != "" && bv != null) {
+                             linb.confirms("确定删除?", "DelPMenuBtn('" + bv + "')")
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                 },
+                 _pbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _pbform_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     IwfItems(newValue, ns.pbjdcode);
+                 },
+                 _pbstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SavePMenuBtn()
+                     }
+                     ns.pbdlg.setDisplay("none")
+                 },
+                 _dmtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var dv = ns.dmtreebar.getUIValue();
+                     var bv = ns.dmbtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.dmdlg.setDisplay("block")
+                         InitDMenu("")
+                     }
+                     if (item.id == "a3") {
+                         if (dv != "" && dv != null) {
+                             IroleItems(ns.pbrcode)
+                             IeventmenuItems("1", "", "", "", ns.pbform)
+                             ns.dmdlg.setDisplay("block")
+                             InitDMenu(dv)
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (dv != "" && dv != null) {
+                             linb.confirms("确定删除?", "DelDTMenu('" + dv + "')")
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                 },
+                 _dmtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.dmtreebar.setValue(item.id)
+                     QueryListDMenuBtn(item.id)
+                 },
+                 _dmstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveDMenu()
+                     }
+                     ns.dmdlg.setDisplay("none");
+                 },
+                 _dmbtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var mv = ns.dmtreebar.getUIValue();
+                     var bv = ns.dmbtreegrid.getUIValue();
+                     binobj.IBtnIconItem(ns.dico);
+                     if (item.id == "a1") {
+                         ns.dmbglg.setDisplay("block")
+                         IroleItems(ns.dbrcode)
+                         IeventmenuItems("1", "", "", "", ns.dbform)
+                         InitDMenuBtn(mv, bv)
+                     }
+                     if (item.id == "a3") {
+                         if (bv != "" && bv != null) {
+                             IroleItems(ns.dbrcode)
+                             IeventmenuItems("1", "", "", "", ns.dbform)
+                             ns.dmbglg.setDisplay("block")
+                             InitDMenuBtn(mv, bv)
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (bv != "" && bv != null) {
+                             linb.confirms("确定删除?", "DelDMenuBtn('" + bv + "')")
+                         }
+                         else {
+                             linb.warn("请选择菜单")
+                         }
+                     }
+                 },
+                 _dmbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _dmbstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveDMenuBtn()
+                     }
+                     ns.dmbglg.setDisplay("none");
+                 },
+                 _dbform_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     IwfItems(newValue, ns.dbjdcode);
+                 },
+                 _gmset_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _gtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _gmtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _gbtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _glset_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _gltreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _glmtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _gltreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                 },
+                 _ctl_tabs2_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IroleItems(ns.rtreebar);
+                         IeventmenuItems("", "1", "", "", ns.lptreebar)
+                     }
+                     if (item.id == "b") {
+                         IroleItems(ns.lirtreebar)
+                         IeventmenuItems("", "1", "", "", ns.limtreebar)
+                     }
+                     if (item.id == "c") {
+                         IeventmenuItems("", "", "", "1", ns.ptreebar)
+                     }
+                     if (item.id == "d") {
+                         IeventmenuItems("", "", "", "2", ns.dmtreebar)
+                     }
+                     if (item.id == "e") {
+                         IeventmenuItems("", "1", "", "", ns.gmtreebar)
+                     }
+                     if (item.id == "f") {
+                         IeventmenuItems("", "1", "", "", ns.glmtreebar)
+                     }
+                 },
+                 _lmattr_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (newValue == "a") {
+                         ns.lmdcode.setReadonly(true);
+                         ns.lmdcode.setUIValue("");
+                     }
+                     else {
+                         ns.lmdcode.setReadonly(false);
+                     }
+                 },
+                 _pattr_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (newValue == "a") {
+                         ns.pdcode.setReadonly(true);
+                         ns.pdcode.setUIValue("");
+                     }
+                     else {
+                         ns.pdcode.setReadonly(false);
+                     }
+                 },
+                 _pdmattr_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (newValue == "a") {
+                         ns.pdmdcode.setReadonly(true);
+                         ns.pdmdcode.setUIValue("");
+                     }
+                     else {
+                         ns.pdmdcode.setReadonly(false);
+                     }
+                 },
+                 _ldimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.ibico;
+                     dlg.addbtnicodlg();
+                 },
+                 _ldfaimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     dlg.addfunctiondlg();
+                 },
+                 _pldsimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.ibfunction;
+                     dlg.showfunctiondlg();
+                 },
+                 _lbimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.lbico;
+                     dlg.addbtnicodlg();
+                 },
+                 _lbaimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     dlg.addfunctiondlg();
+                 },
+                 _lbsimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.lmbfunction;
+                     dlg.showfunctiondlg();
+                 },
+                 _pbimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.pbico;
+                     dlg.addbtnicodlg();
+                 },
+                 _pbfaimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     dlg.addfunctiondlg();
+                 },
+                 _pbsimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.pbfunction;
+                     dlg.showfunctiondlg();
+                 },
+                 _dimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.dico;
+                     dlg.addbtnicodlg();
+                 },
+                 _dfsimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     kj = ns.dbfunction;
+                     dlg.showfunctiondlg();
+                 },
+                 _dfaimg_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     dlg.addfunctiondlg();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitLMenu(v) {
+             var url = preurl + "/InitLMenu"
+             var o = { "emcode": v }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lmname.setValue(r.emname);
+                 ns.lmcode.setValue(r.emcode);
+                 ns.lmid.setValue(r.id);
+             }
+         }
+         function SaveLMenu() {
+             var ec = ns.lmcode.getUIValue()
+             var en = ns.lmname.getUIValue()
+             var eid = ns.lmid.getUIValue()
+             var eattr = ns.lmattr.getUIValue()
+             var eattrex = ns.lmattrex.getUIValue()
+             var url = preurl + "/SaveEventMenu"
+             var o = { "emattr": eattr, "emattrex": eattrex, "emcode": ec, 'eme': '0', 'emf': '0', 'emid': eid, 'eml': '1', 'emname': en, 'emt': '0', 'mcode': '', 'mname': '' }
+             var b = AjaxExb(url, o)
+             BackVad(b, "IeventmenuItems('', '1', '', '', ns.lptreebar)", false)
+         }
+         function DelLMenu(v) {
+             var url = preurl + "/DelEventMenu"
+             var o = { "emcode": v }
+             var b = AjaxExb(url, o)
+             BackVad(b, "IeventmenuItems('', '1', '', '', ns.lptreebar)", false)
+         }
+
+         function InitLMenuBtn(mv, bv) {
+             var url = preburl + "/InitLButton"
+             var o = { "emcode": mv, "bcode": bv }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 Btn(r)
+             }
+             else {
+                 UnBtn()
+             }
+         }
+         function SaveLMenuBtn() {
+             var sv = ns.lptreebar.getUIValue();
+             var url = preburl + "/SaveLButton"
+             var db = linb.DataBinder.getFromName("lmbbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryListLMenuBtn('"+sv+"')", false)
+         }
+         function DelLMenuBtn(v) {
+             var sv = ns.lptreebar.getUIValue();
+             var o = { "bcode": v }
+             var url = preburl + "/DelButton"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryListLMenuBtn('" + sv + "')", false)
+         }
+         function QueryListLMenuBtn(mv) {
+             var url = preburl + "/QueryListLButton";
+             var o = { "emcode": mv ,'bt':"L"};
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.lpbtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[0] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.lpbtreegrid.setRows(arr)
+             }
+         }
+         function Btn(r) {
+             ns.lmename.setValue(r.emname)
+             ns.lmecode.setValue(r.emcode)
+             ns.lmbname.setValue(r.bname)
+             ns.lmbcode.setValue(r.bcode)
+             ns.lmbabc.setValue(r.babc)
+             ns.lmbstyle.setValue(r.bstyle)
+             ns.lmburl.setValue(r.burl)
+             ns.lmbfunction.setValue(r.bfn)
+             ns.lmbsql.setValue(r.bsql)
+             ns.lmbid.setValue(r.id)
+             ns.lmbtab.setValue(r.btab)
+             ns.lbico.setValue(r.bico)
+             ns.lmbshow.setValue(r.bshow==true?"1":"0")
+         }
+         function UnBtn() {
+            ns.lmename.setValue("")
+            ns.lmecode.setValue("")
+            ns.lmbname.setValue("")
+            ns.lmbcode.setValue("")
+            ns.lmbabc.setValue("")
+            ns.lmbstyle.setValue("")
+            ns.lmburl.setValue("")
+            ns.lmbfunction.setValue("")
+            ns.lmbsql.setValue("")
+            ns.lmbid.setValue("0")
+         }
+
+         function InitLXMenuBtn(mv, bv) {
+             var url = preburl + "/InitLButton"
+             var o = { "emcode": mv, "bcode": bv }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 iBtn(r)
+             }
+             else {
+                 UniBtn()
+             }
+         }
+         function SaveLXMenuBtn() {
+             var sv = ns.limtreebar.getUIValue();
+             var url = preburl + "/SaveLXButton"
+             var db = linb.DataBinder.getFromName("ibbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryListLXMenuBtn('" + sv + "')", false)
+         }
+         function DelLXMenuBtn(v) {
+             var sv = ns.limtreebar.getUIValue();
+             var o = { "bcode": v }
+             var url = preburl + "/DelButton"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryListLXMenuBtn('" + sv + "')", false)
+         }
+         function QueryListLXMenuBtn(mv) {
+             var url = preburl + "/QueryListLButton";
+             var o = { "emcode": mv, 'bt': "LX" };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.libtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[0] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.libtreegrid.setRows(arr)
+             }
+         }
+         function iBtn(r) {
+             ns.imname.setValue(r.emname)
+             ns.imcode.setValue(r.emcode)
+             ns.ibname.setValue(r.bname)
+             ns.ibcode.setValue(r.bcode)
+             ns.ibabc.setValue(r.babc)
+             ns.ibstyle.setValue(r.bstyle)
+             ns.ibform.setValue(r.remcode)
+             ns.ibjdcode.setValue(r.rwcode)
+             ns.ibstate.setValue(r.bstate)
+             ns.iburl.setValue(r.burl)
+             ns.ibfunction.setValue(r.bfn)
+             ns.ibsql.setValue(r.bsql)
+             ns.ibico.setValue(r.bico)
+             ns.ibid.setValue(r.id)
+         }
+         function UniBtn() {
+             ns.imname.setValue("")
+             ns.imcode.setValue("")
+             ns.ibname.setValue("")
+             ns.ibcode.setValue("")
+             ns.ibabc.setValue("")
+             ns.ibstyle.setValue("")
+             ns.ibform.setValue("")
+             ns.ibjdcode.setValue("")
+             ns.ibstate.setValue("")
+             ns.iburl.setValue("")
+             ns.ibfunction.setValue("")
+             ns.ibsql.setValue("")
+             ns.ibid.setValue(0)
+         }
+
+         function InitPMenu(v) {
+             var url = preurl + "/InitLMenu"
+             var o = { "emcode": v }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.pname.setValue(r.emname);
+                 ns.pcode.setValue(r.emcode);
+                 ns.pid.setValue(r.id);
+             }
+         }
+         function SavePMenu() {
+             var ec = ns.pcode.getUIValue()
+             var en = ns.pname.getUIValue()
+             var eid = ns.pid.getUIValue()
+             var eattr = ns.pattr.getUIValue()
+             var url = preurl + "/SaveEventMenu"
+             var o = { "emattr": eattr, "emattrex": "", "emcode": ec, 'eme': '1', 'emf': '0', 'emid': eid, 'eml': '0', 'emname': en, 'emt': '0', 'mcode': '', 'mname': '' }
+             var b = AjaxExb(url, o)
+             BackVad(b, "IeventmenuItems('', '', '', '1', ns.ptreebar)", false)
+         }
+         function DelPMenu(v) {
+             var url = preurl + "/DelEventMenu"
+             var o = { "emcode": v }
+             var b = AjaxExb(url, o)
+             BackVad(b, "IeventmenuItems('', '', '', '1', ns.ptreebar)", false)
+         }
+
+         function InitPMenuBtn(mv, bv) {
+             var url = preburl + "/InitLButton"
+             var o = { "emcode": mv, "bcode": bv }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 pBtn(r)
+             }
+             else {
+                 UnpBtn()
+             }
+         }
+         function SavePMenuBtn() {
+             var sv = ns.ptreebar.getUIValue();
+             var url = preburl + "/SavePButton"
+             var db = linb.DataBinder.getFromName("pbbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, " QueryListPMenuBtn('"+sv+"')", false)
+         }
+         function DelPMenuBtn(v) {
+             var sv = ns.ptreebar.getUIValue();
+             var o = { "bcode": v }
+             var url = preburl + "/DelButton"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryListPMenuBtn('" + sv + "')", false)
+         }
+         function QueryListPMenuBtn(mv) {
+             var url = preburl + "/QueryListLButton";
+             var o = { "emcode": mv, 'bt': "N" };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.pbtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[0] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6] }, { "value": cel[7]}] })
+                 }
+                 ns.pbtreegrid.setRows(arr)
+             }
+         }
+         function pBtn(r) {
+             ns.pmname.setValue(r.emname)
+             ns.pmcode.setValue(r.emcode)
+             ns.pbname.setValue(r.bname)
+             ns.pbcode.setValue(r.bcode)
+             ns.pbabc.setValue(r.babc)
+             ns.pbstyle.setValue(r.bstyle)
+             ns.pbrcode.setValue(r.brcode)
+             ns.pbform.setValue(r.remcode)
+             ns.pbjdcode.setValue(r.rwcode)
+             ns.pbstate.setValue(r.bstate)
+             ns.pburl.setValue(r.burl)
+             ns.pbfunction.setValue(r.bfn)
+             ns.pbsql.setValue(r.bsql)
+             ns.pbico.setValue(r.bico)
+             ns.pbproname.setValue(r.bproname)
+             ns.pbid.setValue(r.id)
+         }
+         function UnpBtn() {
+             ns.pmname.setValue()
+             ns.pmcode.setValue()
+             ns.pbname.setValue()
+             ns.pbcode.setValue()
+             ns.pbabc.setValue()
+             ns.pbstyle.setValue()
+             ns.pbrcode.setValue()
+             ns.pbform.setValue()
+             ns.pbjdcode.setValue()
+             ns.pbstate.setValue()
+             ns.pburl.setValue()
+             ns.pbfunction.setValue()
+             ns.pbsql.setValue()
+             ns.pbid.setValue("0")
+         }
+
+         function InitDMenu(v) {
+             var url = preurl + "/InitLMenu"
+             var o = { "emcode": v }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.pdmname.setValue(r.emname);
+                 ns.pdmcode.setValue(r.emcode);
+                 ns.pdmid.setValue(r.id);
+             }
+         }
+         function SaveDMenu() {
+             var ec = ns.pdmcode.getUIValue()
+             var en = ns.pdmname.getUIValue()
+             var eid = ns.pdmid.getUIValue()
+             var eattr = ns.pdmattr.getUIValue()
+             var url = preurl + "/SaveEventMenu"
+             var o = { "emattr": eattr, "emattrex":"", "emcode": ec, 'eme': '2', 'emf': '0', 'emid': eid, 'eml': '0', 'emname': en, 'emt': '0', 'mcode': '', 'mname': '' }
+             var b = AjaxExb(url, o)
+             BackVad(b, "IeventmenuItems('', '', '', '2', ns.dmtreebar)", false)
+         }
+         function DelDTMenu(v) {
+             var url = preurl + "/DelEventMenu"
+             var o = { "emcode": v }
+             var b = AjaxExb(url, o)
+             BackVad(b, "IeventmenuItems('', '', '', '2', ns.dmtreebar)", false)
+         }
+
+         function InitDMenuBtn(mv, bv) {
+             var url = preburl + "/InitLButton"
+             var o = { "emcode": mv, "bcode": bv }
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", false)
+             if (r) {
+                 dBtn(r)
+             }
+             else {
+                 UndBtn()
+             }
+         }
+         function SaveDMenuBtn() {
+             var sv = ns.dmtreebar.getUIValue();
+             var url = preburl + "/SaveDButton"
+             var db = linb.DataBinder.getFromName("dbbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryListDMenuBtn('"+sv+"')", false)
+         }
+         function DelDMenuBtn(v) {
+             var sv = ns.dmtreebar.getUIValue();
+             var o = { "bcode": v }
+             var url = preburl + "/DelButton"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryListDMenuBtn('" + sv + "')", false)
+         }
+         function QueryListDMenuBtn(mv) {
+             var url = preburl + "/QueryListLButton";
+             var o = { "emcode": mv, 'bt': "D" };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.dmbtreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[0] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5]}] })
+                 }
+                 ns.dmbtreegrid.setRows(arr)
+             }
+         }
+         function dBtn(r) {
+             ns.dmname.setValue(r.emname)
+             ns.dmcode.setValue(r.emcode)
+             ns.dbname.setValue(r.bname)
+             ns.dbcode.setValue(r.bcode)
+             ns.dbabc.setValue(r.babc)
+             ns.dbstyle.setValue(r.bstyle)
+             ns.dbrcode.setValue(r.brcode)
+             ns.dbform.setValue(r.remcode)
+             if (r.remcode!="")
+             {
+                 IwfItems(r.remcode, ns.dbjdcode);
+             }
+             ns.dbjdcode.setValue(r.rwcode)
+             ns.dbstate.setValue(r.bstate)
+             ns.dburl.setValue(r.burl)
+             ns.dbfunction.setValue(r.bfn)
+             ns.dbsql.setValue(r.bsql)
+             ns.dico.setValue(r.bico)
+             ns.dbid.setValue(r.id)
+         }
+         function UndBtn() {
+             ns.dmname.setValue()
+             ns.dmcode.setValue()
+             ns.dbname.setValue()
+             ns.dbcode.setValue()
+             ns.dbabc.setValue()
+             ns.dbstyle.setValue()
+             ns.dbrcode.setValue()
+             ns.dbform.setValue()
+             ns.dbjdcode.setValue()
+             ns.dbstate.setValue()
+             ns.dburl.setValue()
+             ns.dbfunction.setValue()
+             ns.dbsql.setValue()
+             ns.dbid.setValue("0")
+         }
+
+         function SetRolePageListBtn(rv, ev, bv) {
+             var url = preburl + "/SetRolePageListBtn"
+             var o = { "rcode": rv, 'emcode': ev, 'bcode': bv  }
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function GetRolePageBtn(rv, ev) {
+             var url = preburl + "/GetRolePageBtn"
+             var o = { "rcode": rv, 'emcode': ev }
+             var b = AjaxExb(url, o)
+             ns.lpbtreegrid.setValue(b)
+         }
+
+         function SetRolePageListItemBtn(rv, ev, bv) {
+             var url = preburl + "/SetRolePageListItemBtn"
+             var o = { "rcode": rv, 'emcode': ev, 'bcode': bv }
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function GetRolePageItemBtn(rv, ev) {
+             var url = preburl + "/GetRolePageItemBtn"
+             var o = { "rcode": rv, 'emcode': ev }
+             var b = AjaxExb(url, o)
+             ns.libtreegrid.setValue(b)
+         }
+    </script>
+</body>
+</html>

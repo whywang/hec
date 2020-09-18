@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>部门管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "depbinder")
+                .setName("depbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("店面管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "b1")
+                .setDock("top")
+                .setHeight(30)
+                .setCustomStyle({ "KEY": "border:1px solid #cccccc" })
+            , "before");
+
+                     host.b1.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("***城市***")
+            );
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_dtreebar_onitemselected")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([ { "id": "col2", "width": 160, "type": "input", "caption": "店面" }, { "id": "col3", "width": 100, "type": "input", "caption": "编码"}])
+                .setValue("")
+                .onRowSelected("_ctreegrid_onrowselected")
+            , "main");
+
+                     host.panel.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "cdlg")
+                .setLeft(199)
+                .setTop(91)
+                .setWidth(550)
+                .setHeight(430)
+                .setCaption("店面")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+                .setDisplay("none")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_cstoolbar_onclick")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adepname")
+                .setDataBinder("depbinder")
+                .setDataField("adepname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(390)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("店面名称")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adepcode")
+                .setDataBinder("depbinder")
+                .setDataField("adepcode")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(390)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("店面编码")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdepname")
+                .setDataBinder("depbinder")
+                .setDataField("pdepname")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(150)
+                .setWidth(390)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("上级部门")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdepcode")
+                .setDataBinder("depbinder")
+                .setDataField("pdepcode")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(200)
+                .setWidth(390)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("上级编码")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adepmanager")
+                .setDataBinder("depbinder")
+                .setDataField("adepmanager")
+                .setLeft(50)
+                .setTop(250)
+                .setWidth(390)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("负&nbsp;&nbsp;责&nbsp;人")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adeptelephone")
+                .setDataBinder("depbinder")
+                .setDataField("adeptelephone")
+                .setLeft(50)
+                .setTop(300)
+                .setWidth(390)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("部门电话")
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "adepattr")
+                .setDataBinder("depbinder")
+                .setDataField("adepattr")
+                .setLeft(50)
+                .setTop(350)
+                .setWidth(375)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("部门属性")
+                .setType("listbox")
+                .setItems([{ "id": " ", "caption": "" }, { "id": "d", "caption": "店面" }])
+            );
+
+                     host.cdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aid")
+                .setDataBinder("depbinder")
+                .setDataField("aid")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(220)
+                .setWidth(390)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("上级编码")
+                .setValue("0")
+            );
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/DepManage/Depment.aspx";
+                     IdepOnlyItemsByAtrr("s", ns.dtreebar)
+                 },
+
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         var sv = ns.dtreebar.getUIValue()
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择城市");
+                             return;
+                         }
+                         ns.cdlg.setDisplay("block");
+                         InitDepment(sv,"")
+                     }
+                     if (item.id == "a3") {
+                         var sv = ns.ctreegrid.getUIValue()
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择店面");
+                             return;
+                         }
+                         ns.cdlg.setDisplay("block");
+                         InitDepment("",sv)
+                     }
+                     if (item.id == "a4") {
+                         var sv = ns.ctreegrid.getUIValue()
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择店面");
+                             return;
+                         }
+                         else {
+                             IDel(sv)
+                         }
+ 
+                     }
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdepTableByCode(item.id, ns.ctreegrid)
+                 },
+                 _cstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveDep()
+                     }
+                     ns.cdlg.setDisplay("none")
+                 },
+                 _ctreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ctreegrid.setValue(row.id)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitDepment(v,cv) {
+             var o = { "pdepcode": v,'cdcode':cv }
+             var url = preurl + "/InitDepmentEx"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitEditDepment(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/QueryDepmentByDepCode"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitKj(r) {
+             if (r != "") {
+                 ns.adepname.setValue(r.dname);
+                 ns.adepcode.setValue(r.dcode);
+                 ns.pdepname.setValue(r.dpname);
+                 ns.pdepcode.setValue(r.dpcode);
+                 ns.adepmanager.setValue(r.dmanager);
+                 ns.adeptelephone.setValue(r.dcontact);
+                 ns.aid.setValue(r.id);
+                 ns.adepattr.setValue(r.dattr);
+             }
+             else {
+                 ns.adepname.setValue();
+                 ns.adepcode.setValue();
+                 ns.pdepname.setValue();
+                 ns.pdepcode.setValue();
+                 ns.adepmanager.setValue();
+                 ns.adeptelephone.setValue();
+                 ns.aid.setValue(0);
+                 ns.adepattr.setValue();
+             }
+         }
+         function SaveDep() {
+             var url = preurl + "/SaveDep"
+             var db = linb.DataBinder.getFromName("depbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function LoadDepment(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/QueryDepmentByDepCode"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 if (r != "") {
+                     ns.depname.setValue(r.dname);
+                     ns.depcode.setValue(r.dcode);
+                     ns.depmanager.setValue(r.dmanager);
+                     ns.deptelephone.setValue(r.dcontact);
+                     if (r.dattr == "s") {
+                         ns.depattr.setValue("平台");
+                     }
+                     if (r.dattr == "g") {
+                         ns.depattr.setValue("工厂");
+                     }
+                 }
+             }
+         }
+         function Del(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/Del"
+             var b = AjaxExb(url, o);
+             BackVad(b, "IdepItems('', ns.deptreebar)", false)
+         }
+     </script>
+</body>
+</html>

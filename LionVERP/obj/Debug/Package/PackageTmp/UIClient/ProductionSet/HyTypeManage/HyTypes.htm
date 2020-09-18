@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>口线管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ILocks.js" type="text/javascript"></script>
+ 
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("合页类型")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "名称" }, { "id": "col2", "width": 140, "type": "input", "caption": "编码" }, { "id": "col3", "width": 140, "type": "input", "caption": "金额"}])
+                .setValue("")
+                .onRowSelected("_treegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "sdlg")
+                .setLeft(120)
+                .setTop(100)
+                .setWidth(550)
+                .setHeight(250)
+                .setDisplay("none")
+                .setCaption("合页类型")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hyname")
+                .setDataBinder("binder")
+                .setDataField("hyname")
+                .setLeft(80)
+                .setTop(50)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("合页名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hycode")
+                .setDataBinder("binder")
+                .setDataField("hycode")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(100)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("合页编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "hyje")
+                .setDataBinder("binder")
+                .setDataField("hyje")
+                .setLeft(80)
+                .setTop(150)
+                .setWidth(350)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("价格")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(60)
+                .setTop(170)
+                .setWidth(350)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setValue("0")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(41)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>合页信息</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../HyType";
+                     QueryHyTable(ns.treegrid);
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.treegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.sdlg.setDisplay("block")
+                         InitHy("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.sdlg.setDisplay("block")
+                             InitHy(v)
+                         }
+                         else {
+                             linb.message("请选择合页")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             IDelFun("DelHY('" + v + "')")
+                         }
+                         else {
+                             linb.message("请选择合页")
+                         }
+                     }
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveHy()
+                     }
+                     ns.sdlg.setDisplay("none");
+                 },
+                 _treegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.treegrid.setValue(row.id)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+
+         function InitHy(v) {
+             var o = { "hycode": v }
+             var url = preurl + "/InitHy"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.hyname.setValue(r.hyname);
+                 ns.hycode.setValue(r.hycode);
+                 ns.hyje.setValue(r.hyprice);
+                 ns.id.setValue(r.id);
+             }
+         }
+         function SaveHy() {
+             var url = preurl + "/SaveHy"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryHyTable(ns.treegrid)", false)
+         }
+         function DelSj(v) {
+             var o = { "hycode": v }
+             var url = preurl + "/DelHy"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryHyTable(ns.treegrid)", false)
+         }
+         function QueryHyTable(kj) {
+             var url = preurl + "/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 kj.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2]}] })
+                 }
+                 kj.setRows(arr)
+             }
+         }
+     </script>
+</body>
+</html>

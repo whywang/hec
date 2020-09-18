@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>木门订单详情</title>
+</head>
+<body>
+  <div id='loading'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/SysMenuCode.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/ITabs.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/INotify.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+                    this.autoDestroy = true;
+                    this.properties = {};
+                },
+                iniComponents: function () {
+                    // [[code created by jsLinb UI Builder
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("<span style='font-size:16px;color:#999999'>&nbsp;&nbsp;测量单详情</span>")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                    host.panel.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tabs")
+                .setItems([{ "id": "a", "caption": "销售订单" }, { "id": "b", "caption": "加工明细" }, { "id": "c", "caption": "销售报价" }, { "id": "d", "caption": "供货报价" }, { "id": "e", "caption": "采购报价"}])
+                .setValue("a")
+                .onItemSelected("tabs_onitemselected")
+            );
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "cpane")
+                .setDock("fill")
+            , "c");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "bpane")
+                .setDock("fill")
+            , "b");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "apane")
+                .setDock("fill")
+
+            , "a");
+
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "dpane")
+                .setDock("fill")
+            , "d");
+                    host.tabs.append(
+                (new linb.UI.Pane)
+                .setHost(host, "epane")
+                .setDock("fill")
+            , "e");
+
+                    return children;
+                },
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+                    return false;
+                },
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", sebobj = SysEmCode;
+                    emcode = sebobj.IQueryCode("0150");
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"].toString();
+                    }
+                    IPageTabEx(emcode, sid, "", ns.tabs);
+                    ///处理通知阅读
+                    if (Request["n"] != null) {
+                        rid = Request["n"];
+                        if (rid != "") {
+                            ReadNotify(rid);
+                        }
+                    }
+                },
+                tabs_onitemselected: function (profile, item, e, src, type) {
+                    var ns = this, uictrl = profile.boxing();
+                    if (item.id == "a") {
+                        ns.apane.setHtml("<iframe src='MeasurePartOrderDetail.htm?Sid=" + sid + "&' height='" + $(window).height() + "px'  width='100%' noresize='noresize' frameborder='0' id='topFrame'></iframe>")
+                    }
+                }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+</script>
+</body>
+</html>

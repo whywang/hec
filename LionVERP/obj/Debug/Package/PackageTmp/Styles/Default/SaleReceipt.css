@@ -1,0 +1,6 @@
+﻿.Sreceipt{margin-top: 60px }
+.Sreceipt table{ border-collapse:collapse ; border:1px solid #1b47ab}
+.Sreceipt td{  border:1px solid #1b47ab; height:25px}
+
+.Sreceipt .theady{ background-image:url(../../../Image/custome/xsqr.gif); height:70px; background-repeat:no-repeat} 
+.Sreceipt #code{margin-left:900px; font-size:24px ; font-weight:bolder}

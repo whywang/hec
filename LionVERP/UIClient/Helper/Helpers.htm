@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>帮助管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ihmenu.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setOverflow("auto")
+                .setCaption("系统帮助")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1")
+                .setDock("top")
+                .setHeight(100)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.p1.append(
+                (new linb.UI.Input)
+                .setHost(host, "stitle")
+                .setLeft(40)
+                .setTop(20)
+                .setWidth(220)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>标题检索</span>")
+                .setLabelHAlign("left")
+                .onHotKeyup("_stitle_onhotkeyup")
+            );
+
+                     host.p1.append(
+                (new linb.UI.Image)
+                .setHost(host, "sbtn")
+                .setLeft(230)
+                .setTop(22)
+                .setWidth(22)
+                .setHeight(20)
+                .setSrc("../../Image/opeimage/search.gif")
+                .onClick("_sbtn_onclick")
+                .setCustomStyle({ "KEY": "cursor:pointer" })
+            );
+
+                     host.ly.append(
+                (new linb.UI.TreeView)
+                .setHost(host, "htreeview")
+                .setItems([{ "id": "node1", "caption": "node1", "sub": [{ "id": "node11", "caption": "node11" }, { "id": "node12", "image": "img/demo.gif", "caption": "node12" }, { "id": "node13", "caption": "node13" }, { "id": "node14", "caption": "node14"}] }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .onItemSelected("_htreeview_onitemselected")
+                .beforeExpend("_htreeview_beforeexpend")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "phl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "phr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1t")
+                .setDock("top")
+                .setHeight(60)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.p1t.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>帮助详情</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1l")
+                .setDock("left")
+                .setWidth(20)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1r")
+                .setDock("right")
+                .setWidth(20)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "bview")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            , "main");
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     IHelpItems("", ns.htreeview)
+                 },
+                 _sbtn_onclick: function (profile, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.stitle.getUIValue();
+                     if (sv == "" || sv == null) {
+                         linb.message("请输入标题内容");
+                         return
+                     }
+                     IHelpEndItem(sv, ns.htreeview)
+                 },
+                 _htreeview_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IHelpCItems(item, ns.htreeview);
+                     QueryContext(item.id)
+                 },
+                 _htreeview_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IHelpCItems(item, ns.htreeview)
+                 },
+                 _stitle_onhotkeyup: function (profile, keyboard, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.stitle.getUIValue();
+                     if (sv == "") {
+                         IHelpItems("", ns.htreeview)
+                     }
+                 }
+             }
+         });
+
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitApi(v) {
+             var o = { "scode": v }
+             var url = preurl + "/InitApi"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.sname.setValue(r.sname);
+                 ns.scode.setValue(r.scode)
+                 ns.surl.setValue(r.surl)
+                 ns.suser.setValue(r.suser)
+                 ns.spwd.setValue(r.spwd)
+                 ns.sfwname.setValue(r.sfwname)
+                 ns.smethod.setValue(r.sfwmethod)
+                 ns.sid.setValue(r.id)
+             }
+             else {
+
+             }
+         }
+         function QueryContext(hcode) {
+             var o = { 'hcode': hcode }
+             var url = "../../../HelpMenu/InitHcontext"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.bview.setHtml(r.hcontext)
+             }
+         }
+     </script>
+</body>
+</html>

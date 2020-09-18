@@ -1,0 +1,558 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>人员管理</title>
+     <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("人员信息")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pa.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "保存" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(51)
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:20px'>新增人员</span>")
+            );
+
+                     host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#fff" })
+            );
+
+                     host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pd")
+                .setDock("top")
+                .setHeight(340)
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "eno")
+                .setDataBinder("binder")
+                .setDataField("eno")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(40)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>员工编号</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "eid")
+                .setDataBinder("binder")
+                .setDataField("eid")
+                .setLeft(30)
+                .setTop(10)
+                .setWidth(290)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>员工ID</span>")
+                .setValue("0")
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "ename")
+                .setDataBinder("binder")
+                .setDataField("ename")
+                .setLeft(380)
+                .setTop(40)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>姓名</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "depcode")
+                .setDataBinder("binder")
+                .setDataField("depcode")
+                .setReadonly(true)
+                .setLeft(380)
+                .setTop(100)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>部门编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pd.append(
+                (new linb.UI.RadioBox)
+                .setHost(host, "estate")
+                .setDataBinder("binder")
+                .setDataField("estate")
+                .setItems([{ "id": "1", "caption": "在职" }, { "id": "0", "caption": "离职"}])
+                .setLeft(50)
+                .setTop(180)
+                .setWidth(230)
+                .setHeight(30)
+                .setValue("1")
+            );
+
+                     host.pd.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel1")
+                .setLeft(50)
+                .setTop(165)
+                .setHeight(12)
+                .setCaption("<span style='color:#656468;font-size:14px'>状态</span>")
+            );
+
+                     host.pd.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "role")
+                .setDataBinder("binder")
+                .setDataField("role")
+                .setLeft(380)
+                .setTop(160)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>角色</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pd.append(
+                (new linb.UI.RadioBox)
+                .setHost(host, "elogin")
+                .setDataBinder("binder")
+                .setDataField("elogin")
+                .setItems([{ "id": "1", "caption": "是" }, { "id": "0", "caption": "否"}])
+                .setLeft(50)
+                .setTop(240)
+                .setWidth(230)
+                .setHeight(30)
+                .setValue("1")
+            );
+
+                     host.pd.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel2")
+                .setLeft(50)
+                .setTop(220)
+                .setHeight(12)
+                .setCaption("<span style='color:#656468;font-size:14px'>登录</span>")
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "account")
+                .setDataBinder("binder")
+                .setDataField("account")
+                .setLeft(50)
+                .setTop(280)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>登录账号</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "epwd")
+                .setDataBinder("binder")
+                .setDataField("epwd")
+                .setLeft(380)
+                .setTop(280)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>登录密码</span>")
+                .setLabelHAlign("left")
+                .setType("password")
+                .setValue("123456")
+            );
+
+                     host.pd.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "duty")
+                .setDataBinder("binder")
+                .setDataField("duty")
+                .setLeft(380)
+                .setTop(220)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>岗位</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.pd.append(
+                (new linb.UI.Input)
+                .setHost(host, "depname")
+                .setDataBinder("binder")
+                .setDataField("depname")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>部门名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pd.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='color:#656468;font-size:14px'>基本信息</span>")
+            );
+
+                     host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pex")
+                .setDock("top")
+                .setHeight(280)
+            );
+
+                     host.pex.append(
+                (new linb.UI.Input)
+                .setHost(host, "etelephone")
+                .setDataBinder("binder")
+                .setDataField("etelephone")
+                .setLeft(380)
+                .setTop(40)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>电话</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pex.append(
+                (new linb.UI.RadioBox)
+                .setHost(host, "esex")
+                .setDataBinder("binder")
+                .setDataField("esex")
+                .setItems([{ "id": "1", "caption": "先生" }, { "id": "0", "caption": "女士"}])
+                .setLeft(50)
+                .setTop(60)
+                .setWidth(220)
+                .setHeight(30)
+                .setValue("1")
+            );
+
+                     host.pex.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "ctl_slabel3")
+                .setLeft(50)
+                .setTop(40)
+                .setCaption("<span style='color:#656468;font-size:14px'>性别</span>")
+            );
+
+                     host.pex.append(
+                (new linb.UI.Input)
+                .setHost(host, "eage")
+                .setDataBinder("binder")
+                .setDataField("eage")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(270)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>年龄</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.pex.append(
+                (new linb.UI.Input)
+                .setHost(host, "esfz")
+                .setDataBinder("binder")
+                .setDataField("esfz")
+                .setLeft(380)
+                .setTop(100)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>身份证号</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pex.append(
+                (new linb.UI.Input)
+                .setHost(host, "eemail")
+                .setDataBinder("binder")
+                .setDataField("eemail")
+                .setLeft(50)
+                .setTop(160)
+                .setWidth(270)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>Email</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pex.append(
+                (new linb.UI.Input)
+                .setHost(host, "eaddress")
+                .setDataBinder("binder")
+                .setDataField("eaddress")
+                .setLeft(380)
+                .setTop(160)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>住址</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pex.append(
+                (new linb.UI.Input)
+                .setHost(host, "egradute")
+                .setDataBinder("binder")
+                .setDataField("egradute")
+                .setLeft(50)
+                .setTop(220)
+                .setWidth(270)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>学历</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pex.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "eworkdate")
+                .setDataBinder("binder")
+                .setDataField("eworkdate")
+                .setLeft(380)
+                .setTop(220)
+                .setWidth(280)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;font-size:14px'>入职时间</span>")
+                .setLabelHAlign("left")
+                .setType("date")
+            );
+
+                     host.pex.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='color:#656468;font-weight:bold;font-size:16px'>扩展信息</span>")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/EmploeeManage/Emploees.aspx";
+                     IroleItems(ns.role)
+                     var Request = new Object();
+                     Request = GetRequest();
+                     if (Request["dname"] != null) {
+                         var dname = Request["dname"];
+                         var dcode = Request["dcode"];
+                         ns.depname.setValue(dname);
+                         ns.depcode.setValue(dcode);
+                     }
+                     if (Request["ecode"] != null) {
+                         var ecode = Request["ecode"];
+                         QueryEmploee(ecode)
+                     }
+                     else {
+                         QueryEmploee("")
+                     }
+                     if (Request["mt"] != null) {
+                         var mt = Request["mt"];
+                         if (mt == "d") {
+                             ns.role.setItems([{ 'id': '0001', 'caption': '店员'}])
+                         }
+                     }
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveEmploee()
+                     }
+                     else {
+                         GoBack();
+                     }
+                 },
+                 _depname_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SaveEmploee() {
+             if (!CheckInput(ns, ns.eno, true, "", "请输入员工编号", "", "", "")) {
+                 return false;
+             }
+             if (!CheckInput(ns, ns.ename, true, "", "请输入姓名", "", "", "")) {
+                 return false;
+             }
+             if (!CheckInput(ns, ns.role, true, "", "请选择角色", "", "", "")) {
+                 return false;
+             }
+             if (!CheckInput(ns, ns.estate, true, "", "请选择状态", "", "", "")) {
+                 return false;
+             }
+
+             var url = preurl + "/SaveEmploee"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "", true)
+         }
+         function QueryEmploee(v) {
+             var url = preurl + "/QueryEmploee"
+             var o = {'eno':v};
+             var b = AjaxExb(url, o)
+             var r = BackVad(b, "", true)
+             if (r) {
+                 ns.eno.setValue(r.eno)
+                 ns.ename.setValue(r.ename)
+                 if (r.dcode) {
+                     ns.depname.setValue(r.dname)
+                     ns.depcode.setValue(r.dcode)
+                 }
+                 ns.estate.setValue(r.estate)
+                 ns.role.setValue(r.rcode)
+                 ns.elogin.setValue(r.elogin)
+                 ns.duty.setValue(r.dtcode)
+                 ns.account.setValue(r.uname)
+                 ns.epwd.setValue(r.upass)
+                 ns.esex.setValue(r.esex)
+                 ns.etelephone.setValue(r.etelephone)
+                 ns.eage.setValue(r.eage)
+                 ns.esfz.setValue(r.eidentity)
+                 ns.eemail.setValue(r.eemail)
+                 ns.eaddress.setValue(r.eaddress)
+                 ns.egradute.setValue(r.eeducation)
+                 ns.eworkdate.setValue(r.eworkdate)
+                 ns.eid.setValue(r.id)
+                 if (r.id != "0") {
+                     ns.eno.setReadonly(true)
+                 }
+             }
+
+         }
+         
+     </script>
+</body>
+</html>
+

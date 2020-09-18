@@ -1,0 +1,404 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>表格设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.8.2.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+ 
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("产品表头模板")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "treegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 100, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码" }, { "id": "col3", "width": 200, "type": "input", "caption": "详情表头" }, { "id": "col4", "width": 200, "type": "input", "caption": "生产表头" }, { "id": "col4", "width": 200, "type": "input", "caption": "销售表头" }, { "id": "col4", "width": 200, "type": "input", "caption": "供货表头" }, { "id": "col4", "width": 200, "type": "input", "caption": "采购表头"}])
+                .setValue("")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "tdlg")
+                .setLeft(50)
+                .setTop(30)
+                .setWidth(1148)
+                .setHeight(780)
+                .setDisplay("none")
+                .setCaption("模板")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tname")
+                .setDataBinder("binder")
+                .setDataField("tname")
+                .setLeft(40)
+                .setTop(40)
+                .setWidth(410)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "tcode")
+                .setDataBinder("binder")
+                .setDataField("tcode")
+                .setReadonly(true)
+                .setLeft(710)
+                .setTop(40)
+                .setWidth(410)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(480)
+                .setTop(50)
+                .setWidth(410)
+                .setHeight(50)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("编码")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "xqt")
+                .setDataBinder("binder")
+                .setDataField("xqt")
+                .setLeft(40)
+                .setTop(90)
+                .setWidth(1080)
+                .setHeight(70)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("详情模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "sct")
+                .setDataBinder("binder")
+                .setDataField("sct")
+                .setLeft(40)
+                .setTop(210)
+                .setWidth(1080)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("生产模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "spt")
+                .setDataBinder("binder")
+                .setDataField("spt")
+                .setLeft(40)
+                .setTop(340)
+                .setWidth(1080)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("销售模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gpt")
+                .setDataBinder("binder")
+                .setDataField("gpt")
+                .setLeft(40)
+                .setTop(470)
+                .setWidth(1080)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("供货模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bpt")
+                .setDataBinder("binder")
+                .setDataField("bpt")
+                .setLeft(40)
+                .setTop(600)
+                .setWidth(1080)
+                .setHeight(80)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("采购模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "xqf")
+                .setDataBinder("binder")
+                .setDataField("xqf")
+                .setLeft(40)
+                .setTop(160)
+                .setWidth(1080)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("详情模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "scf")
+                .setDataBinder("binder")
+                .setDataField("scf")
+                .setLeft(40)
+                .setTop(290)
+                .setWidth(1080)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("生产模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "spf")
+                .setDataBinder("binder")
+                .setDataField("spf")
+                .setLeft(40)
+                .setTop(420)
+                .setWidth(1080)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("销售模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "gpf")
+                .setDataBinder("binder")
+                .setDataField("gpf")
+                .setLeft(40)
+                .setTop(550)
+                .setWidth(1080)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("供货模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     host.tdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "bpf")
+                .setDataBinder("binder")
+                .setDataField("bpf")
+                .setLeft(40)
+                .setTop(680)
+                .setWidth(1080)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("采购模板")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     QueryList()
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sv = ns.treegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.tdlg.setDisplay("block")
+                         InitOrderTemp("")
+                     }
+                     if (item.id == "a3") {
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择记录")
+                             return
+                         }
+                         ns.tdlg.setDisplay("block")
+                         InitOrderTemp(sv)
+                     }
+                     if (item.id == "a4") {
+                         if (sv == "" || sv == null) {
+                             linb.message("请选择记录")
+                             return
+                         }
+                         IDelFun("ReSetInvTempCate('" + sv + "')")
+                     }
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveOrderTemp()
+                     }
+                     else {
+                         ns.tdlg.setDisplay("none");
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1280, "height": 1024 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitOrderTemp(v) {
+             var o = { "tcode": v }
+             var url = "../../../OrderTemp/InitOrderTemp"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.tname.setValue(r.tname);
+                 ns.tcode.setValue(r.tcode);
+                 ns.xqt.setValue(r.xqt);
+                 ns.sct.setValue(r.sct);
+                 ns.spt.setValue(r.spt);
+                 ns.gpt.setValue(r.gpt);
+                 ns.bpt.setValue(r.bpt);
+                 ns.xqf.setValue(r.xqf);
+                 ns.scf.setValue(r.scf);
+                 ns.spf.setValue(r.spf);
+                 ns.gpf.setValue(r.gpf);
+                 ns.bpf.setValue(r.bpf);
+                 ns.id.setValue(r.id);
+             }
+         }
+         function SaveOrderTemp() {
+             var url = "../../../OrderTemp/SaveOrderTemp"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList() ", false)
+             ns.tdlg.setDisplay("none");
+         }
+         function DelOrderTemp(tv) {
+             var o = { "tcode": tv }
+             var url = "../../../OrderTemp/DelOrderTemp"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList() ", false)
+         }
+         function QueryList() {
+             var url = "../../../OrderTemp/QueryList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.treegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }, { "value": cel[3] }, { "value": cel[4] }, { "value": cel[5] }, { "value": cel[6]}] })
+                 }
+                 ns.treegrid.setRows(arr)
+             }
+         }
+
+          
+     </script>
+</body>
+</html>

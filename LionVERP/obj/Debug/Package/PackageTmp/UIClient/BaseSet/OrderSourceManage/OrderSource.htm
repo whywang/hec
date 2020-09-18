@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>订单来源管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Irole.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IMenu.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IGroup.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Ieventmenu.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("订单来源")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "streegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "表单" }, { "id": "col2", "width": 200, "type": "input", "caption": "来源"}])
+                .setValue("")
+                .onRowSelected("_streegrid_onrowselected")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "sdlg")
+                .setLeft(120)
+                .setTop(170)
+                .setWidth(579)
+                .setHeight(159)
+                .setDisplay("none")
+                .setCaption("订单来源")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "sstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_sstoolbar_onclick")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "emcode")
+                .setDataBinder("binder")
+                .setDataField("emcode")
+                .setLeft(40)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;font-size:14px'>表单</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "sname")
+                .setDataBinder("binder")
+                .setDataField("sname")
+                .setLeft(310)
+                .setTop(50)
+                .setWidth(230)
+                .setHeight(48)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#999999;font-size:14px'>来源</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.sdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "id")
+                .setDataBinder("binder")
+                .setDataField("id")
+                .setLeft(40)
+                .setTop(150)
+                .setWidth(400)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("来源")
+                .setValue("0")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/OrderSourceManage/OrderSources.aspx";
+                     SQueryList()
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var scode = ns.streegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.sdlg.setDisplay("block");
+                         IeventmenuItems(1, "", "", "", ns.emcode)
+                     }
+                     if (item.id == "a3") {
+                         if (scode != "") {
+                             IeventmenuItems(1, "", "", "", ns.emcode)
+                             LoadSource(scode)
+                             ns.sdlg.setDisplay("block");
+                         }
+                         else {
+                             linb.message("请选择来源")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (scode != "" && scode != null) {
+                             IDelFun("Del('" + scode + "')")
+                         }
+                         else {
+                             linb.message("请选择来源")
+                         }
+                     }
+                 },
+                 _sstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         if (!CheckInput(ns, ns.emcode, true, "", "表单名称不能为空", "", "", "")) {
+                             return false;
+                         }
+                         if (!CheckInput(ns, ns.sname, true, "", "来源名称不能为空", "", "", "")) {
+                             return false;
+                         }
+                         SaveSource();
+                     }
+                     ns.sdlg.setDisplay("none");
+                 },
+                 _streegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.streegrid.setValue(row.id)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SaveSource() {
+             var url = preurl + "/SaveSource"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "SQueryList()", false)
+         }
+         function LoadSource(v) {
+             var o = { "id": v }
+             var url = preurl + "/LoadSource"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.emcode.setValue(r.emcode);
+                 ns.sname.setValue(r.sname);
+                 ns.id.setValue(r.id);
+             }
+         }
+         function Del(v) {
+             var o = { "id": v }
+             var url = preurl + "/DelSource"
+             var b = AjaxExb(url, o);
+             BackVad(b, "SQueryList()", false)
+         }
+         function SQueryList() {
+             var url = preurl + "/QuerySourceList";
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.streegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[2] }] })
+                 }
+                 ns.streegrid.setRows(arr)
+             }
+         }
+     </script>
+</body>
+</html>
+

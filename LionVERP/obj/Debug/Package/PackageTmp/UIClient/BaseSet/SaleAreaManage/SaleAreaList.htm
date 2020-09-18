@@ -1,0 +1,442 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>区域管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("区域管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "ty")
+                .setItems([{ "id": "a", "caption": "区域设置" }, { "id": "b", "caption": "区域"}])
+                .setValue("a")
+                .onItemSelected("_ty_onitemselected")
+            );
+
+                     host.ty.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "atoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_atoolbar_onclick")
+            , "b");
+
+                     host.ty.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "areegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "区域名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "区域编码" }, { "id": "col3", "width": 120, "type": "input", "caption": "区域颜色"}])
+                .setValue("")
+                .onRowSelected("_areegrid_onrowselected")
+            , "b");
+
+                     host.ty.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "adlg")
+                .setLeft(150)
+                .setTop(90)
+                .setWidth(550)
+                .setHeight(250)
+                .setDisplay("none")
+                .setCaption("区域")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            , "b");
+
+                     host.adlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "astoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_astoolbar_onclick")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aname")
+                .setDataBinder("binder")
+                .setDataField("aname")
+                .setLeft(80)
+                .setTop(50)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color-size:14px;color:#666666'>区域名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "acode")
+                .setDataBinder("binder")
+                .setDataField("acode")
+                .setReadonly(true)
+                .setLeft(80)
+                .setTop(100)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color-size:14px;color:#666666'>区域编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aid")
+                .setDataBinder("binder")
+                .setDataField("aid")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(190)
+                .setWidth(400)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("区域编码")
+                .setValue("0")
+            );
+
+                     host.adlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "acolor")
+                .setDataBinder("binder")
+                .setDataField("acolor")
+                .setLeft(80)
+                .setTop(150)
+                .setWidth(345)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color-size:14px;color:#666666'>订单颜色</span>")
+                .setLabelHAlign("left")
+                .setType("color")
+            );
+
+                     host.ty.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pal")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "b");
+
+                     host.ty.append(
+                (new linb.UI.Pane)
+                .setHost(host, "par")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "b");
+
+                     host.ty.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pat")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "b");
+
+                     host.pat.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>销售区域</span>")
+            );
+
+                     host.ty.append(
+                (new linb.UI.Layout)
+                .setHost(host, "lay")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.lay.append(
+                (new linb.UI.Pane)
+                .setHost(host, "p1")
+                .setDock("top")
+                .setHeight(38)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.p1.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "s1")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>销售区域</span>")
+            );
+
+                     host.lay.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "atreebar")
+                .onItemSelected("_atreebar_onitemselected")
+            , "before");
+
+                     host.lay.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 120, "type": "input", "caption": "城市" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码"}])
+                .setValue("")
+            , "main");
+
+                     host.lay.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lay.append(
+                (new linb.UI.Pane)
+                .setHost(host, "psr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.lay.append(
+                (new linb.UI.Pane)
+                .setHost(host, "plt")
+                .setDock("top")
+                .setHeight(40)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.plt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>销售城市</span>")
+            );
+
+                     host.ty.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            , "a");
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                 },
+
+
+                 _astoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveArea();
+                     }
+                     ns.adlg.setDisplay("none");
+                 },
+                 _ty_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IAreaItems();
+                         IdepTableByAtrr("cs", ns.ctreegrid)
+                     }
+                     if (item.id == "b") {
+                         QueryAreaList()
+                     }
+                 },
+                 _atoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         ns.adlg.setDisplay("block");
+                         InitArea("")
+                     }
+                     if (item.id == "a3") {
+                         var sv = ns.areegrid.getUIValue();
+                         if (sv == null || sv == "") {
+                             linb.message("选择记录");
+                             return;
+                         }
+                         ns.adlg.setDisplay("block");
+                         InitArea(sv)
+                     }
+                     if (item.id == "a4") {
+                         var sv = ns.areegrid.getUIValue();
+                         if (sv == null || sv == "") {
+                             linb.message("选择记录");
+                             return;
+                         }
+                         IDelFun("DelArea('" + sv + "')")
+                     }
+                 },
+                 _areegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.areegrid.setValue(row.id)
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var sa = ns.atreebar.getUIValue();
+                     var sc = ns.ctreegrid.getUIValue();
+                     if (sa == null || sa == "") {
+                         linb.message("选择区域");
+                         return;
+                     }
+                     if (item.id == "a1") {
+                         if (sc == null || sc == "") {
+                             linb.message("选择城市");
+                             return;
+                         }
+                         SetArea(sa, sc)
+                     }
+                     if (item.id == "a3") {
+                         ReSetArea(sa)
+                     }
+                 },
+                 _atreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.atreebar.setValue(item.id);
+                     GetArea(item.id)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitArea(v) {
+             var o = { "acode": v }
+             var url ="../../../SaleArea/InitArea"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.aname.setValue(r.aname)
+                 ns.acode.setValue(r.acode)
+                 ns.acolor.setValue(r.atype)
+                 ns.aid.setValue(r.id)
+             }
+         }
+         function DelArea(v) {
+             var o = { "acode": v }
+             var url = "../../../SaleArea/DelArea"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryAreaList()", false)
+         }
+         function SaveArea() {
+             var url ="../../../SaleArea/SaveArea"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryAreaList()", false)
+         }
+         function QueryAreaList() {
+             var url ="../../../SaleArea/QueryList"
+             var b = AjaxEb(url);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.areegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] }, { "value": cel[2] } ] })
+                 }
+                 ns.areegrid.setRows(arr)
+             }
+         }
+         function SetArea(av,cv) {
+             var o = { 'acode':av,"dcode": cv }
+             var url =  "../../../SaleArea/SetAreaDcode"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetArea(v) {
+             var o = { "acode": v }
+             var url = "../../../SaleArea/ReSetAreaDcode"
+             var b = AjaxExb(url, o);
+             BackVad(b, " ", false)
+         }
+         function GetArea(v) {
+             var o = { "acode": v }
+             var url = "../../../SaleArea/GetAreaDcode"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 linb.message("未设置区域");
+                 ns.ctreegrid.setValue()
+             }
+             else {
+                 ns.ctreegrid.setValue(b)
+             }
+         }
+         function IAreaItems( ) {
+             var url = "../../../SaleArea/QueryList";
+             var b = AjaxEb(url);
+             ns.atreebar.setItems();
+             var r = BackVad(b, "", false)
+             if (r) {
+                 var arr = new Array();
+                 for (i = 1; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "caption": cel[1] })
+                 }
+                 ns.atreebar.setItems(arr)
+             }
+         }
+     </script>
+</body>
+</html>

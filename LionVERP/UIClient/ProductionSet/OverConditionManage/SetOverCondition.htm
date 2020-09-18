@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title> 超标设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Iovercategory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("供货超标条件设置")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before1");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "otreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 140, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码"}])
+                .setValue("")
+                .onRowSelected("_otreegrid_onrowselected")
+            );
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ptreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 150, "type": "input", "caption": "名称" }, { "id": "col2", "width": 80, "type": "input", "caption": "编码" }, { "id": "col3", "width": 160, "type": "input", "caption": "材质"}])
+                .setValue("")
+            , "main");
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/OverConditionManage/OverCondition.aspx";
+                     IinvItems("", ns.ptreebar)
+                     Iovercomputecate(ns.otreegrid)
+
+                 },
+
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     var nv = ns.otreegrid.getUIValue();
+                     var plv = ns.ptreegrid.getUIValue();
+                     if (pv == "" || pv == null) {
+                         linb.warn("产品类别");
+                         return
+                     }
+                     if (nv == "" || nv == null) {
+                         linb.warn("选择超标条件");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         if (plv == "" || plv == null) {
+                             linb.warn("选择产品");
+                             return
+                         }
+                         SetProductionOc(pv, plv, nv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("重置产品超标条件？", "ReSetProductionOc('" + pv + "','" + nv + "')")
+                         Iovercomputecate(ns.otreegrid);
+                     }
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var nv = ns.otreegrid.getUIValue();
+                     ns.ptreebar.setValue(item.id)
+                     IinvCItems(item, ns.ptreebar)
+                     QueryListInv(item.id, ns.ptreegrid);
+                     GetProductionOc(item.id, nv)
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _otreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     GetProductionOc(pv, row.id)
+                     ns.otreegrid.setUIValue(row.id)
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetProductionOc(pv, plv, nv) {
+             var o = { "icode": pv, "pcode": plv, "ocode": nv }
+             var url = preurl + "/SetProductionOc"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", false)
+         }
+         function ReSetProductionOc(pv, nv) {
+             var o = { "icode": pv, "ocode": nv }
+             var url = preurl + "/ReSetProductionOc"
+             var b = AjaxExb(url, o);
+             BackVad(b, "", true)
+         }
+         function GetProductionOc(pv, nv) {
+             var o = { "icode": pv, "ocode": nv }
+             var url = preurl + "/GetProductionOc"
+             var b = AjaxExb(url, o);
+             if (b == "") {
+                 if (pv != "" && pv != null) {
+                     linb.warn("未设置超标条件");
+                     ns.ptreegrid.setValue();
+                 }
+             }
+             else {
+                 ns.ptreegrid.setValue(b)
+             }
+         }
+     </script>
+</body>
+</html>

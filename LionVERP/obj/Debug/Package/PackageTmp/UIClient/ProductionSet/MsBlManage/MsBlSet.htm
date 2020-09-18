@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>门扇玻璃设置</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/INomalSize.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "panel")
+                .setZIndex(1)
+                .setCaption("门扇玻璃设置")
+            );
+
+                     host.panel.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.panel.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 300, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "before1", "pos": "before", "min": 300, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "mtreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_mtreebar_onitemselected")
+                .beforeExpend("_mtreebar_beforeexpend")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "btreebar")
+                .setItems([{ "id": "node1", "sub": ["node11", { "id": "node12", "image": "img/demo.gif" }, "node13", "node14"], "caption": "node1" }, { "id": "node2", "sub": ["node21", "node22", "node23", "node24"], "caption": "node2"}])
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_btreebar_onitemselected")
+                .beforeExpend("_btreebar_beforeexpend")
+            , "before1");
+
+                     host.ly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "btreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "产品名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "产品编码"}])
+                .setValue("")
+            , "main");
+
+                     return children;
+
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/AssortManage/Assorts.aspx";
+                     IinvItems("00010001001", ns.mtreebar);
+                     IinvItems("00010001005", ns.btreebar);
+                 },
+
+                 _mtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.mtreebar);
+                     ns.mtreebar.setValue(item.id);
+                     var blv = ns.btreebar.getUIValue();
+                     if (blv != "" && blv != null) {
+                         GetMsBl(item.id, blv)
+                     }
+                 },
+                 _mtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.mtreebar);
+                 },
+                 _btreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.btreebar);
+                     ns.btreebar.setValue(item.id);
+                     QueryListInv(item.id, ns.btreegrid)
+                     var mv = ns.mtreebar.getUIValue();
+                     if (mv != "" || mv != null) {
+                         GetMsBl(mv, item.id);
+                     }
+                 },
+                 _btreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.btreebar);
+                 },
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var mv = ns.mtreebar.getUIValue();
+                     if (mv == "" || mv == null) {
+                         linb.warn("请选择门扇产品");
+                         return
+                     }
+                     if (item.id == "a1") {
+                         var blv = ns.btreebar.getUIValue();
+                         if (blv == "" || blv == null) {
+                             linb.warn("请选择玻璃类别");
+                             return
+                         }
+                         var bv = ns.btreegrid.getUIValue();
+                         if (bv == "" || bv == null) {
+                             linb.warn("请选择玻璃");
+                             return
+                         }
+                         SetMsBl(mv, blv, bv);
+                     }
+                     if (item.id == "a3") {
+                         linb.confirms("确定要重置条件类别？", "ReSetMsBl('" + mv + "')")
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function SetMsBl(mv,blv,bv) {
+             var o = { "mcode": mv,"blcode":blv,"bcode":bv }
+             var url = preurl + "/SetMsBl"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function ReSetMsBl(mv) {
+             var o = { "mcode": mv  }
+             var url = preurl + "/ReSetMsBl"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+         }
+         function GetMsBl(mv,blv) {
+             var o = { "mcode": mv, "blcode": blv }
+             var url = preurl + "/GetMsBl"
+             var b = AjaxExb(url, o);
+             if (b) {
+                 ns.btreegrid.setValue(b);
+             }
+             else {
+                 linb.warn("未设置玻璃");
+                 ns.btreegrid.setValue("")
+             }
+         }
+         
+     </script>
+</body>
+</html>

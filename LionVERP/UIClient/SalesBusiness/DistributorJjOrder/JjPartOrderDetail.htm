@@ -1,0 +1,512 @@
+﻿ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>订单详情</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+   .customtable{}
+   .customtable table{ border-collapse:collapse ; border:1px solid #68957f}
+   .customtable td{  border:1px solid #68957f; font-size:14px}
+   </style>
+</head>
+<body>
+ <div id='Div1'>
+    <img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js?V=201927" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/ajaxfileupload.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IButton.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IWorkLine.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IEventBtnDo.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/IImg.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/IExport.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/AppInit.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/SysMenuCode.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Busi/OrderAttr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/CommonCompent/InitDlg.js?v=2" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/LvDownLoad.js" type="text/javascript"></script>
+ 
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../../Scripts/Api/IimageList.js"></script>
+    <script type="text/javascript">
+        Class('App', 'linb.Com', {
+
+            Instance: {
+
+                initialize: function () {
+
+                    this.autoDestroy = true;
+
+                    this.properties = {};
+                },
+
+                iniComponents: function () {
+
+                    var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                    append(
+                (new linb.UI.Pane)
+                .setHost(host, "pa")
+                .setDock("fill")
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(80)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pt.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "返回"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(50)
+                .setCaption("<span style='color:#666666;font-weight:bolder; font-size:16px'>订单详情</span>")
+            );
+
+                    host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(100)
+                .setTop(50)
+                .setCaption("<span style='color:#666666; font-size:12px'>Order Detail</span>")
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.pa.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pm")
+                .setDock("fill")
+                .setCustomStyle({ "KEY": "background:#ffffff" })
+            );
+
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "ofp")
+                .setDock("top")
+                .setHeight(85)
+                .setCustomStyle({ "KEY": "border-bottom:5px solid #f2f2f2" })
+            );
+
+                    host.ofp.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='color:#666666;font-weight:bolder;font-size:14px'>订单进度</span>")
+            );
+
+                    host.ofp.append(
+                (new linb.UI.StatusButtons)
+                .setHost(host, "ostate")
+                .setLeft(70)
+                .setTop(30)
+                .setWidth(900)
+                .setHeight(50)
+                .setSelMode("multibycheckbox")
+                .setBorderType("none")
+                .setValue("a")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "oip")
+                .setDock("top")
+                .setHeight(265)
+                .setCustomStyle({ "KEY": "border-bottom:5px solid #f2f2f2" })
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "scode")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(30)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>订单编号</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='color:#666666;font-weight:bolder;font-size:14px'>订单详情</span>")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "otype")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(30)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>订单类型</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "city")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(80)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>城市</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "dname")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(80)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>店面</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "sperson")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(130)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>收货人</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "stelephone")
+                .setReadonly(true)
+                .setLeft(260)
+                .setTop(130)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>联系电话</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "saddress")
+                .setReadonly(true)
+                .setLeft(470)
+                .setTop(130)
+                .setWidth(400)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>收货地址</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "remark")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(180)
+                .setWidth(820)
+                .setHeight(70)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>备注</span>")
+                .setLabelHAlign("left")
+                .setMultiLines(true)
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "cdate")
+                .setReadonly(true)
+                .setLeft(470)
+                .setTop(30)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>日期</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Input)
+                .setHost(host, "maker")
+                .setReadonly(true)
+                .setLeft(680)
+                .setTop(30)
+                .setWidth(190)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#666666;font-size:14px'>制单员</span>")
+                .setLabelHAlign("left")
+            );
+
+                    host.oip.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pg")
+                .setDock("height")
+                .setLeft(910)
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                    host.oip.append(
+                (new linb.UI.Pane)
+                .setHost(host, "opattr")
+                .setDock("height")
+                .setLeft(940)
+                .setWidth(130)
+            );
+
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pppt")
+                .setDock("top")
+                .setHeight(40)
+            );
+
+                    host.pppt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl5")
+                .setLeft(20)
+                .setTop(10)
+                .setCaption("<span style='color:#666666;font-weight:bolder;font-size:14px'>产品详情</span>")
+            );
+
+                    host.pm.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pppl")
+                .setDock("top")
+                .setHeight("auto")
+                .setCustomStyle({ "KEY": "border-bottom:50px solid #f2f2f2" })
+                .setCustomClass({ "KEY": "customtable" })
+            );
+
+                    return children;
+
+                },
+
+                iniExComs: function (com, threadid) {
+                },
+
+                customAppend: function (parent, subId, left, top) {
+
+                    return false;
+                },
+
+
+                events: { "onReady": "_onready" },
+                _onready: function () {
+                    ns = this, sid = "", emcode = "", embcode = "",
+                    pgcode = "0048", pbgcode = "0050", bcode = "", gnum = 0, xfunstr = "";
+                    secobj = SysEmCode;
+                    egnum = 0; //编辑产品gnum
+                    emcode = secobj.IQueryCode(pgcode);
+                    embcode = secobj.IQueryCode(pbgcode);
+                    ptype = "wl"//产品类型
+                    preurl = "../../../UIServer/SalesBusiness/DistributionMeterialOrder/MeterialOrderDetail.aspx";
+                    preinvurl = "../../../UIServer/SalesBusiness/DistributorDoorOrder/ProdctionDetail.aspx";
+                    preclurl = "../../../UIServer/SalesBusiness/DistributorDoorOrder/SaleCustomerOrder.aspx";
+                    var Request = new Object();
+                    Request = GetRequest();
+                    if (Request["Sid"] != null) {
+                        sid = Request["Sid"];
+                        WorkFlowBar(emcode, sid, ns.toolbar);
+                        WorkLine(sid, emcode, ns.ostate)
+                        QueryOrderAttr(sid, ns.opattr);
+                        LoadSaleOrder();
+                        LoadProductionHtml();
+                    }
+                    ///处理通知阅读
+                    if (Request["n"] != null) {
+                        rid = Request["n"];
+                        if (rid != "") {
+                            ReadNotify(rid);
+                        }
+                    }
+                },
+                _toolbar_onclick: function (profile, item, group, e, src) {
+                    var ns = this, uictrl = profile.boxing();
+                    bcode = item.bcode;
+                    if (item.btip == 1) {
+                        BtnDoTip(sid, emcode, item, false)
+                    }
+                    else {
+                        BtnDo(sid, emcode, item)
+                    }
+                }
+            },
+            Static: {
+                viewSize: { "width": 1280, "height": 1024 }
+            }
+        });
+        linb.UI.setTheme(themes);
+        linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+        var dlg = Dlg;
+        function LoadSaleOrder() {
+            var o = { "sid": sid }
+            var url = preurl + "/QueryOrder"
+            var b = AjaxDdExb(url, o);
+            $.when(b).done(function (d) {
+                var r = BackVad(d, "", false)
+                if (r) {
+                    ns.scode.setValue(r.scode);
+                    ns.stelephone.setValue(r.stelephone);
+                    ns.saddress.setValue(r.saddress);
+                    ns.cdate.setValue(r.cdate);
+                    ns.maker.setValue(r.maker);
+                    ns.dname.setValue(r.dname);
+                    ns.city.setValue(r.city);
+                    ns.otype.setValue(r.otype);
+                    ns.remark.setValue(r.remark);
+                    ns.sperson.setValue(r.sperson);
+                }
+            })
+
+        }
+        function LoadProductionHtml() {
+            var o = { "emcode": emcode, "embcode": embcode, "sid": sid, "ttype": "xq" }
+            var url = "../../../UIServer/CommonFile/CommonTempProduction.aspx/ProductionOrderDetail"
+            var b = AjaxDdExb(url, o);
+            $.when(b).done(function (d) {
+                ns.pppl.setHtml(d)
+            })
+        }
+        //显示日志
+        function ShowLogs(id) {
+            dlg.logdlg();
+        }
+        //增加产品
+        function AddProduction() {
+            //xfunstr = "LoadProductionHtml()";
+            dlg.addwlproductiondlg();
+        }
+        function EditProduction(gv) {
+            penum = 1;
+            xfunstr = "LoadProductionHtml()";
+            egnum = gv;
+            var dt = new Date().Format("MMddhhssmmSS");
+            dlg.addwlproductiondlg(dt);
+
+        }
+        //附件管理
+        function AddAttachment() {
+            dlg.attachmentdlg();
+        }
+        function ShowAttachment(id) {
+            dlg.showattachmentdlg();
+        }
+        //订单审核
+        function CheckOrder() {
+            dlg.checkdlg();
+        }
+        function SetRemark() {
+            xfunstr = "LoadSaleOrder()"
+            dlg.setorderremarkdlg();
+        }
+        function SetProduceType() {
+            xfunstr = " QueryOrderAttr(sid, ns.opattr)"
+            dlg.setorderproducedlg();
+        }
+        function SetDiscount() {
+            xfunstr = " QueryOrderAttr(sid, ns.opattr)"
+            dlg.discountdlg();
+        }
+
+        //编辑部件
+        function EditApart(id, gnum) {
+            xfunstr = "LoadProductionHtml()";
+            agsid = id;
+            agnum = gnum;
+            dlg.apartdlg();
+        }
+        function UpMImg(sid, gnum) {
+            var el = document.getElementById('linb.UI.Pane:a:');
+            ns["stv"] = el.scrollTop == 0 ? 200 : el.scrollTop + 200;
+            ns["gnum"] = gnum;
+            ns["cusfun"] = "LoadProductionHtml()";
+            dlg.productionimgdlg();
+        }
+
+        function DelPImg(v) {
+            linb.confirms("确定要删除", "DelImg('" + v + "')")
+        }
+        function DelImg(id) {
+            var o = { "pid": id }
+            var url = "../../../UIServer/SalesBusiness/DistributorDoorOrder/ProdctionDetail.aspx/DelProductionImg"
+            var b = AjaxExb(url, o);
+            BackVad(b, "QueryMImg();LoadProductionHtml();", false)
+        }
+        function Del(id, gid) {
+            linb.confirms("确定要删除", "DelProduction('" + id + "','" + gid + "')")
+        }
+        function UpPayImg(ptv) {
+            pztype = ptv;
+            dlg.payimgdlg();
+        }
+
+        function DelProduction(id, gid) {
+            var o = { "sid": id, "gnum": gid }
+            var url = preinvurl + "/DelProduction"
+            var b = AjaxExb(url, o);
+            BackVad(b, " LoadProductionHtml()", false)
+        }
+
+</script>
+</body>
+</html>

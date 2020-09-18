@@ -1,0 +1,621 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>部门管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Idepment.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "depbinder")
+                .setName("depbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("部门管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdt")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pdt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-weight:bold;font-size:16px;color:#666666'>组织结构</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pdr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "dtreebar")
+                .onItemSelected("_dtreebar_onitemselected")
+                .beforeExpend("_dtreebar_beforeexpend")
+            , "before");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pit")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pit.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;color:#666666;font-weight:bold'>部门详情</span>")
+            );
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pil")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pir")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.ly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pim")
+                .setDock("fill")
+            , "main");
+
+                     host.pim.append(
+                (new linb.UI.Input)
+                .setHost(host, "depname")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(20)
+                .setWidth(340)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:14px'>部门名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pim.append(
+                (new linb.UI.Input)
+                .setHost(host, "depcode")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(80)
+                .setWidth(340)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:14px'>部门编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pim.append(
+                (new linb.UI.Input)
+                .setHost(host, "deptelephone")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(140)
+                .setWidth(340)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:14px'>部门电话</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pim.append(
+                (new linb.UI.Input)
+                .setHost(host, "depmanager")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(200)
+                .setWidth(340)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:14px'>负&nbsp;&nbsp;责 人</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pim.append(
+                (new linb.UI.Input)
+                .setHost(host, "depattr")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(260)
+                .setWidth(340)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:14px'>部门性质</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pim.append(
+                (new linb.UI.Input)
+                .setHost(host, "khcode")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(320)
+                .setWidth(340)
+                .setHeight(50)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;#font-weight:bold;font-size:14px'>市区</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "AddDlg")
+                .setLeft(160)
+                .setTop(130)
+                .setWidth(700)
+                .setHeight(410)
+                .setDisplay("none")
+                .setCaption("部门管理")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "depstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_depstoolbar_onclick")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adepname")
+                .setDataBinder("depbinder")
+                .setDataField("adepname")
+                .setLeft(60)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>部门名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adepcode")
+                .setDataBinder("depbinder")
+                .setDataField("adepcode")
+                .setReadonly(true)
+                .setLeft(370)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>部门编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdepname")
+                .setDataBinder("depbinder")
+                .setDataField("pdepname")
+                .setReadonly(true)
+                .setLeft(60)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>上级部门</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "pdepcode")
+                .setDataBinder("depbinder")
+                .setDataField("pdepcode")
+                .setReadonly(true)
+                .setLeft(370)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>上级编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adepmanager")
+                .setDataBinder("depbinder")
+                .setDataField("adepmanager")
+                .setLeft(60)
+                .setTop(160)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>负&nbsp;&nbsp;责&nbsp;人</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adeptelephone")
+                .setDataBinder("depbinder")
+                .setDataField("adeptelephone")
+                .setLeft(370)
+                .setTop(160)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>部门电话</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "aid")
+                .setDataBinder("depbinder")
+                .setDataField("aid")
+                .setLeft(40)
+                .setTop(260)
+                .setWidth(400)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("ID")
+                .setValue("0")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "adepattr")
+                .setDataBinder("depbinder")
+                .setDataField("adepattr")
+                .setLeft(60)
+                .setTop(210)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>部门属性</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": " ", "caption": "" }, { "id": "pp", "caption": "品牌" }, { "id": "dm", "caption": "门店" }, { "id": "cs", "caption": "城市" }, { "id": "gc", "caption": "工厂" }, { "id": "fw", "caption": "服务" }, { "id": "wl", "caption": "物流" }, { "id": "sf", "caption": "省份" }, { "id": "dl", "caption": "多城市代理"}])
+                .onChange("_adepattr_onchange")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "dabc")
+                .setDataBinder("depbinder")
+                .setDataField("dabc")
+                .setLeft(400)
+                .setTop(210)
+                .setWidth(300)
+                .setHeight(47)
+                .setDisplay("none")
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("部门代码")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "akhcode")
+                .setDataBinder("depbinder")
+                .setDataField("akhcode")
+                .setLeft(370)
+                .setTop(210)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>市区</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adsort")
+                .setDataBinder("depbinder")
+                .setDataField("adsort")
+                .setLeft(370)
+                .setTop(260)
+                .setWidth(250)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>显示顺序</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "admattr")
+                .setDataBinder("depbinder")
+                .setDataField("admattr")
+                .setLeft(60)
+                .setTop(260)
+                .setWidth(235)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>店面属性</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "z", "caption": "直营" }, { "id": "w", "caption": "代理"}])
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "adsquare")
+                .setDataBinder("depbinder")
+                .setDataField("adsquare")
+                .setLeft(60)
+                .setTop(310)
+                .setWidth(210)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='font-size:14px;color:#666666'>店面面积</span>")
+                .setLabelHAlign("left")
+                .setValue("0")
+            );
+
+                     host.AddDlg.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(280)
+                .setTop(335)
+                .setCaption("(平米)")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/DepManage/Depment.aspx";
+                     IdepItems("", ns.dtreebar);
+                 },
+
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var dcode = ns.dtreebar.getUIValue()
+                     if (item.id == "a1") {
+                         ns.AddDlg.setDisplay("block");
+                         InitDepment(dcode)
+                     }
+                     if (item.id == "a3") {
+                         if (dcode != "" && dcode != null) {
+                             ns.AddDlg.setDisplay("block");
+                             InitEditDepment(dcode);
+                         }
+                         else {
+                             linb.warn("请选择部门")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (dcode != "") {
+                             linb.confirms("确定删除?", " Del('" + dcode + "')")
+
+                         }
+                         else {
+                             linb.message("请选择部门")
+                         }
+                     }
+                 },
+                 _dtreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdepCItems(item, ns.dtreebar);
+                     ns.dtreebar.setValue(item.id)
+                     LoadDepment(item.id);
+                 },
+                 _dtreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IdepCItems(item, ns.dtreebar)
+                 },
+                 _depstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         var pdc = ns.adepcode.getUIValue();
+                         if (!CheckInput(ns, ns.adepname, true, "", "部门名称不能为空", "", "", "")) {
+                             return false;
+                         }
+                         SaveDep();
+                         ns.AddDlg.setDisplay("none");
+                     }
+                     else {
+                         ns.AddDlg.setDisplay("none");
+                         InitKj("")
+                     }
+                 },
+                 _adepattr_onchange: function (profile, oldValue, newValue) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (newValue.length == 8) {
+
+                     }
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitDepment(v) {
+             var o = { "pdepcode": v }
+             var url = preurl + "/InitDepment"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitEditDepment(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/QueryDepmentByDepCode"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+         }
+         function InitKj(r) {
+             if (r != "") {
+                 ns.adepname.setValue(r.dname);
+                 ns.adepcode.setValue(r.dcode);
+                 ns.pdepname.setValue(r.dpname);
+                 ns.pdepcode.setValue(r.dpcode);
+                 ns.adepmanager.setValue(r.dmanager);
+                 ns.adeptelephone.setValue(r.dcontact);
+                 ns.aid.setValue(r.id);
+                 ns.adepattr.setValue(r.dattr);
+                 ns.akhcode.setValue(r.khcode);
+                 ns.adsort.setValue(r.dsort);
+                 ns.admattr.setValue(r.dmattr)
+                 ns.admattr.setValue(r.dmattr)
+                 ns.adsquare.setValue(r.dsquare)
+                 if (r.dcode.length == 8) {
+                     ns.dabc.setDisplay("none");
+                     ns.dabc.setValue(r.dabc);
+                 }
+             }
+         }
+         function SaveDep() {
+             var dtv = ns.adepattr.getUIValue();
+             if (dtv == "dm") {
+                 if (!CheckInput(ns, ns.admattr, true, "", "请选择店面属性！", "", "", "", "")) {
+                     return
+                 }
+             }
+             var url = preurl + "/SaveDep"
+             var db = linb.DataBinder.getFromName("depbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, " ", false)
+         }
+         function LoadDepment(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/QueryDepmentByDepCode"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 if (r != "") {
+                     ns.depname.setValue(r.dname);
+                     ns.depcode.setValue(r.dcode);
+                     ns.depmanager.setValue(r.dmanager);
+                     ns.deptelephone.setValue(r.dcontact);
+                     ns.khcode.setValue(r.khcode);
+                     if (r.dattr == "s") {
+                         ns.depattr.setValue("平台");
+                     }
+                     if (r.dattr == "g") {
+                         ns.depattr.setValue("工厂");
+                     }
+                 }
+             }
+         }
+         function Del(v) {
+             var o = { "dcode": v }
+             var url = preurl + "/Del"
+             var b = AjaxExb(url, o);
+             BackVad(b, "IdepItems('', ns.dtreebar)", false)
+         }
+ 
+     </script>
+</body>
+</html>

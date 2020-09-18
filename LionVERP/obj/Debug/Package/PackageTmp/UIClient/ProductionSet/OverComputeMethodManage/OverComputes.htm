@@ -1,0 +1,703 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>超标计算公式管理</title>
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IocmList.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "fbinder")
+                .setName("fbinder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "ctl_panel3")
+                .setZIndex(1)
+                .setCaption("超标计算公式")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "stoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_stoolbar_onclick")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Layout)
+                .setHost(host, "ctl_layout3")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 350, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block3")
+                .setDock("fill")
+            , "before");
+
+                     host.ctl_block3.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "ptreebar")
+                .setSelMode("multibycheckbox")
+                .setValue("")
+                .onItemSelected("_ptreebar_onitemselected")
+                .beforeExpend("_ptreebar_beforeexpend")
+            );
+
+                     host.ctl_layout3.append(
+                (new linb.UI.Block)
+                .setHost(host, "ctl_block4")
+                .setDock("fill")
+            , "main");
+
+                     host.ctl_block4.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ftoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_ftoolbar_onclick")
+            );
+
+                     host.ctl_block4.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ftreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "编码" }, { "id": "col3", "width": 100, "type": "input", "caption": "类型" }, { "id": "col4", "width": 180, "type": "input", "caption": "公式"}])
+                .setValue("")
+                .onRowSelected("_ftreegrid_onrowselected")
+            );
+
+                     host.ctl_panel3.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fdlg")
+                .setLeft(238)
+                .setTop(126)
+                .setWidth(550)
+                .setHeight(365)
+                .setDisplay("none")
+                .setCaption("公式")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_fstoolbar_onclick")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fname")
+                .setDataBinder("fbinder")
+                .setDataField("fname")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(440)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fid")
+                .setDataBinder("fbinder")
+                .setDataField("fid")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(440)
+                .setHeight(25)
+                .setValue(0)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcode")
+                .setDataBinder("fbinder")
+                .setDataField("fcode")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(90)
+                .setWidth(440)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("编码")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "ftx")
+                .setDataBinder("fbinder")
+                .setDataField("ftx")
+                .setLeft(30)
+                .setTop(130)
+                .setWidth(430)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("体系")
+                .setType("listbox")
+                .setItems([{ "id": "a", "caption": "item a", "image": "img/demo.gif" }, { "id": "b", "caption": "item b", "image": "img/demo.gif" }, { "id": "c", "caption": "item c", "image": "img/demo.gif" }, { "id": "d", "caption": "item d", "image": "img/demo.gif", "disabled": true}])
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "flx")
+                .setDataBinder("fbinder")
+                .setDataField("flx")
+                .setLeft(30)
+                .setTop(130)
+                .setWidth(425)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("类型")
+                .setType("listbox")
+              .setItems([{ "id": "销售", "caption": "销售" }, { "id": "供货", "caption": "供货" }, { "id": "采购", "caption": "采购"}])
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fgs")
+                .setDataBinder("fbinder")
+                .setDataField("fgs")
+                .setReadonly(true)
+                .setLeft(30)
+                .setTop(170)
+                .setWidth(440)
+                .setHeight(25)
+                .setLabelSize(60)
+                .setLabelCaption("公式")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Group)
+                .setHost(host, "ctl_group1")
+                .setLeft(30)
+                .setTop(210)
+                .setWidth(480)
+                .setHeight(100)
+                .setCaption("符号")
+                .setToggleBtn(false)
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "zkh")
+                .setLeft(10)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("(")
+                .onClick("_zkh_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "ykh")
+                .setLeft(50)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption(")")
+                .onClick("_ykh_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "jia")
+                .setLeft(90)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("+")
+                .onClick("_jia_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "jian")
+                .setLeft(130)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("-")
+                .onClick("_jian_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "cheng")
+                .setLeft(170)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("*")
+                .onClick("_cheng_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "chu")
+                .setLeft(210)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("/")
+                .onClick("_chu_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "g")
+                .setLeft(320)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("高")
+                .onClick("_g_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "k")
+                .setLeft(360)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("宽")
+                .onClick("_k_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "h")
+                .setLeft(400)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("厚")
+                .onClick("_h_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "f")
+                .setLeft(440)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("辅")
+                .onClick("_f_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n0")
+                .setLeft(10)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("0")
+                .onClick("_n0_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n1")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("1")
+                .onClick("_n1_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n2")
+                .setLeft(90)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("2")
+                .onClick("_n2_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n3")
+                .setLeft(130)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("3")
+                .onClick("_n3_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n4")
+                .setLeft(170)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("4")
+                .onClick("_n4_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n5")
+                .setLeft(210)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("5")
+                .onClick("_n5_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n6")
+                .setLeft(250)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("6")
+                .onClick("_n6_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n7")
+                .setLeft(290)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("7")
+                .onClick("_n7_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n8")
+                .setLeft(330)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("8")
+                .onClick("_n8_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n9")
+                .setLeft(370)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("9")
+                .onClick("_n9_onclick")
+            );
+
+                     host.ctl_group1.append(
+                (new linb.UI.SButton)
+                .setHost(host, "del")
+                .setLeft(410)
+                .setTop(50)
+                .setWidth(55)
+                .setCaption("Del")
+                .onClick("_del_onclick")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/ProductionSet/OverComputeMethodManage/OverComputes.aspx";
+                     IinvItems("", ns.ptreebar)
+                     Iocm(ns.ftreegrid);
+                 },
+
+                 _stoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.ptreebar.getUIValue();
+                     var nv = ns.ftreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.message("选择产品公式");
+                             return
+                         }
+                         SetProductionOcm(pv, nv)
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "") {
+                             linb.message("选择产品类别");
+                             return
+                         }
+                         IDoFun("重置产品公式？", "ReSetProductionOcm('" + pv + "')")
+                     }
+                 },
+                 _ptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.ptreebar)
+                 },
+                 _ptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ptreebar.setValue(item.id)
+                     IinvCItems(item, ns.ptreebar)
+                     GetProductionOcm(item.id, ns.ftreegrid)
+                 },
+                 _ftoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.ftreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         InitOComputeMethod("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.fdlg.setDisplay("block")
+                             InitOComputeMethod(v)
+                         }
+                         else {
+                             linb.message("请选择产品类")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             IDelFun("DelOComputeMethod('" + v + "')")
+                         }
+                         else {
+                             linb.message("请选择产品类别")
+                         }
+                     }
+                 },
+                 _ftreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ftreegrid.setValue(row.id)
+                 },
+                 _fstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveOComputeMethod()
+                     }
+                     if (item.id == "a3") {
+                         ns.bdlg.setDisplay("none")
+                         InitUnKj();
+                     }
+                 },
+                 _zkh_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "("
+                     ns.fgs.setValue(fstr);
+                 },
+                 _ykh_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + ")"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _jia_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "+"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _jian_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "-"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _cheng_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "*"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _chu_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "/"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _g_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "H"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _k_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "W"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _h_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "D"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _f_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "F"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n0_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "0"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n1_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "1"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n2_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "2"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n3_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "3"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n4_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "4"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n5_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "5"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n6_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "6"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n7_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "7"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n8_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "8"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n9_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "9"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _del_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue()
+                     fstr = fstr.substring(0, fstr.length - 1);
+                     ns.fgs.setValue(fstr);
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitOComputeMethod(v) {
+             var o = { "fcode": v }
+             var url = preurl + "/InitOComputeMethod"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function InitKj(r) {
+             ns.fname.setValue(r.fname)
+             ns.fcode.setValue(r.fcode)
+             ns.flx.setValue(r.fattr)
+             ns.fgs.setValue(r.fstr)
+             ns.fid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.fname.setValue()
+             ns.fcode.setValue()
+             ns.flx.setValue()
+             ns.fgs.setValue()
+             ns.fid.setValue(0)
+         }
+         function SaveOComputeMethod() {
+             var url = preurl + "/SaveOComputeMethod"
+             var db = linb.DataBinder.getFromName("fbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoad()", false)
+         }
+         function DelOComputeMethod(v) {
+             var o = { "fcode": v }
+             var url = preurl + "/DelComputeMethod"
+             var b = AjaxExb(url, o);
+             BackVad(b, "ReLoad()", false)
+         }
+ 
+         
+         function ReLoad() {
+             Iocm(ns.ftreegrid)
+             ns.fdlg.setDisplay("none")
+         }
+     </script>
+</body>
+</html>

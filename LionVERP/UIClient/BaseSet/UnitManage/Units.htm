@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+     <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." /></div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("单位管理")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "toolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_toolbar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "utreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(28)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 200, "type": "input", "caption": "名称"}])
+                .setValue("")
+            );
+
+                     host.pane.append(
+                (new linb.UI.PageBar)
+                .setHost(host, "pagebar")
+                .setDock("bottom")
+                .setCaption("分页")
+                .onClick("_upagebar_onclick")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Dialog)
+                .setHost(host, "udlg")
+                .setLeft(140)
+                .setTop(120)
+                .setWidth(550)
+                .setHeight(199)
+                .setDisplay("none")
+                .setCaption("单位")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.udlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ustoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_ustoolbar_onclick")
+            );
+
+                     host.udlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "uname")
+                .setDataBinder("binder")
+                .setDataField("uname")
+                .setLeft(70)
+                .setTop(50)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("单位名称")
+                .setLabelHAlign("left")
+            );
+
+                     host.udlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "ucode")
+                .setDataBinder("binder")
+                .setDataField("ucode")
+                .setReadonly(true)
+                .setLeft(70)
+                .setTop(100)
+                .setWidth(360)
+                .setHeight(47)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("单位编码")
+                .setLabelHAlign("left")
+            );
+
+                     host.udlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "uid")
+                .setDataBinder("binder")
+                .setDataField("uid")
+                .setLeft(150)
+                .setTop(30)
+                .setWidth(240)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setValue("0")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>系统单位</span>")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     host.pane.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this;
+                     preurl = "../../../UIServer/BaseSet/UnitManage/Units.aspx";
+                     QueryList(1)
+                 },
+                 _toolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var v = ns.utreegrid.getUIValue()
+                     if (item.id == "a1") {
+                         ns.udlg.setDisplay("block")
+                         InitUnit("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.udlg.setDisplay("block")
+                             InitUnit(v)
+                         }
+                         else {
+                             linb.warn("请选择单位")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("确定删除？","DelUnit('" + v + "') ")
+                         }
+                         else {
+                             linb.warn("请选择单位")
+                         }
+                     }
+                 },
+                 _ustoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveUnit()
+                     }
+                     ns.udlg.setDisplay("none")
+                 },
+                 _upagebar_onclick: function (profile, page) {
+                     var ns = this, uictrl = profile.boxing();
+                     profile.boxing().setPage(page)
+                     QueryList(page)
+                 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitUnit(v) {
+             var o = { "ucode": v }
+             var url = preurl + "/InitUnit"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 InitKj(r)
+             }
+             else {
+                 InitUnKj()
+             }
+         }
+         function SaveUnit() {
+             var url = preurl + "/SaveUnit"
+             var db = linb.DataBinder.getFromName("binder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "QueryList(1)", false)
+         }
+         function DelUnit(v) {
+             var o = { "ucode": v }
+             var url = preurl + "/DelUnit"
+             var b = AjaxExb(url, o);
+             BackVad(b, "QueryList(1)", false)
+         }
+         function QueryList(p) {
+             var url = preurl + "/QueryFyList";
+             var o = { "curpage": p, "pagesize": "15" };
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.utreegrid.removeAllRows();
+                 var arr = new Array();
+                 for (i = 2; i < r.length; i++) {
+                     var cel = r[i].toString().split(',')
+                     arr.push({ "id": cel[0], "cells": [{ "value": cel[1] }, { "value": cel[0] } ] })
+                 }
+                 ns.pagebar.setValue("1:1:" + r[1] + "")
+                 ns.utreegrid.setRows(arr)
+             }
+         }
+         function InitKj(r) {
+             ns.uname.setValue(r.uname)
+             ns.ucode.setValue(r.ucode)
+             ns.uid.setValue(r.id)
+         }
+         function InitUnKj() {
+             ns.uname.setValue("")
+             ns.ucode.setValue("")
+             ns.uid.setValue("0")
+         }
+    </script>
+</body>
+</html>

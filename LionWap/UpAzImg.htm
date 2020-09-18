@@ -1,0 +1,88 @@
+﻿
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1 maximum-scale=2, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="Add to Home">
+		<meta name="format-detection" content="telephone=no">
+		<meta http-equiv="x-rim-auto-match" content="none">
+        <link href="MobileCss/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" />
+        <script src="Scripts/json2.js" type="text/javascript"></script>
+        <script src="MobileScript/jquery.js" type="text/javascript"></script>
+        <script src="MobileScript/jquery.mobile-1.4.5.js" type="text/javascript"></script>
+        <script src="Scripts/jquery-1.8.2.js" type="text/javascript"></script>
+        <script src="Scripts/script.js" type="text/javascript"></script>
+        <script src="Scripts/Common.js" type="text/javascript"></script>
+        <script src="Scripts/ajaxfileupload.js" type="text/javascript"></script>
+        <link href="Styles/Upfile/publi.css" rel="stylesheet" type="text/css" />
+        <link href="Styles/Upfile/style.css" rel="stylesheet" type="text/css" />
+        <script src="Scripts/ValReturn.js" type="text/javascript"></script>
+		<!--[if lt IE 9]>
+			<script src="js/html5.js"></script>
+			<script src="js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+    <div data-role="page" id="main">
+		<section id="loading"></section>
+		<div data-role="header">
+         <a href="#" id="backurl" class="ui-btn ui-icon-arrow-l ui-btn-icon-left" rel="external">&nbsp;</a>
+          <h1>收货图片上传</h1>
+        </div>
+		<section class="acc_apply">
+			<ul  style="height:80px">
+				<li style="border-top: 0; margin-bottom: 0px;">
+						<div class="acc_sc" style="background:url( 'Image/sysimg/addimg.png'); width:83px; height:83px">
+							<a href="javascript:;" ></a>
+							<input type="file" name="file0" id="file0" multiple class="ph08" />
+						</div>
+				</li>
+			</ul>
+		</section>
+        <div id="imglist">
+        </div>
+		<script type="text/javascript">
+		    sid = "";
+		    $(function () {
+		        $(window).on("load", function () {
+		            $("#loading").fadeOut();
+		            var Request = new Object();
+		            Request = GetRequest();
+		            if (Request["Sid"] != null) {
+		                sid = Request["Sid"];
+		                QueryImglist();
+		            }
+		        })
+		        $("#file0").live('change', function () {
+		            imgshchange()
+		        })
+		    })
+		    function imgshchange() {
+		        var url = "UIServer/UpAzImg.aspx?sid=" + sid;
+		        UpFile(null, "file0", url, QueryImglist);
+		    }
+		    $(function () {
+		        $("#backurl").click(function () { window.location.href = "orderdetail.htm?Sid=" + sid })
+		    })
+		    function QueryImglist() {
+		        var o = { "sid": sid }
+		        var url = "UIServer/WapFixOrder.aspx/QueryAzFixImgListZip"
+		        var b = AjaxExb(url, o);
+		        $("#imglist").html(b)
+		    }
+		    function DelAzImg(id) {
+		        var o = { "id": id }
+		        var url = "UIServer/WapFixOrder.aspx/DelAzFixImg"
+		        var b = AjaxExb(url, o);
+		        BackVad(b, "QueryImglist()", false)
+		    }
+		</script>
+        </div>
+	</body>
+
+</html>

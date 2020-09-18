@@ -1,0 +1,1151 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>计算公式管理</title>
+    <link href="../../../Styles/Common/toastr.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id='loading'><img src="../../../runtime/loading.gif" alt="Loading..." />加载中......</div>
+    <script src="../../../Scripts/Common/json2.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/linb-debug.js" type="text/javascript"></script>
+    <script src="../../../runtime/jsLinb/js/adv-debug.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/Common.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValReturn.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Valid/ValInput.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/IInventory.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Api/Icomputermethods.js" type="text/javascript"></script>
+    <script src="../../../Scripts/Common/toastr.js" type="text/javascript"></script>
+     <script type="text/javascript">
+
+         Class('App', 'linb.Com', {
+
+             Instance: {
+
+                 initialize: function () {
+
+                     this.autoDestroy = true;
+
+                     this.properties = {};
+                 },
+
+                 iniComponents: function () {
+                     // [[code created by jsLinb UI Builder
+                     var host = this, children = [], append = function (child) { children.push(child.get(0)) };
+
+                     append(
+                (new linb.DataBinder)
+                .setHost(host, "binder")
+                .setName("binder")
+            );
+
+                     append(
+                (new linb.UI.Panel)
+                .setHost(host, "pane")
+                .setZIndex(1)
+                .setCaption("计算公式")
+                .setImage("../../../Image/opeimage/page.gif")
+            );
+
+                     host.pane.append(
+                (new linb.UI.Tabs)
+                .setHost(host, "tab")
+                .setItems([{ "id": "a", "caption": "销售公式" }, { "id": "b", "caption": "供货公式" }, { "id": "c", "caption": "采购公式"}])
+                .setValue("b")
+                .onItemSelected("_tab_onitemselected")
+            );
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "cstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_cstoolbar_onclick")
+            , "c");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "cly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "c");
+
+                     host.cly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "cptreebar")
+                .onItemSelected("_cptreebar_onitemselected")
+                .beforeExpend("_cptreebar_beforeexpend")
+            , "before");
+
+                     host.cly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "ctoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_ctoolbar_onclick")
+            , "main");
+
+                     host.cly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "ctreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "体系" }, { "id": "col3", "width": 100, "type": "input", "caption": "类型" }, { "id": "col4", "width": 180, "type": "input", "caption": "公式"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_ctreegrid_onrowselected")
+            , "main");
+
+                     host.cly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pcct")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pcct.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl5")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类</span>")
+            );
+
+                     host.cly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pccl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.cly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pccr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.cly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pclt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pclt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl6")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>采购公式</span>")
+            );
+
+                     host.cly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pcll")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.cly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pclr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "gstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_gstoolbar_onclick")
+            , "b");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "gly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "b");
+
+                     host.gly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "gptreebar")
+                .onItemSelected("_gptreebar_onitemselected")
+                .beforeExpend("_gptreebar_beforeexpend")
+            , "before");
+
+                     host.gly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "gtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_gtoolbar_onclick")
+            , "main");
+
+                     host.gly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "gtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "体系" }, { "id": "col3", "width": 100, "type": "input", "caption": "类型" }, { "id": "col4", "width": 180, "type": "input", "caption": "公式"}])
+                .setRows({})
+                .setValue("")
+                .onRowSelected("_gtreegrid_onrowselected")
+            , "main");
+
+                     host.gly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pgct")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pgct.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl3")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类</span>")
+            );
+
+                     host.gly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pgcl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.gly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pglr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.gly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pglt")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pglt.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl4")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>供货公式</span>")
+            );
+
+                     host.gly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pgll")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.gly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pglrr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.tab.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "xstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "设置", "image": "../../../Image/opeimage/set.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "重置", "image": "../../../Image/opeimage/reset.gif"}], "caption": "grp1"}])
+                .onClick("_xstoolbar_onclick")
+            , "a");
+
+                     host.tab.append(
+                (new linb.UI.Layout)
+                .setHost(host, "xly")
+                .setItems([{ "id": "before", "pos": "before", "min": 10, "size": 300, "locked": false, "folded": false, "hidden": false, "cmd": true }, { "id": "main", "min": 10}])
+                .setType("horizontal")
+            , "a");
+
+                     host.xly.append(
+                (new linb.UI.TreeBar)
+                .setHost(host, "xptreebar")
+                .onItemSelected("_xptreebar_onitemselected")
+                .beforeExpend("_xptreebar_beforeexpend")
+            , "before");
+
+                     host.xly.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "xtoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "新增", "image": "../../../Image/opeimage/add.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "编辑", "image": "../../../Image/opeimage/edit.gif" }, { "id": "a2", "type": "split", "split": true }, { "id": "a4", "caption": "删除", "image": "../../../Image/opeimage/del.gif"}], "caption": "grp1"}])
+                .onClick("_xtoolbar_onclick")
+            , "main");
+
+                     host.xly.append(
+                (new linb.UI.TreeGrid)
+                .setHost(host, "xtreegrid")
+                .setSelMode("multibycheckbox")
+                .setAltRowsBg(true)
+                .setRowNumbered(true)
+                .setHeaderHeight(25)
+                .setRowHeight(25)
+                .setHeader([{ "id": "col1", "width": 160, "type": "input", "caption": "名称" }, { "id": "col2", "width": 100, "type": "input", "caption": "体系" }, { "id": "col3", "width": 100, "type": "input", "caption": "类型" }, { "id": "col4", "width": 180, "type": "input", "caption": "公式"}])
+                .setValue("")
+                .onRowSelected("_xtreegrid_onrowselected")
+            , "main");
+
+                     host.xly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pxct")
+                .setDock("top")
+                .setHeight(50)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.pxct.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl1")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>产品类</span>")
+            );
+
+                     host.xly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pxcl")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.xly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pxcr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "before");
+
+                     host.xly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pxla")
+                .setDock("top")
+                .setHeight(51)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.pxla.append(
+                (new linb.UI.SLabel)
+                .setHost(host, "sl2")
+                .setLeft(20)
+                .setTop(20)
+                .setCaption("<span style='font-size:16px;font-weight:bolder;color:#666666'>销售公式</span>")
+            );
+
+                     host.xly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pxll")
+                .setDock("left")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     host.xly.append(
+                (new linb.UI.Pane)
+                .setHost(host, "pxlr")
+                .setDock("right")
+                .setWidth(12)
+                .setCustomStyle({ "KEY": "background:#f2f2f2" })
+            , "main");
+
+                     append(
+                (new linb.UI.Dialog)
+                .setHost(host, "fdlg")
+                .setLeft(80)
+                .setTop(167)
+                .setWidth(620)
+                .setHeight(403)
+                .setDisplay("none")
+                .setCaption("公式")
+                .setMinBtn(false)
+                .setMaxBtn(false)
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ToolBar)
+                .setHost(host, "fstoolbar")
+                .setItems([{ "id": "grp1", "sub": [{ "id": "a1", "caption": "确定" }, { "id": "a2", "type": "split", "split": true }, { "id": "a3", "caption": "取消"}], "caption": "grp1"}])
+                .onClick("_fstoolbar_onclick")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fname")
+                .setDataBinder("fbinder")
+                .setDataField("fname")
+                .setLeft(50)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>名称</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fid")
+                .setDataBinder("fbinder")
+                .setDataField("fid")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(440)
+                .setHeight(25)
+                .setDisplay("none")
+                .setLabelSize(60)
+                .setLabelCaption("名称")
+                .setValue("0")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fcode")
+                .setDataBinder("fbinder")
+                .setDataField("fcode")
+                .setReadonly(true)
+                .setLeft(320)
+                .setTop(50)
+                .setWidth(250)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>编码</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.ComboInput)
+                .setHost(host, "flx")
+                .setDataBinder("fbinder")
+                .setDataField("flx")
+                .setLeft(50)
+                .setTop(100)
+                .setWidth(240)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>类型</span>")
+                .setLabelHAlign("left")
+                .setType("listbox")
+                .setItems([{ "id": "xs", "caption": "销售" }, { "id": "gh", "caption": "供货" }, { "id": "cg", "caption": "采购"}])
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "fgs")
+                .setDataBinder("fbinder")
+                .setDataField("fgs")
+                .setReadonly(true)
+                .setLeft(50)
+                .setTop(150)
+                .setWidth(520)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>公式</span>")
+                .setLabelHAlign("left")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Group)
+                .setHost(host, "gkey")
+                .setLeft(50)
+                .setTop(210)
+                .setWidth(520)
+                .setHeight(140)
+                .setCaption("符号")
+                .setToggleBtn(false)
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "zkh")
+                .setLeft(30)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("(")
+                .onClick("_zkh_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "ykh")
+                .setLeft(70)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption(")")
+                .onClick("_ykh_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "jia")
+                .setLeft(110)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("+")
+                .onClick("_jia_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "jian")
+                .setLeft(150)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("-")
+                .onClick("_jian_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "cheng")
+                .setLeft(190)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("*")
+                .onClick("_cheng_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "chu")
+                .setLeft(230)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("/")
+                .onClick("_chu_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "g")
+                .setLeft(340)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("高")
+                .onClick("_g_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "k")
+                .setLeft(380)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("宽")
+                .onClick("_k_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "h")
+                .setLeft(420)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("厚")
+                .onClick("_h_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "f")
+                .setLeft(460)
+                .setTop(10)
+                .setWidth(25)
+                .setCaption("辅")
+                .onClick("_f_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n0")
+                .setLeft(30)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("0")
+                .onClick("_n0_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n1")
+                .setLeft(70)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("1")
+                .onClick("_n1_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n2")
+                .setLeft(110)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("2")
+                .onClick("_n2_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n3")
+                .setLeft(150)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("3")
+                .onClick("_n3_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n4")
+                .setLeft(190)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("4")
+                .onClick("_n4_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n5")
+                .setLeft(230)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("5")
+                .onClick("_n5_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n6")
+                .setLeft(270)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("6")
+                .onClick("_n6_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n7")
+                .setLeft(310)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("7")
+                .onClick("_n7_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n8")
+                .setLeft(350)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("8")
+                .onClick("_n8_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "n9")
+                .setLeft(390)
+                .setTop(50)
+                .setWidth(25)
+                .setCaption("9")
+                .onClick("_n9_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "del")
+                .setLeft(430)
+                .setTop(50)
+                .setWidth(55)
+                .setCaption("Del")
+                .onClick("_del_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "uqzbtn")
+                .setLeft(330)
+                .setTop(90)
+                .setWidth(66)
+                .setCaption("向上取整")
+                .onClick("_uqzbtn_onclick")
+            );
+
+                     host.gkey.append(
+                (new linb.UI.SButton)
+                .setHost(host, "swbtn")
+                .setLeft(420)
+                .setTop(90)
+                .setWidth(66)
+                .setCaption("四舍五入")
+                .onClick("_swbtn_onclick")
+            );
+
+                     host.fdlg.append(
+                (new linb.UI.Input)
+                .setHost(host, "minv")
+                .setDataBinder("fbinder")
+                .setDataField("minv")
+                .setLeft(320)
+                .setTop(100)
+                .setWidth(250)
+                .setHeight(45)
+                .setLabelSize(20)
+                .setLabelPos("top")
+                .setLabelCaption("<span style='color:#656468;bold;font-size:14px'>最小数量</span>")
+                .setLabelHAlign("left")
+            );
+
+                     return children;
+                     // ]]code created by jsLinb UI Builder
+                 },
+
+                 iniExComs: function (com, threadid) {
+                 },
+
+                 customAppend: function (parent, subId, left, top) {
+
+                     return false;
+                 },
+
+                 events: { "onReady": "_onready" },
+                 _onready: function () {
+                     ns = this, ctpye = "";
+                     preurl = "../../../UIServer/ProductionSet/ComputeMethodManage/ComputeMethods.aspx";
+                 },
+                 _tab_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a") {
+                         IinvItems("", ns.xptreebar)
+                         IcmlistByType("xs", ns.xtreegrid);
+                         ns.flx.setUIValue("xs");
+                     }
+                     if (item.id == "b") {
+                         IinvItems("", ns.gptreebar)
+                         IcmlistByType("gh", ns.gtreegrid)
+                         ns.flx.setUIValue("gh")
+                     }
+                     if (item.id == "c") {
+                         IinvItems("", ns.cptreebar)
+                         IcmlistByType("cg", ns.ctreegrid)
+                         ns.flx.setUIValue("cg")
+                     }
+                     ns.flx.setReadonly(true)
+                 },
+                 _xstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.xptreebar.getUIValue();
+                     var nv = ns.xtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.warn("选择产品公式");
+                             return
+                         }
+                         SetProductionCm(pv, nv, "xs");
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "") {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         linb.confirms("重置产品公式？", "ReSetProductionCm('" + pv + "','xs')")
+                     }
+                 },
+                 _gstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.gptreebar.getUIValue();
+                     var nv = ns.gtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.warn("选择产品公式");
+                             return
+                         }
+                         SetProductionCm(pv, nv, "gh")
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "") {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         linb.confirms("重置产品公式？", "ReSetProductionCm('" + pv + "','gh')")
+                     }
+                 },
+                 _cstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     var pv = ns.cptreebar.getUIValue();
+                     var nv = ns.ctreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         if (pv == "") {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         if (nv == "" || nv == null) {
+                             linb.warn("选择产品公式");
+                             return
+                         }
+                         SetProductionCm(pv, nv,"cg")
+                     }
+                     if (item.id == "a3") {
+                         if (pv == "") {
+                             linb.warn("选择产品类别");
+                             return
+                         }
+                         linb.confirms("重置产品公式？", "ReSetProductionCm('" + pv + "','cg')")
+                     }
+                 },
+                 _xtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     ctpye = "xs";
+                     var v = ns.xtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         InitComputeMethod("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.fdlg.setDisplay("block")
+                             InitComputeMethod(v)
+                         }
+                         else {
+                             linb.warn("请选择产品公式")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("确定删除？","DelComputeMethod('" + v + "')")
+                         }
+                         else {
+                             linb.warn("请选择产品公式")
+                         }
+                     }
+                 },
+                 _gtoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     ctpye = "gh";
+                     var v = ns.gtreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         InitComputeMethod("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.fdlg.setDisplay("block")
+                             InitComputeMethod(v)
+                         }
+                         else {
+                             linb.warn("请选择产品公式")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("确定删除？", "DelComputeMethod('" + v + "')")
+                         }
+                         else {
+                             linb.warn("请选择产品公式")
+                         }
+                     }
+                 },
+                 _ctoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     ctpye = "cg";
+                     var v = ns.ctreegrid.getUIValue();
+                     if (item.id == "a1") {
+                         ns.fdlg.setDisplay("block")
+                         InitComputeMethod("")
+                     }
+                     if (item.id == "a3") {
+                         if (v != null && v != "") {
+                             ns.fdlg.setDisplay("block")
+                             InitComputeMethod(v)
+                         }
+                         else {
+                             linb.warn("请选择产品公式")
+                         }
+                     }
+                     if (item.id == "a4") {
+                         if (v != null && v != "") {
+                             linb.confirms("确定删除？", "DelComputeMethod('" + v + "')")
+                         }
+                         else {
+                             linb.warn("请选择产品公式")
+                         }
+                     }
+                 },
+                 _xtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.xtreegrid.setValue(row.id)
+                 },
+                 _gtreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.gtreegrid.setValue(row.id)
+                 },
+                 _ctreegrid_onrowselected: function (profile, row, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.ctreegrid.setValue(row.id)
+                 },
+                 _xptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.xptreebar.setValue(item.id)
+                     IinvCItems(item, ns.xptreebar)
+                     GetProductionCm(item.id, ns.xtreegrid,"xs")
+                 },
+                 _xptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.xptreebar)
+                 },
+                 _gptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.gptreebar.setValue(item.id)
+                     IinvCItems(item, ns.gptreebar)
+                     GetProductionCm(item.id, ns.gtreegrid, "gh")
+                 },
+                 _gptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.gptreebar)
+                 },
+                 _cptreebar_onitemselected: function (profile, item, e, src, type) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.cptreebar.setValue(item.id)
+                     IinvCItems(item, ns.cptreebar)
+                     GetProductionCm(item.id, ns.ctreegrid, "cg")
+                 },
+                 _cptreebar_beforeexpend: function (profile, item) {
+                     var ns = this, uictrl = profile.boxing();
+                     IinvCItems(item, ns.cptreebar)
+                 },
+                 _fstoolbar_onclick: function (profile, item, group, e, src) {
+                     var ns = this, uictrl = profile.boxing();
+                     if (item.id == "a1") {
+                         SaveComputeMethod()
+                     }
+                     ns.fdlg.setDisplay("none");
+                 },
+                 _zkh_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "("
+                     ns.fgs.setValue(fstr);
+                 },
+                 _ykh_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + ")"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _jia_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "+"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _jian_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "-"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _cheng_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "*"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _chu_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "/"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _g_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "H"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _k_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "W"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _h_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "D"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _f_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "F"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n0_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "0"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n1_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "1"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n2_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "2"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n3_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "3"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n4_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "4"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n5_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "5"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n6_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "6"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n7_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "7"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n8_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "8"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _n9_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     fstr = fstr + "9"
+                     ns.fgs.setValue(fstr);
+                 },
+                 _del_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue()
+                     fstr = fstr.substring(0, fstr.length - 1);
+                     ns.fgs.setValue(fstr);
+                 },
+                 _uqzbtn_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     var fstr = ns.fgs.getUIValue();
+                     ns.fgs.setValue(fstr + "Math.Ceiling(");
+                 },
+                 _swbtn_onclick: function (profile, e, src, value) {
+                     var ns = this, uictrl = profile.boxing();
+                     ns.fgs.setValue(fstr + "Math.Round(");
+                 }
+             },
+             Static: {
+                 viewSize: { "width": 1024, "height": 768 }
+             }
+         });
+         linb.UI.setTheme(themes);
+         linb.Com.load('App', function () { linb('loading').remove(); }, 'en');
+         function InitComputeMethod(v) {
+             var o = { "fcode": v }
+             var url = preurl + "/InitComputeMethod"
+             var b = AjaxExb(url, o);
+             var r = BackVad(b, "", false)
+             if (r) {
+                 ns.fname.setValue(r.fname)
+                 ns.fcode.setValue(r.fcode)
+                 if (r.fattr != "") {
+                     ns.flx.setValue(r.fattr)
+                 }
+                 else {
+                     ns.flx.setValue(ctpye)
+                 }
+                 ns.fgs.setValue(r.fstr);
+                 ns.minv.setValue(r.fminv)
+                 ns.fid.setValue(r.id)
+             }
+         }
+         function SaveComputeMethod() {
+             var url = preurl + "/SaveComputeMethod"
+             var db = linb.DataBinder.getFromName("fbinder");
+             var o = db.updateDataFromUI().getData();
+             var b = AjaxExb(url, o)
+             BackVad(b, "ReLoad()", false)
+         }
+         function DelComputeMethod(v) {
+             var o = { "fcode": v }
+             var url = preurl + "/DelComputeMethod"
+             var b = AjaxExb(url, o);
+             BackVad(b, "ReLoad()", false)
+         }
+         function ReLoad() {
+             switch (ctpye) {
+                 case "xs":
+                     IcmlistByType("xs", ns.xtreegrid);
+                     break;
+                 case "gh":
+                     IcmlistByType("gh", ns.gtreegrid);
+                     break;
+                 case "cg":
+                     IcmlistByType("cg", ns.ctreegrid);
+                     break;
+             }
+         }
+     </script>
+</body>
+</html>
